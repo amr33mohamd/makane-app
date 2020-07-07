@@ -6,7 +6,6 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.horcrux.svg.SvgPackage;
 import com.reactnativecommunity.geolocation.GeolocationPackage;
 import com.oblador.vectoricons.VectorIconsPackage;

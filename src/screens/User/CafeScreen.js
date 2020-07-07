@@ -9,8 +9,9 @@ import AsyncStorage from "@react-native-community/async-storage";
 import Carousel from 'react-native-snap-carousel';
 import i18n from "i18next";
 import Modal from 'react-native-modal';
+import QRCode from 'react-native-qrcode-svg';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ReviewBox from '../../components/ReviewBox'
 import CouponBox from "../../components/CouponBox";
 import SpecialEventBox from "../../components/SpecialEventBox";
@@ -260,6 +261,10 @@ return (
                                 (i18n.language == 'ar') ? store.description_ar : store.description_en
                             }
                         </Text>
+                        <QRCode
+                            value='70'
+
+  />
                         <Button
                             title="Press me"
                             onPress={() => {submit()}}
