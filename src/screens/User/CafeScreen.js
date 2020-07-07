@@ -9,9 +9,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import Carousel from 'react-native-snap-carousel';
 import i18n from "i18next";
 import Modal from 'react-native-modal';
-import QRCode from 'react-native-qrcode';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/FontAwesome5';
 import ReviewBox from '../../components/ReviewBox'
 import CouponBox from "../../components/CouponBox";
 import SpecialEventBox from "../../components/SpecialEventBox";
@@ -160,11 +159,7 @@ export default function CafeScreen({route,navigation}) {
 return (
     <Container>
         <Content>
-            <QRCode
-                value="http://google.com"
-                size={200}
-                bgColor='purple'
-                fgColor='white'/>
+
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={normalModal}>
                 <View style={{height:285,backgroundColor:'#fff',padding:10,borderRadius:20}}>
                     <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>

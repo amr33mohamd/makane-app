@@ -78,9 +78,10 @@ target 'makane' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
 
-  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
 
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   target 'makaneTests' do
     inherit! :complete
