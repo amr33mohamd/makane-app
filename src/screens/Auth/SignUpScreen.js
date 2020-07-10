@@ -25,21 +25,21 @@ export default function SignUpScreen({route,navigation}) {
 
    var submit = () =>{
        if(email != '' && password != '' && password != '' && phone != '20'){
-           axios.get('http://127.0.0.1:8000/api/signup', {
+           axios.get('http://10.0.2.2:8000/api/signup', {
                params: {
                    email, password, phone, name, country: 'kkk',code
                }
            })
                .then(function (response) {
                    AsyncStorage.setItem('token',response.data.token);
-
+                    AsyncStorage.setItem('type','1');
                    navigation.navigate('Verify',{'data':JSON.stringify(response.data)})
                })
                .catch(function (error) {
 
                 setErrors(error.response.data.errors)
 
-                    // alert(error.response.data.errors);
+                    // alert(error);
                });
        }
        else{
@@ -106,7 +106,7 @@ export default function SignUpScreen({route,navigation}) {
                     }}>{t('Password')}</Text>
                     <Item style={styles.searchInput} rounded >
 
-                        <Input placeholder='Password' value={password} onChangeText={(value)=>setPassword(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
+                        <Input secureTextEntry={true} placeholder='Password' value={password} onChangeText={(value)=>setPassword(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
                         />
                     </Item>
                     {

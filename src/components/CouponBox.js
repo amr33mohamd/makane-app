@@ -4,12 +4,60 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Container, Header, Content, Thumbnail, Text,Button } from 'native-base';
 import Feather from 'react-native-vector-icons/Feather';
 import {useTranslation} from "react-i18next/src/index";
+import Modal from 'react-native-modal';
+import QRCode from 'react-native-qrcode-svg';
+
  const CouponBox: () => React$Node = (props) => {
      const { t } = useTranslation();
+     const [normalModal,setNormalModal] = useState(false);
+     const [buyModal,seBuyModal] = useState(false);
 
      return(
 
     <View style={styles2.container} >
+        <Modal animationIn="fadeIn"  isVisible={normalModal}>
+            <View style={{height:285,backgroundColor:'#fff',padding:10,borderRadius:20,justifyContent:'center',alignItems:'center'}}>
+                <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,paddingHorizontal:20,padding:20}}>Show coupon for store</Text>
+                <View style={{justifyContent:'center',alignItems:'center'}}>
+                    <QRCode
+                        value={""+props.id}
+                        style={{        alignSelf:'center',
+                        }}
+                    />
+                    <Button
+                        title="Press me"
+                        onPress={() => {setNormalModal(false)}}
+                        style={ styles2.modalCancel }
+                    >
+                        <Text style={{color:'#000' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
+
+                    </Button>
+                </View>
+            </View>
+        </Modal>
+        <Modal animationIn="fadeIn"  isVisible={buyModal}>
+            <View style={{height:180,backgroundColor:'#fff',padding:10,borderRadius:20,justifyContent:'center',alignItems:'center'}}>
+                <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,paddingHorizontal:20,padding:20}}>Sure you want to buy this coupon</Text>
+                <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
+                    <Button
+                        title="Press me"
+                        onPress={() => {seBuyModal(false);props.buy_coupon()}}
+                        style={ styles2.modalBook }
+                    >
+                        <Text style={{color:'#FFF' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Buy')} </Text>
+
+                    </Button>
+                    <Button
+                        title="Press me"
+                        onPress={() => {seBuyModal(false)}}
+                        style={ styles2.modalCancel }
+                    >
+                        <Text style={{color:'#000' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
+
+                    </Button>
+                </View>
+            </View>
+        </Modal>
         <View style={styles2.left}>
             <Image  source={{
                 uri: props.image}}
@@ -22,16 +70,27 @@ import {useTranslation} from "react-i18next/src/index";
         <View style={styles2.right}>
             <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:13,padding:5}}>percent</Text>
             <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.percent}</Text>
-
+            {
+                (props.price == 0 || props.type == 'owned') ?
 
                     <Button
                         title="Press me"
-                        onPress={() => alert('a')}
+                        onPress={() => setNormalModal(true)}
                         style={ styles2.selectedButton }
                     >
                         <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:11}}>{t('Show')}</Text>
 
                     </Button>
+                    :
+                    <Button
+                        title="Press me"
+                        onPress={() => {seBuyModal(true)}}
+                        style={ styles2.selectedButton }
+                    >
+                        <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:11}}>{t('Buy') } {props.price} Point </Text>
+
+                    </Button>
+            }
         </View>
 
     </View>
@@ -90,6 +149,39 @@ flexDirection:'row',
      shadowOffset: { height: 0, width: 0 },
 
  },
+    modalCancel:{
+        backgroundColor: '#EFEFEF',
+        flexDirection:'row',
+        alignSelf:'center',
+        borderRadius:10,
+        height:45,
+        marginHorizontal:15,
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        margin:20,
+        justifyContent:'center',
+        width:80,
+        shadowColor: '#EFEFEF',
+        shadowOffset: { height: 0, width: 0 },
+
+    },
+
+    modalBook:{
+        backgroundColor: '#E50000',
+        flexDirection:'row',
+        alignSelf:'center',
+        borderRadius:10,
+        height:45,
+        width:80,
+        justifyContent:'center',
+        marginHorizontal:15,
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        margin:20,
+        shadowColor: '#E50000',
+        shadowOffset: { height: 0, width: 0 },
+
+    },
 
 
 

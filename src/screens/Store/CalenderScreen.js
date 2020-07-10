@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import {View,Image,StyleSheet,Alert,ScrollView,FlatList} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {Container, Header, Content, Item, Input, Icon, Button, Text, Toast} from 'native-base';
-import ReservationBox from '../../components/ReservationBox'
+import ReservationBox from '../../components/Store/ReservationBox'
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
 import moment from 'moment';
@@ -29,8 +29,8 @@ export default function CalenderScreen({navigation}) {
                     setComming(response.data.comming);
                     setPast(response.data.past);
 
-                        setSelected('comming');
-                        setCurrentData(response.data.comming);
+                    setSelected('comming');
+                    setCurrentData(response.data.comming);
 
 
                 })
@@ -41,9 +41,44 @@ export default function CalenderScreen({navigation}) {
                 });
         });
     },[update,isFocused]);
-    var cancel = (id)=>{
+    var arrived = (id)=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/cancel_reservation',null, {
+            axios.post('http://10.0.2.2:8000/api/arrived',null, {
+                params:{
+                    id
+                },
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(function (response) {
+                    Toast.show({
+                        text: 'Successfully canceled reservation',
+                        buttonText: 'Okay',
+                        type: "success"
+
+                    });
+
+                    setUpdate(!update);
+
+
+                })
+                .catch(function (error) {
+                    if(error.response.data.err == 1){
+                        Toast.show({
+                            text: "You don't have enough balance",
+                            buttonText: 'Okay',
+                            type: "danger"
+
+                        });
+                    }
+                    alert(JSON.stringify(error.response.data));
+                });
+        });
+    }
+    var notArrived = (id)=>{
+        AsyncStorage.getItem('token').then((token)=>{
+            axios.post('http://10.0.2.2:8000/api/not-arrived',null, {
                 params:{
                     id
                 },
@@ -111,9 +146,12 @@ export default function CalenderScreen({navigation}) {
                                 address={item.store.address}
                                 type={item.type}
                                 clientReview={item.clientReview}
-                                cancel={()=>{cancel(item.id)}}
+                                arrived={()=>{arrived(item.id)}}
+                                notArrived={()=>{notArrived(item.id)}}
+                                storeReview={item.storeReview}
                                 id={item.id}
                                 store_id={item.store.id}
+                                user_id={item.user.id}
                                 image="https://docs.nativebase.io/docs/assets/web-cover1.jpg"
                                 status={item.status}
                                 lat={item.store.lat}

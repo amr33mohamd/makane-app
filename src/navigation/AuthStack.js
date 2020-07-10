@@ -24,10 +24,11 @@ export default function Auth(route,navigation) {
     });
     return (
                 <Stack.Navigator>
+                    <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false,title:t('verify')}} />
+
                     <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown:false,title:t('Home')}} />
                     <Stack.Screen name="Verify" component={VerifyScreen} options={{headerShown:false,title:t('verify')}} />
 
-                <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false,title:t('verify')}} />
 
                 </Stack.Navigator>
 

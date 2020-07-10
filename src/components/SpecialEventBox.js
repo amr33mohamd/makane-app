@@ -23,6 +23,7 @@ const SpecialEventBox: () => React$Node = (props) => {
             <View style={styles2.right}>
                 <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:13,padding:5}}>{props.name}</Text>
                 <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:11,padding:5}}>{moment(props.time,'hh:mm:ss').calendar() }</Text>
+                <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.available } person</Text>
 
 
                 <Button

@@ -1,36 +1,29 @@
 import React,{useState,useEffect} from 'react';
-import {View,Image,StyleSheet,Alert,ScrollView,FlatList} from 'react-native';
+import {View,Image,StyleSheet,Alert,ScrollView,FlatList,TouchableOpacity} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {Container, Header, Content, Item, Input, Icon, Button, Text, Toast} from 'native-base';
-import ReservationBox from '../../components/ReservationBox'
+import CouponBox from '../../components/CouponBox'
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
-import moment from 'moment';
-import { useIsFocused } from '@react-navigation/native'
-
-export default function CalenderScreen({navigation}) {
+export default function CouponScreen({navigation}) {
     const { t } = useTranslation();
-    const [selected , setSelected] = useState('comming');
-    const [comming, setComming ] = useState([]);
-    const [past, setPast ] = useState([]);
+    const [selected , setSelected] = useState('coupons');
+    const [coupons, setCoupons ] = useState([]);
+    const [owned, setOwned ] = useState([]);
+    const [currentData,setCurrentData] = useState(coupons);
     const [update,setUpdate] = useState(false);
-    const isFocused = useIsFocused()
-
-    const [currentData,setCurrentData] = useState(comming);
+    const [redirect,setRedirect] = useState(false);
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/reservations',null, {
+            axios.post('http://10.0.2.2:8000/api/store-coupons',null, {
 
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
                 .then(function (response) {
-                    setComming(response.data.comming);
-                    setPast(response.data.past);
 
-                        setSelected('comming');
-                        setCurrentData(response.data.comming);
+                        setCurrentData(response.data.coupons);
 
 
                 })
@@ -40,10 +33,11 @@ export default function CalenderScreen({navigation}) {
                     // alert(error.response.data.errors);
                 });
         });
-    },[update,isFocused]);
-    var cancel = (id)=>{
+    },[update]);
+
+    var buy_coupon = (id)=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/cancel_reservation',null, {
+            axios.post('http://10.0.2.2:8000/api/buy_coupon',null, {
                 params:{
                     id
                 },
@@ -53,11 +47,12 @@ export default function CalenderScreen({navigation}) {
             })
                 .then(function (response) {
                     Toast.show({
-                        text: 'Successfully canceled reservation',
+                        text: 'Successfully bought the coupon',
                         buttonText: 'Okay',
                         type: "success"
 
                     });
+                    setRedirect(true);
 
                     setUpdate(!update);
 
@@ -72,61 +67,47 @@ export default function CalenderScreen({navigation}) {
 
                         });
                     }
-                    alert(JSON.stringify(error.response.data));
                 });
         });
     }
+
     return (
         <Container>
             <Content>
 
 
                 <View style={styles.container}>
-
                     <View style={styles.buttons}>
                         <Button
                             title="Press me"
-                            onPress={() => {setSelected('past'); setCurrentData(past);}
-                            }
-                            style={selected == 'past' ?  styles.selectedButton : styles.button}
+                            onPress={() => {setSelected('coupons');setCurrentData(coupons)}}
+                            style={selected == 'coupons' ?  styles.selectedButton : styles.button}
                         >
-                            <Text style={{color:selected== 'past' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('previous')}</Text>
+                            <Text style={{color:selected== 'coupons' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Coupons')}</Text>
                         </Button>
 
-                        <Button
-                            onPress={() => {setSelected('comming');setCurrentData(comming)}}
-                            style={selected == 'comming' ?  styles.selectedButton : styles.button}
-                        >
-                            <Text style={{color: selected== 'comming' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('comming')}</Text>
-                        </Button>
+
                     </View>
+
                     <FlatList
                         style={styles.components}
                         data={currentData}
                         renderItem={({ item }) => (
 
 
-                            <ReservationBox
-                                date={(item.type == 1)  ? moment(item.created_at).format('h:mm a') : moment(item.special_event.time,'hh:mm:ss').format('h:mm a')}
-                                address={item.store.address}
-                                type={item.type}
-                                clientReview={item.clientReview}
-                                cancel={()=>{cancel(item.id)}}
+                            <CouponBox
+                                percent={(item.percent) ? item.percent :item.coupon.percent }
+                                price={(item.price) ? item.price :item.coupon.price }
+                                type={selected}
+                                code={(item.code) ? item.code :item.coupon.code }
                                 id={item.id}
-                                store_id={item.store.id}
+                                buy_coupon={()=>{buy_coupon(item.id)}}
                                 image="https://docs.nativebase.io/docs/assets/web-cover1.jpg"
-                                status={item.status}
-                                lat={item.store.lat}
-                                lng={item.store.lng}
-                                navigation={navigation}
                             />
                         )}
                         keyExtractor={item => item.id}
                     />
-                    <View style={styles.components}>
 
-
-                    </View>
                 </View>
             </Content>
 

@@ -15,6 +15,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ReviewBox from '../../components/ReviewBox'
 import CouponBox from "../../components/CouponBox";
 import SpecialEventBox from "../../components/SpecialEventBox";
+import CalenderScreen from "./CalenderScreen";
 export default function CafeScreen({route,navigation}) {
     const {t} = useTranslation();
     const [store,setStore]= useState(JSON.parse(route.params.item));
@@ -57,7 +58,7 @@ export default function CafeScreen({route,navigation}) {
 
     var reserveNormal = ()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://127.0.0.1:8000/api/reserve',null,{
+            axios.post('http://10.0.2.2:8000/api/reserve',null,{
                 params:{
                     store_id:store.id,
                     type:1
@@ -74,6 +75,8 @@ export default function CafeScreen({route,navigation}) {
                     type: "success"
 
                 })
+                navigation.navigate('User',{screen:'Calender',  initial: false})
+
             }).catch((error)=>{
                 closeModal()
                 if(error.response.data.err == 1){
@@ -108,7 +111,7 @@ export default function CafeScreen({route,navigation}) {
 
     var reserveSpecial = ()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://127.0.0.1:8000/api/reserve',null,{
+            axios.post('http://10.0.2.2:8000/api/reserve',null,{
                 params:{
                     store_id:store.id,
                     type:2,
@@ -126,6 +129,8 @@ export default function CafeScreen({route,navigation}) {
                     type: "success"
 
                 })
+                navigation.navigate('User',{screen:'Calender',  initial: false})
+
             }).catch((error)=>{
                 closeModal()
                 if(error.response.data.err == 1){
@@ -162,7 +167,7 @@ return (
         <Content>
 
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={normalModal}>
-                <View style={{height:285,backgroundColor:'#fff',padding:10,borderRadius:20}}>
+                <View style={{height:220,backgroundColor:'#fff',padding:10,borderRadius:20}}>
                     <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
                     <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
@@ -187,7 +192,7 @@ return (
                 </View>
             </Modal>
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={specialModal}>
-                <View style={{height:285,backgroundColor:'#fff',padding:10,borderRadius:20}}>
+                <View style={{height:220,backgroundColor:'#fff',padding:10,borderRadius:20}}>
                     <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
                     <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
@@ -248,11 +253,13 @@ return (
                 <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:10,padding:5}}>{store.available} person available</Text>
                 <Tabs
                     style={{}}
+                    tabContainerStyle={{elevation: 0}}
+
                     tabBarUnderlineStyle={{ backgroundColor:"#E50000" }}
                 >
                     <Tab textStyle={{fontFamily:'Poppins-medium',color:'#000',fontSize:10,padding:5}}
                          activeTextStyle={{fontFamily:'Poppins-medium',color:'#000',fontSize:10,padding:5}}
-                         tabStyle={{backgroundColor:'#fff'}}
+                         tabStyle={{backgroundColor:'#fff',borderWidth:0,elevation: 0}}
                          activeTabStyle={{backgroundColor:'#fff',borderColor:'#E50000'}}
 
                          heading="Overview">
@@ -261,10 +268,7 @@ return (
                                 (i18n.language == 'ar') ? store.description_ar : store.description_en
                             }
                         </Text>
-                        <QRCode
-                            value='70'
 
-  />
                         <Button
                             title="Press me"
                             onPress={() => {submit()}}
@@ -299,6 +303,7 @@ return (
                                             image="https://docs.nativebase.io/docs/assets/web-cover1.jpg"
                                             name={item.name}
                                             time={item.time}
+                                            available={item.available}
                                             onPress={()=> {
                                                 reserveSpecialButton(item.id)
                                             }

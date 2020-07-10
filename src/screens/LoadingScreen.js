@@ -15,7 +15,14 @@ export default function LoadingScreen({route,navigation}) {
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
             if(token){
-                navigation.navigate('User');
+                AsyncStorage.getItem('type').then((type)=>{
+                    if(type == '1' ){
+                        navigation.navigate('User');
+                    }
+                    else {
+                        navigation.navigate('Store');
+                    }
+                })
             }
             else {
                 navigation.navigate('Auth');

@@ -10,6 +10,7 @@ import {useTranslation} from "react-i18next/src/index";
 import AsyncStorage from '@react-native-community/async-storage';
 import LoadingScreen from "../screens/LoadingScreen";
 import CafeScreen from "../screens/User/CafeScreen";
+import Store from "./StoreStack";
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,7 @@ export default function RootNavigation() {
                         <Stack.Screen name="Auth" component={Auth} options={{headerShown:false,title:t('Home')}} />
                         <Stack.Screen name="CafeScreen" component={CafeScreen} options={{headerShown:false,title:t('CafeScreen')}} />
 
+                        <Stack.Screen name="Store" component={Store} options={{headerShown:false,title:t('CafeScreen')}} />
 
 
 

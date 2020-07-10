@@ -21,15 +21,20 @@ export default function LoginScreen({route,navigation}) {
     },[]);
     var submit = () =>{
         if(email != '' && password != '' ){
-            axios.get('http://127.0.0.1:8000/api/login', {
+            axios.get('http://10.0.2.2:8000/api/login', {
                 params: {
                     email, password
                 }
             })
                 .then(function (response) {
                     AsyncStorage.setItem('token',response.data.token);
-
-                    navigation.navigate('User');
+                    AsyncStorage.setItem('type',''+response.data.user.type);
+                    if(response.data.user.type == 1 ){
+                        navigation.navigate('User');
+                    }
+                    else {
+                        navigation.navigate('Store');
+                    }
                 })
                 .catch(function (error) {
 
@@ -92,7 +97,7 @@ export default function LoginScreen({route,navigation}) {
                     }}>{t('Password')}</Text>
                     <Item style={styles.searchInput} rounded >
 
-                        <Input placeholder='Password' value={password} onChangeText={(value)=>setPassword(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
+                        <Input secureTextEntry={true} placeholder='Password' value={password} onChangeText={(value)=>setPassword(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
                         />
                     </Item>
 

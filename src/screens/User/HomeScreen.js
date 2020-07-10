@@ -15,12 +15,11 @@ export default function HomeScreen({navigation}) {
     const [currentData,setCurrentData] = useState(restaurants);
     useEffect(()=>{
         // AsyncStorage.removeItem('token');
-        Geolocation.requestAuthorization();
         Geolocation.getCurrentPosition((info) => {
             var lat = info.coords.latitude;
             var lng = info.coords.latitude;
 
-            axios.get('http://127.0.0.1:8000/api/stores', {
+            axios.get('http://10.0.2.2:8000/api/stores', {
                 params: {
                     lat, lng
                 }
@@ -82,6 +81,7 @@ export default function HomeScreen({navigation}) {
                               <TouchableOpacity onPress={()=>{
                                   navigation.navigate('CafeScreen',{item:JSON.stringify(item)})
                               }}
+                                                activeOpacity={.95}
                                                 >
 
                             <StoreBox
