@@ -24,14 +24,14 @@ return(
         <View style={{flexDirection:'row'}}>
             <Thumbnail small source={{uri: props.image}} style={{alignSelf:'center'}}/>
 
-            <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:12,padding:20}}>{props.username}</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:12,padding:20}}>{props.username}</Text>
         </View>
-        <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:10}}>
+        <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:10}}>
             {props.review}
 
         </Text>
         <View style={{flexDirection:'row'}}>
-            <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:12,alignSelf:'center',flex:.2}} >Rate</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:12,alignSelf:'center',flex:.2}} >Rate</Text>
             <View style={styles2.reviewStars}>
 
                 {renderStars()}

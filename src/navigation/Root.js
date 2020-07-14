@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import LoadingScreen from "../screens/LoadingScreen";
 import CafeScreen from "../screens/User/CafeScreen";
 import Store from "./StoreStack";
+import PayScreen from "../screens/Store/PayScreen";
 
 const Stack = createStackNavigator();
 
@@ -42,6 +43,7 @@ export default function RootNavigation() {
                         <Stack.Screen name="CafeScreen" component={CafeScreen} options={{headerShown:false,title:t('CafeScreen')}} />
 
                         <Stack.Screen name="Store" component={Store} options={{headerShown:false,title:t('CafeScreen')}} />
+                        <Stack.Screen name="PayScreen" component={PayScreen} options={{headerShown:false,title:t('PayScreen')}} />
 
 
 

@@ -52,14 +52,14 @@ import AsyncStorage from "@react-native-community/async-storage";
     <View style={styles2.container} >
         <Modal animationIn="fadeIn"  isVisible={cancelModal}>
             <View style={{height:150,backgroundColor:'#fff',padding:10,borderRadius:20}}>
-                <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want cancel now!</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want cancel now!</Text>
                 <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                     <Button
                         title="Press me"
                         onPress={() => {setCancelModal(false)}}
                         style={ styles2.modalCancel }
                     >
-                        <Text style={{color:'#000' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('skip')} </Text>
+                        <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('skip')} </Text>
 
                     </Button>
                     <Button
@@ -67,7 +67,7 @@ import AsyncStorage from "@react-native-community/async-storage";
                         onPress={() => {props.cancel();setCancelModal(false)}}
                         style={ styles2.modalBook }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Confirm')} </Text>
+                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Confirm')} </Text>
 
                     </Button>
 
@@ -77,7 +77,7 @@ import AsyncStorage from "@react-native-community/async-storage";
         </Modal>
         <Modal animationIn="fadeIn"  isVisible={reviewModal}>
             <View style={{height:260,backgroundColor:'#fff',padding:10,borderRadius:20,alignItems:'center'}}>
-                <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Rate Us!</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Rate Us!</Text>
                 <StarRating
                     disabled={false}
                     maxStars={5}
@@ -102,7 +102,7 @@ import AsyncStorage from "@react-native-community/async-storage";
                         onPress={() => {setReviewModal(false)}}
                         style={ styles2.modalCancel }
                     >
-                        <Text style={{color:'#000' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('cancel')} </Text>
+                        <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('cancel')} </Text>
 
                     </Button>
                     <Button
@@ -110,7 +110,7 @@ import AsyncStorage from "@react-native-community/async-storage";
                         onPress={() => {rate();setReviewModal(false)}}
                         style={ styles2.modalBook }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Confirm')} </Text>
+                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Confirm')} </Text>
 
                     </Button>
 
@@ -128,12 +128,12 @@ import AsyncStorage from "@react-native-community/async-storage";
 
         </View>
         <View style={styles2.right}>
-            <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:13,padding:5}}>Date & Time</Text>
-            <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.date}</Text>
-            <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:13,padding:5}}>Address</Text>
-            <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.address}</Text>
-            <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:13,padding:5}}>Status</Text>
-            <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:11,padding:5}}>{(props.status == 0) ? 'comming' : (props.status == 1)  ? 'done' : (props.status == 2) ? 'ignored' : 'canceled'}</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>Date & Time</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.date}</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>Address</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.address}</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>Status</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{(props.status == 0) ? 'comming' : (props.status == 1)  ? 'done' : (props.status == 2) ? 'ignored' : 'canceled'}</Text>
             {
                 (props.status == 0)?
                     (props.type == 1) ?
@@ -145,7 +145,7 @@ import AsyncStorage from "@react-native-community/async-storage";
                             onPress={() => setCancelModal(true)}
                             style={ styles2.selectedButton }
                         >
-                            <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:11}}>{t('Cancel')}</Text>
+                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('Cancel')}</Text>
 
                         </Button>
                         :
@@ -157,7 +157,7 @@ import AsyncStorage from "@react-native-community/async-storage";
                                 onPress={() => setCancelModal(true)}
                                 style={ styles2.selectedButton }
                             >
-                                <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:11}}>{t('Cancel')}</Text>
+                                <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('Cancel')}</Text>
 
                             </Button>
 
@@ -167,7 +167,7 @@ import AsyncStorage from "@react-native-community/async-storage";
                         onPress={() => setReviewModal(true)}
                         style={ styles2.selectedButton }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:11}}>{t('Rate')}</Text>
+                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('Rate')}</Text>
 
                     </Button>
                     :null

@@ -19,7 +19,7 @@ export default function CalenderScreen({navigation}) {
     const [currentData,setCurrentData] = useState(comming);
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/reservations',null, {
+            axios.post('http://192.168.1.2:8000/api/reservations',null, {
 
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -43,7 +43,7 @@ export default function CalenderScreen({navigation}) {
     },[update,isFocused]);
     var arrived = (id)=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/arrived',null, {
+            axios.post('http://192.168.1.2:8000/api/arrived',null, {
                 params:{
                     id
                 },
@@ -53,7 +53,7 @@ export default function CalenderScreen({navigation}) {
             })
                 .then(function (response) {
                     Toast.show({
-                        text: 'Successfully canceled reservation',
+                        text: 'Successfully marked as arrived',
                         buttonText: 'Okay',
                         type: "success"
 
@@ -78,7 +78,7 @@ export default function CalenderScreen({navigation}) {
     }
     var notArrived = (id)=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/not-arrived',null, {
+            axios.post('http://192.168.1.2:8000/api/not-arrived',null, {
                 params:{
                     id
                 },
@@ -88,7 +88,7 @@ export default function CalenderScreen({navigation}) {
             })
                 .then(function (response) {
                     Toast.show({
-                        text: 'Successfully canceled reservation',
+                        text: 'Successfully marked as not arrived ',
                         buttonText: 'Okay',
                         type: "success"
 
@@ -125,14 +125,14 @@ export default function CalenderScreen({navigation}) {
                             }
                             style={selected == 'past' ?  styles.selectedButton : styles.button}
                         >
-                            <Text style={{color:selected== 'past' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('previous')}</Text>
+                            <Text style={{color:selected== 'past' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('previous')}</Text>
                         </Button>
 
                         <Button
                             onPress={() => {setSelected('comming');setCurrentData(comming)}}
                             style={selected == 'comming' ?  styles.selectedButton : styles.button}
                         >
-                            <Text style={{color: selected== 'comming' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('comming')}</Text>
+                            <Text style={{color: selected== 'comming' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('comming')}</Text>
                         </Button>
                     </View>
                     <FlatList
@@ -152,6 +152,7 @@ export default function CalenderScreen({navigation}) {
                                 id={item.id}
                                 store_id={item.store.id}
                                 user_id={item.user.id}
+                                user={item.user}
                                 image="https://docs.nativebase.io/docs/assets/web-cover1.jpg"
                                 status={item.status}
                                 lat={item.store.lat}

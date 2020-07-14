@@ -23,8 +23,17 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>We need your location to get stores near you</string>
+	<key>NSCameraUsageDescription</key>
+    <string>We use camera to read the coupon</string>
 	<key>LSRequiresIPhoneOS</key>
+	    <key>NSPhotoLibraryUsageDescription</key>
+        <string>$(PRODUCT_NAME) would like access to your photo gallery to upload photo</string>
+        <key>NSPhotoLibraryAddUsageDescription</key>
+        <string>$(PRODUCT_NAME) would like to save photos to your photo gallery to upload it</string>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>$(PRODUCT_NAME) would like to use your microphone (for videos) to upload it</string>
+
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>

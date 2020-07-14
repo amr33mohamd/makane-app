@@ -25,7 +25,7 @@ export default function SignUpScreen({route,navigation}) {
 
    var submit = () =>{
        if(email != '' && password != '' && password != '' && phone != '20'){
-           axios.get('http://10.0.2.2:8000/api/signup', {
+           axios.get('http://192.168.1.2:8000/api/signup', {
                params: {
                    email, password, phone, name, country: 'kkk',code
                }
@@ -66,7 +66,7 @@ export default function SignUpScreen({route,navigation}) {
 
                 <View style={styles.container}>
                     <View style={{borderBottomColor:'#000',borderBottomWidth:3,display:'flex',margin:10}}>
-                    <Text style={{fontFamily:'Poppins-medium',padding:10,fontSize:25}}>{t('Sign Up')}</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',padding:10,fontSize:25}}>{t('Sign Up')}</Text>
                     </View>
                     <Text style={{        fontFamily:'Poppins-Medium',
                         fontSize:12,
@@ -176,7 +176,7 @@ export default function SignUpScreen({route,navigation}) {
                         onPress={() => {submit()}}
                         style={ styles.selectedButton }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Next')}</Text>
+                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Next')}</Text>
 
                     </Button>
                 </View>

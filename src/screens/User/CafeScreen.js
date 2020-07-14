@@ -58,7 +58,7 @@ export default function CafeScreen({route,navigation}) {
 
     var reserveNormal = ()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/reserve',null,{
+            axios.post('http://192.168.1.2:8000/api/reserve',null,{
                 params:{
                     store_id:store.id,
                     type:1
@@ -111,7 +111,7 @@ export default function CafeScreen({route,navigation}) {
 
     var reserveSpecial = ()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/reserve',null,{
+            axios.post('http://192.168.1.2:8000/api/reserve',null,{
                 params:{
                     store_id:store.id,
                     type:2,
@@ -163,20 +163,22 @@ export default function CafeScreen({route,navigation}) {
     }
 
 return (
-    <Container>
-        <Content>
+    <ScrollView
+        decelerationRate="fast"
+        renderToHardwareTextureAndroid
+        >
 
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={normalModal}>
                 <View style={{height:220,backgroundColor:'#fff',padding:10,borderRadius:20}}>
-                    <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
-                    <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                         <Button
                             title="Press me"
                             onPress={() => {reserveNormal()}}
                             style={ styles.modalBook }
                         >
-                            <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Book Now')} </Text>
+                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Book Now')} </Text>
 
                         </Button>
                         <Button
@@ -184,7 +186,7 @@ return (
                             onPress={() => {closeModal()}}
                             style={ styles.modalCancel }
                         >
-                            <Text style={{color:'#000' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
+                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
 
                         </Button>
 
@@ -193,15 +195,15 @@ return (
             </Modal>
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={specialModal}>
                 <View style={{height:220,backgroundColor:'#fff',padding:10,borderRadius:20}}>
-                    <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
-                    <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                         <Button
                             title="Press me"
                             onPress={() => {reserveSpecial()}}
                             style={ styles.modalBook }
                         >
-                            <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Book Now')} </Text>
+                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Book Now')} </Text>
 
                         </Button>
                         <Button
@@ -209,7 +211,7 @@ return (
                             onPress={() => {closeModal()}}
                             style={ styles.modalCancel }
                         >
-                            <Text style={{color:'#000' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
+                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
 
                         </Button>
 
@@ -217,6 +219,7 @@ return (
                 </View>
             </Modal>
     <ScrollView
+        renderToHardwareTextureAndroid
         horizontal={true}
         contentContainerStyle={{ width: '300%' }}
         showsHorizontalScrollIndicator={false}
@@ -246,24 +249,24 @@ return (
                 }}/>
     </ScrollView>
 
-            <View style={styles.container}>
-                <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:10,padding:5}}>{store.country}</Text>
+            <View  renderToHardwareTextureAndroid style={styles.container}>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:10,padding:5}}>{store.country}</Text>
 
-                <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:28,padding:5}}>{store.name}</Text>
-                <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:10,padding:5}}>{store.available} person available</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:28,padding:5}}>{store.name}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:10,padding:5}}>{store.available} person available</Text>
                 <Tabs
                     style={{}}
                     tabContainerStyle={{elevation: 0}}
 
                     tabBarUnderlineStyle={{ backgroundColor:"#E50000" }}
                 >
-                    <Tab textStyle={{fontFamily:'Poppins-medium',color:'#000',fontSize:10,padding:5}}
-                         activeTextStyle={{fontFamily:'Poppins-medium',color:'#000',fontSize:10,padding:5}}
+                    <Tab textStyle={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:5}}
+                         activeTextStyle={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:5}}
                          tabStyle={{backgroundColor:'#fff',borderWidth:0,elevation: 0}}
                          activeTabStyle={{backgroundColor:'#fff',borderColor:'#E50000'}}
 
                          heading="Overview">
-                        <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:15,padding:20}}>
+                        <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>
                             {
                                 (i18n.language == 'ar') ? store.description_ar : store.description_en
                             }
@@ -274,7 +277,7 @@ return (
                             onPress={() => {submit()}}
                             style={ styles.selectedButton }
                         >
-                            <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('website')}</Text>
+                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('website')}</Text>
 
 
                         </Button>
@@ -287,7 +290,7 @@ return (
                                 ?
                                 null
                                 :
-                                (<Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:20,padding:5}}>{t('Special events')}</Text>
+                                (<Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,padding:5}}>{t('Special events')}</Text>
                                 )
                         }
 
@@ -329,11 +332,11 @@ return (
                             onPress={() => {reserveNormalButton()}}
                             style={ styles.selectedButton2 }
                         >
-                            <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Book Now')} </Text>
+                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Book Now')} </Text>
                             <View name="arrow-right-circle-outline"
                                   style={{backgroundColor:'#CE0000',height:45,justifyContent:'center',borderRadius:10
                             }}>
-                                <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:20}}> >> </Text>
+                                <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:20}}> >> </Text>
                             </View>
 
                         </Button>
@@ -344,8 +347,8 @@ return (
                     <Tab
                         tabStyle={{backgroundColor:'#fff'}}
                         activeTabStyle={{backgroundColor:'#fff'}}
-                        textStyle={{fontFamily:'Poppins-medium',color:'#000',fontSize:10,padding:5}}
-                        activeTextStyle={{fontFamily:'Poppins-medium',color:'#000',fontSize:10,padding:5}}
+                        textStyle={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:5}}
+                        activeTextStyle={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:5}}
                         heading="Reviews">
                         <FlatList
                             style={styles.components}
@@ -374,8 +377,7 @@ return (
 
 
 
-        </Content>
-    </Container>
+    </ScrollView>
 )
 
 }

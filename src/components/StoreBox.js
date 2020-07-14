@@ -31,9 +31,9 @@ return(
 
         </View>
         <View style={styles2.right}>
-            <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:13,padding:5}}>{props.name}</Text>
-            <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:10,padding:5,height:50}}>{props.description}</Text>
-            <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:10,padding:0}}>Avalilability</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{props.name}</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:10,padding:5,height:50}}>{props.description}</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:0}}>Avalilability</Text>
             <View style={styles2.buttom}>
                 <View style={{flexDirection:'row',flex:.6,alignItems:'center'}}>
                 <Feather name="users" color="#000" style={{}}/>

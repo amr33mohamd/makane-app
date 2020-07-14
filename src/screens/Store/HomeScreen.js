@@ -5,6 +5,8 @@ import {Container, Header, Content, Item, Input, Icon, Button, Text, Label, Toas
 import StoreBox from '../../components/StoreBox'
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
+import ImagePicker from 'react-native-image-picker';
+
 export default  function HomeScreen({navigation}) {
     const { t } = useTranslation();
     const [name,setName] = useState();
@@ -18,9 +20,10 @@ export default  function HomeScreen({navigation}) {
     const [errors,setErrors] = useState({});
     const [persons,setPersons] = useState();
     const [update,setUpdate] = useState(false);
+    const [mainImage,setMainImage] = useState();
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/user',null, {
+            axios.post('http://192.168.1.2:8000/api/user',null, {
 
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -41,11 +44,45 @@ export default  function HomeScreen({navigation}) {
                 });
         });
     },[update]);
+    const options = {
+        title: 'Select Avatar',
+        customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+    };
+
+    /**
+     * The first arg is the options object for customization (it can also be null or omitted for default options),
+     * The second arg is the callback which sends object: response (more info in the API Reference)
+     */
+    var mainImageUpload = ()=>{
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.uri };
+
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+                setMainImage(source);
+
+            }
+        });
+    }
+
     var submit = (available2) =>{
         AsyncStorage.getItem('token').then((token)=> {
 
             if ( name != '') {
-                axios.post('http://10.0.2.2:8000/api/update_user', null, {
+                axios.post('http://192.168.1.2:8000/api/update_user', null, {
                     params: {
                         email, password, name,description_ar,description_en,
                         available:(available2 != null) ? available2 : persons
@@ -92,7 +129,9 @@ export default  function HomeScreen({navigation}) {
         <Container>
             <Content>
 
-                <View style={{  alignItems: 'center',  position: 'absolute'}}>
+                <View
+                    renderToHardwareTextureAndroid
+                    style={{  alignItems: 'center',  position: 'absolute'}}>
                     <Image
                         style={styles.stretch}
                         source={require('../../Assets/Images/Header.png')}
@@ -100,7 +139,7 @@ export default  function HomeScreen({navigation}) {
                     />
 
                 </View>
-                <View style={styles.container}>
+                <View renderToHardwareTextureAndroid style={styles.container}>
 
                     <Text style={{        fontFamily:'Poppins-Medium',
                         fontSize:12,
@@ -147,6 +186,38 @@ export default  function HomeScreen({navigation}) {
                             color:'#E50000'
                         }}>{errors.name}</Text>
                     }
+
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',padding:10 }}>
+                        {mainImage && (
+                            <Image
+                                source={{ uri: mainImage.uri }}
+                                style={{ width: 50, height: 100,margin:10 }}
+                            />
+                        )}
+                        <Button title="Choose Photo" style={{
+                            backgroundColor: '#E50000',
+                            alignItems:'center',
+                            justifyContent:'center',
+                            borderRadius:50,
+                            shadowOpacity: 0.3,
+                            shadowRadius: 5,
+                            shadowColor: '#E50000',
+                            shadowOffset: { height: 0, width: 0 },
+                            margin:10,
+
+                        }} onPress={()=>{mainImageUpload()}} >
+                            <Text style={{
+                            fontFamily:'Poppins-Medium',
+                            fontSize:12,
+                            padding:10,
+                            textAlign:'center',
+                            color:'#fff',
+                            alignSelf:'center'
+
+                        }}>{t('upload image')}</Text>
+                        </Button>
+                    </View>
+
 
                     <Text style={{        fontFamily:'Poppins-Medium',
                         fontSize:12,
@@ -217,7 +288,7 @@ export default  function HomeScreen({navigation}) {
                             fontSize:12,
                             padding:10,
                             textAlign:'center',
-                            color:'#E50000'
+                            color:'#E50000',
                         }}>{errors.password}</Text>
                     }
 
@@ -233,7 +304,7 @@ export default  function HomeScreen({navigation}) {
                         onPress={() => submit(null)}
                         style={ styles.selectedButton }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Save')}</Text>
+                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Save')}</Text>
 
                     </Button>
 

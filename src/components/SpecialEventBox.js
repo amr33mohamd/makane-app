@@ -21,9 +21,9 @@ const SpecialEventBox: () => React$Node = (props) => {
 
             </View>
             <View style={styles2.right}>
-                <Text style={{fontFamily:'Poppins-medium',color:'#000',fontSize:13,padding:5}}>{props.name}</Text>
-                <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:11,padding:5}}>{moment(props.time,'hh:mm:ss').calendar() }</Text>
-                <Text style={{fontFamily:'Poppins-medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.available } person</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{props.name}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{moment(props.time,'hh:mm:ss').calendar() }</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.available } person</Text>
 
 
                 <Button
@@ -33,7 +33,7 @@ const SpecialEventBox: () => React$Node = (props) => {
                     }}
                     style={ styles2.selectedButton }
                 >
-                    <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:11}}>{t('book')}</Text>
+                    <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('book')}</Text>
 
                 </Button>
             </View>

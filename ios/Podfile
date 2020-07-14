@@ -85,6 +85,9 @@ target 'makane' do
 
   pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
   target 'makaneTests' do
     inherit! :complete
     # Pods for testing

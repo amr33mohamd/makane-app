@@ -14,7 +14,7 @@ export default function VerifyScreen({route,navigation}) {
     var submit = () =>{
 
        if(code != '' ){
-           axios.get('http://127.0.0.1:8000/api/verify', {
+           axios.get('http://192.168.1.2:8080/api/verify', {
                params: {
                    code,
                    id:JSON.parse(route.params.data).user.id
@@ -56,7 +56,7 @@ export default function VerifyScreen({route,navigation}) {
 
                 <View style={styles.container}>
                     <View style={{borderBottomColor:'#000',borderBottomWidth:3,display:'flex',margin:10}}>
-                    <Text style={{fontFamily:'Poppins-medium',padding:10,fontSize:25}}>{t('Verify Number')}</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',padding:10,fontSize:25}}>{t('Verify Number')}</Text>
                     </View>
 
 
@@ -92,7 +92,7 @@ export default function VerifyScreen({route,navigation}) {
                         onPress={() => {submit()}}
                         style={ styles.selectedButton }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Next')}</Text>
+                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Next')}</Text>
 
                     </Button>
                 </View>

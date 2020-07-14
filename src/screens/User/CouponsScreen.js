@@ -15,7 +15,7 @@ export default function CouponScreen({navigation}) {
     const [redirect,setRedirect] = useState(false);
     useEffect(()=>{
     AsyncStorage.getItem('token').then((token)=>{
-        axios.post('http://10.0.2.2:8000/api/coupons',null, {
+        axios.post('http://192.168.1.2:8000/api/coupons',null, {
 
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -46,7 +46,7 @@ export default function CouponScreen({navigation}) {
 
     var buy_coupon = (id)=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/buy_coupon',null, {
+            axios.post('http://192.168.1.2:8000/api/buy_coupon',null, {
                 params:{
                     id
                 },
@@ -92,14 +92,14 @@ export default function CouponScreen({navigation}) {
                             onPress={() => {setSelected('coupons');setCurrentData(coupons)}}
                             style={selected == 'coupons' ?  styles.selectedButton : styles.button}
                         >
-                            <Text style={{color:selected== 'coupons' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Coupons')}</Text>
+                            <Text style={{color:selected== 'coupons' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Coupons')}</Text>
                         </Button>
 
                         <Button
                             onPress={() => {setSelected('owned');setCurrentData(owned)}}
                             style={selected == 'owned' ?  styles.selectedButton : styles.button}
                         >
-                            <Text style={{color: selected== 'owned' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Owned')}</Text>
+                            <Text style={{color: selected== 'owned' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Owned')}</Text>
                         </Button>
                     </View>
 

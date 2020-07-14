@@ -19,7 +19,7 @@ export default function HomeScreen({navigation}) {
             var lat = info.coords.latitude;
             var lng = info.coords.latitude;
 
-            axios.get('http://10.0.2.2:8000/api/stores', {
+            axios.get('http://192.168.1.2:8000/api/stores', {
                 params: {
                     lat, lng
                 }
@@ -63,14 +63,14 @@ export default function HomeScreen({navigation}) {
                     onPress={() => {setSelected('cafe'); setCurrentData(cafes)}}
                     style={selected == 'cafe' ?  styles.selectedButton : styles.button}
                 >
-                    <Text style={{color:selected== 'cafe' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Cafe')}</Text>
+                    <Text style={{color:selected== 'cafe' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Cafe')}</Text>
                 </Button>
 
                     <Button
                     onPress={() => {setSelected('resturant'); setCurrentData(restaurants)}}
                     style={selected == 'resturant' ?  styles.selectedButton : styles.button}
                 >
-                    <Text style={{color: selected== 'resturant' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('resturants')}</Text>
+                    <Text style={{color: selected== 'resturant' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('resturants')}</Text>
                 </Button>
                 </View>
 

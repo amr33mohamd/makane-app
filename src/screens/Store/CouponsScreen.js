@@ -2,9 +2,13 @@ import React,{useState,useEffect} from 'react';
 import {View,Image,StyleSheet,Alert,ScrollView,FlatList,TouchableOpacity} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {Container, Header, Content, Item, Input, Icon, Button, Text, Toast} from 'native-base';
-import CouponBox from '../../components/CouponBox'
+import CouponBox from '../../components/Store/CouponBox'
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
+import Modal from 'react-native-modal';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { RNCamera } from 'react-native-camera';
+
 export default function CouponScreen({navigation}) {
     const { t } = useTranslation();
     const [selected , setSelected] = useState('coupons');
@@ -13,9 +17,11 @@ export default function CouponScreen({navigation}) {
     const [currentData,setCurrentData] = useState(coupons);
     const [update,setUpdate] = useState(false);
     const [redirect,setRedirect] = useState(false);
+    const [scanModal,setScanModal] = useState(false);
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/store-coupons',null, {
+
+            axios.post('http://192.168.1.2:8000/api/store-coupons',null, {
 
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -37,7 +43,7 @@ export default function CouponScreen({navigation}) {
 
     var buy_coupon = (id)=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/buy_coupon',null, {
+            axios.post('http://192.168.1.2:8000/api/buy_coupon',null, {
                 params:{
                     id
                 },
@@ -70,20 +76,101 @@ export default function CouponScreen({navigation}) {
                 });
         });
     }
+    var check_coupon = (code)=>{
+
+        AsyncStorage.getItem('token').then((token)=>{
+            axios.post('http://192.168.1.2:8000/api/use-coupon',null, {
+                params:{
+                    id:code
+                },
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(function (response) {
+                    setScanModal(false)
+                    Toast.show({
+                        text: 'This code is valid  ',
+                        buttonText: 'Okay',
+                        type: "success",
+                        duration:3600000000
+
+                    });
+
+                    setUpdate(!update);
+
+
+                })
+                .catch(function (error) {
+                    setScanModal(false)
+
+                    if(error.response.data.err == 1){
+                        Toast.show({
+                            text: "This code isn't valid please check that user is using out app",
+                            buttonText: 'Okay',
+                            type: "danger",
+                            duration:3600000000
+
+
+                        });
+                    }
+                    else if(error.response.data.err == 2){
+                        Toast.show({
+                            text: "This code is used before",
+                            buttonText: 'Okay',
+                            type: "danger",
+                            duration:3600000000
+
+
+                        });
+                    }
+                });
+        });
+    }
 
     return (
         <Container>
             <Content>
+                <Modal animationIn="fadeIn"  isVisible={scanModal}>
+                    <View style={{height:'100%',backgroundColor:'#fff',padding:10,borderRadius:20,alignItems:'center'}}>
+                        <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Scan Qr</Text>
+                        <QRCodeScanner
+                            onRead={(e)=>{check_coupon(e.data)}}
+                            flashMode={RNCamera.Constants.FlashMode.torch}
+                            topContent={
+                                <Text style={styles.centerText}>
+                                    Go to{' '}
+                                    <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
+                                    your computer and scan the QR code.
+                                </Text>
+                            }
+                            bottomContent={
+                                <TouchableOpacity onPress={()=>{
+                                setScanModal(false)
+                                }
+                                } style={styles.buttonTouchable}>
+                                    <Text style={styles.buttonText}>OK. Got it!</Text>
+                                </TouchableOpacity>
+                            }
+                        />
 
+                        <View style={{flexDirection:'row',justifyContent:'center'}}>
+
+
+
+
+                        </View>
+                    </View>
+                </Modal>
 
                 <View style={styles.container}>
                     <View style={styles.buttons}>
                         <Button
                             title="Press me"
-                            onPress={() => {setSelected('coupons');setCurrentData(coupons)}}
-                            style={selected == 'coupons' ?  styles.selectedButton : styles.button}
+                            onPress={() => {setScanModal(true);}}
+                            style={styles.selectedButton }
                         >
-                            <Text style={{color:selected== 'coupons' ? '#fff' : '#000',fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Coupons')}</Text>
+                            <Text style={{color: '#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Scan Coupon')}</Text>
                         </Button>
 
 
@@ -101,6 +188,7 @@ export default function CouponScreen({navigation}) {
                                 type={selected}
                                 code={(item.code) ? item.code :item.coupon.code }
                                 id={item.id}
+                                user={item.user}
                                 buy_coupon={()=>{buy_coupon(item.id)}}
                                 image="https://docs.nativebase.io/docs/assets/web-cover1.jpg"
                             />
@@ -175,6 +263,23 @@ const styles = StyleSheet.create({
     },
     components:{
         width:'90%'
+    },
+    centerText: {
+        flex: 1,
+        fontSize: 18,
+        padding: 32,
+        color: '#777'
+    },
+    textBold: {
+        fontWeight: '500',
+        color: '#000'
+    },
+    buttonText: {
+        fontSize: 21,
+        color: 'rgb(0,122,255)'
+    },
+    buttonTouchable: {
+        padding: 16
     }
 });
 

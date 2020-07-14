@@ -8,12 +8,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 import { useTranslation } from 'react-i18next';
 
 import HomeScreen from '../screens/Store/HomeScreen'
 import CalenderScreen from "../screens/Store/CalenderScreen";
 import CouponScreen from "../screens/Store/CouponsScreen";
-import ProfileScreen from "../screens/User/ProfileScreen";
+import PaymentScreen from "../screens/Store/PaymentScreen";
 
 export default function Store() {
     const { t } = useTranslation();
@@ -30,12 +32,12 @@ export default function Store() {
                 style:{
                     borderRadius:25,
                     shadowOpacity: 0.1,
-                    shadowRadius: 5,
+                    shadowRadius: 25,
                     shadowColor: '#000',
                     shadowOffset: { height: 0, width: 0 },
                     borderBottomLeftRadius:0,
                     borderBottomRightRadius:0,
-
+                    elevation:1
 
 
                 }
@@ -61,8 +63,8 @@ export default function Store() {
                         type = 'MaterialCommunityIcons'
                     }
                     else if (route.name === 'Payment') {
-                        iconName = focused ? 'money' : 'money';
-                        type = 'EvilIcons'
+                        iconName = focused ? 'money-bill-wave' : 'money-bill-wave';
+                        type = 'FontAwesome5'
                     }
 
 
@@ -81,6 +83,9 @@ export default function Store() {
                         case 'EvilIcons':
                             return <EvilIcons name={iconName} size={size} color={color}/>;
                             break;
+                        case 'FontAwesome5':
+                            return <FontAwesome5 name={iconName} size={size} color={color}/>;
+                            break;
 
                     }
 
@@ -91,7 +96,7 @@ export default function Store() {
             <Tab.Screen name="Home"   component={HomeScreen} options={{headerShown:false,title:t('Home')}} />
             <Tab.Screen name="Calender" component={CalenderScreen} options={{headerShown:false,title:t('calender')}} />
             <Tab.Screen name="Coupon" component={CouponScreen} options={{headerShown:false,title:t('Coupons')}}/>
-            <Tab.Screen name="Payment" component={ProfileScreen} options={{headerShown:false,title:t('Profile')}} />
+            <Tab.Screen name="Payment" component={PaymentScreen} options={{headerShown:false,title:t('Payment')}} />
 
         </Tab.Navigator>
 

@@ -19,9 +19,10 @@ export default function LoginScreen({route,navigation}) {
             }
         })
     },[]);
+    //http://10.0.2.2:8000
     var submit = () =>{
         if(email != '' && password != '' ){
-            axios.get('http://10.0.2.2:8000/api/login', {
+            axios.get('http://192.168.1.2:8000/api/login', {
                 params: {
                     email, password
                 }
@@ -67,7 +68,7 @@ export default function LoginScreen({route,navigation}) {
 
                 <View style={styles.container}>
                     <View style={{borderBottomColor:'#000',borderBottomWidth:3,display:'flex',margin:10}}>
-                        <Text style={{fontFamily:'Poppins-medium',padding:10,fontSize:25}}>{t('Login')}</Text>
+                        <Text style={{fontFamily:'Poppins-Medium',padding:10,fontSize:25}}>{t('Login')}</Text>
                     </View>
 
                     {
@@ -125,7 +126,7 @@ export default function LoginScreen({route,navigation}) {
                         onPress={() => {submit()}}
                         style={ styles.selectedButton }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Login')}</Text>
+                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Login')}</Text>
 
                     </Button>
                 </View>

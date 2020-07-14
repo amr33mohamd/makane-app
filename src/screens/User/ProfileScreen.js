@@ -18,7 +18,7 @@ export default function ProfileScreen({navigation}) {
     const [update,setUpdate] = useState(false);
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/user',null, {
+            axios.post('http://192.168.1.2:8000/api/user',null, {
 
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -42,7 +42,7 @@ export default function ProfileScreen({navigation}) {
         AsyncStorage.getItem('token').then((token)=> {
 
             if ( name != '') {
-                axios.post('http://10.0.2.2:8000/api/update_user', null, {
+                axios.post('http://192.168.1.2:8000/api/update_user', null, {
                     params: {
                         email, password, name
                     },
@@ -186,7 +186,7 @@ export default function ProfileScreen({navigation}) {
                         onPress={() => submit()}
                         style={ styles.selectedButton }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Save')}</Text>
+                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Save')}</Text>
 
                     </Button>
                         <Button
@@ -194,7 +194,7 @@ export default function ProfileScreen({navigation}) {
                             onPress={() => logout()}
                             style={ styles.button }
                         >
-                            <Text style={{color:'#000' ,fontFamily:'Poppins-medium',textAlign:'center',fontSize:15}}>{t('Log Out')}</Text>
+                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Log Out')}</Text>
 
                         </Button>
                     </View>
