@@ -121,8 +121,7 @@ export default function ProfileScreen({navigation}) {
 
                     }}>{t('Points')} : {points}</Text>
                     <Text style={{
-                        fontFamily: 'Poppins-Medium',
-                        fontSize: 13,
+                        fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                        fontSize: 13,
                         padding: 10,
                         textAlign: 'center'
                     }}>{t('to get points give this code to people to sign up with')}</Text>
@@ -135,15 +134,14 @@ export default function ProfileScreen({navigation}) {
                     </Item>
 
                     <Text style={{
-                        fontFamily: 'Poppins-Medium',
-                        fontSize: 12,
+                        fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                     fontSize: 12,
                         padding: 10,
                         textAlign: 'center'
 
                     }}>{t('Name')}</Text>
                     <Item style={styles.searchInput} rounded>
 
-                        <Input placeholder='Name' value={name} onChangeText={(value) => setName(value)}
+                        <Input placeholder={t('Name')} value={name} onChangeText={(value) => setName(value)}
                                style={{textAlign: 'center'}} fontFamily='Poppins-ExtraLight' fontSize={15}
                                placeholderTextColor="#CECDCD"
                         />
@@ -159,14 +157,13 @@ export default function ProfileScreen({navigation}) {
                     }
 
                     <Text style={{
-                        fontFamily: 'Poppins-Medium',
-                        fontSize: 12,
+                        fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                        fontSize: 12,
                         padding: 10,
                         textAlign: 'center'
                     }}>{t('Email')}</Text>
                     <Item style={styles.searchInput} rounded>
 
-                        <Input placeholder='Email' value={email} onChangeText={(value) => setEmail(value)}
+                        <Input placeholder={t('Email')} value={email} onChangeText={(value) => setEmail(value)}
                                style={{textAlign: 'center'}} fontFamily='Poppins-ExtraLight' fontSize={15}
                                placeholderTextColor="#CECDCD"
                         />
@@ -182,21 +179,21 @@ export default function ProfileScreen({navigation}) {
                     }
 
                     <Text style={{
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                        fontSize: 13,
                         fontSize: 12,
                         padding: 10,
                         textAlign: 'center'
                     }}>{t('Password')}</Text>
                     <Item style={styles.searchInput} rounded>
 
-                        <Input secureTextEntry={true} placeholder='Password' value={password}
+                        <Input secureTextEntry={true} placeholder={t('Password')} value={password}
                                onChangeText={(value) => setPassword(value)} style={{textAlign: 'center'}}
                                fontFamily='Poppins-ExtraLight' fontSize={15} placeholderTextColor="#CECDCD"
                         />
                     </Item>
                     {
                         errors.password && <Text style={{
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                        fontSize: 13,
                             fontSize: 12,
                             padding: 10,
                             textAlign: 'center',
@@ -209,6 +206,8 @@ export default function ProfileScreen({navigation}) {
                             if(i18n.language == 'ar'){
                                 AsyncStorage.setItem('lang','en');
                                 i18n.changeLanguage ('en');
+                                I18nManager.forceRTL(false);
+
                                 RNRestart.Restart();
 
                             }
@@ -237,9 +236,10 @@ export default function ProfileScreen({navigation}) {
                     >
                         <Text style={{
                             color: '#fff',
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                        fontSize: 13,
                             textAlign: 'center',
-                            fontSize: 15
+                            fontSize: 15,
+                            alignSelf:'center'
                         }}>{t('Change Langauage to ')}{ (i18n.language == 'ar') ? 'english' : 'Arabic'}</Text>
 
                     </Button>
@@ -260,7 +260,7 @@ export default function ProfileScreen({navigation}) {
                     >
                         <Text style={{
                             color: '#fff',
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                        fontSize: 13,
                             textAlign: 'center',
                             fontSize: 15
                         }}>{t('Save')}</Text>
@@ -273,7 +273,7 @@ export default function ProfileScreen({navigation}) {
                     >
                         <Text style={{
                             color: '#000',
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                        fontSize: 13,
                             textAlign: 'center',
                             fontSize: 15
                         }}>{t('Log Out')}</Text>

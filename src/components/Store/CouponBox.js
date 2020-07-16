@@ -26,11 +26,11 @@ const CouponBox: () => React$Node = (props) => {
 
             </View>
             <View style={styles2.right}>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>percent</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('Percent')}</Text>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.percent} %</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>User Name</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('User Name')}</Text>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.user.name}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>User Phone</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}> {t('User Phone')}</Text>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.user.phone}</Text>
 
             </View>

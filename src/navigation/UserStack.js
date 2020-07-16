@@ -8,12 +8,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+
+
 import { useTranslation } from 'react-i18next';
 
 import HomeScreen from '../screens/User/HomeScreen'
 import CalenderScreen from "../screens/User/CalenderScreen";
 import CouponScreen from "../screens/User/CouponsScreen";
 import ProfileScreen from "../screens/User/ProfileScreen";
+import i18n from "i18next";
 
 export default function User() {
     const { t } = useTranslation();
@@ -24,7 +29,7 @@ export default function User() {
                     activeTintColor: '#E50000',
                     inactiveTintColor: '#000000',
                     labelStyle: {
-                        fontFamily:'Poppins-Medium',
+                        fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',
                         fontSize:10
                     },
                         style:{
@@ -49,16 +54,16 @@ export default function User() {
                         if (route.name === 'Home') {
                             iconName = focused
                                 ? 'home'
-                                : 'home-outline';
-                            type = 'MaterialCommunityIcons'
+                                : 'home';
+                            type = 'AntDesign'
                         } else if (route.name === 'Calender') {
-                            iconName = focused ? 'calendar' : 'calendar-outline';
+                            iconName = focused ? 'calendar' : 'calendar';
 
-                            type = 'MaterialCommunityIcons'
+                            type = 'AntDesign'
                         }
                      else if (route.name === 'Coupons') {
-                            iconName = focused ? 'ticket-percent' : 'ticket-percent';
-                            type = 'MaterialCommunityIcons'
+                            iconName = focused ? 'percent' : 'percent';
+                            type = 'Feather'
                         }
                         else if (route.name === 'Profile') {
                             iconName = focused ? 'user' : 'user';
@@ -80,6 +85,12 @@ export default function User() {
                                 break;
                             case 'EvilIcons':
                                 return <EvilIcons name={iconName} size={size} color={color}/>;
+                                break;
+                            case 'AntDesign':
+                                return <AntDesign name={iconName} size={size} color={color}/>;
+                                break;
+                            case 'Feather':
+                                return <Feather name={iconName} size={size} color={color}/>;
                                 break;
 
                         }

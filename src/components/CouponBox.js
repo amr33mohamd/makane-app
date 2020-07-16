@@ -3,9 +3,10 @@ import {View,Image,StyleSheet,Alert} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Container, Header, Content, Thumbnail, Text,Button } from 'native-base';
 import Feather from 'react-native-vector-icons/Feather';
-import {useTranslation} from "react-i18next/src/index";
+import {useTranslation} from "react-i18next";
 import Modal from 'react-native-modal';
 import QRCode from 'react-native-qrcode-svg';
+import i18n from "i18next";
 
  const CouponBox: () => React$Node = (props) => {
      const { t } = useTranslation();
@@ -17,7 +18,7 @@ import QRCode from 'react-native-qrcode-svg';
     <View style={styles2.container} >
         <Modal animationIn="fadeIn"  isVisible={normalModal}>
             <View style={{height:285,backgroundColor:'#fff',padding:10,borderRadius:20,justifyContent:'center',alignItems:'center'}}>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,padding:20}}>Show coupon for store</Text>
+                <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,padding:20}}>{t('Show coupon for store')}</Text>
                 <View style={{justifyContent:'center',alignItems:'center'}}>
                     <QRCode
                         value={""+props.id}
@@ -29,7 +30,7 @@ import QRCode from 'react-native-qrcode-svg';
                         onPress={() => {setNormalModal(false)}}
                         style={ styles2.modalCancel }
                     >
-                        <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
+                        <Text style={{color:'#000' ,fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
 
                     </Button>
                 </View>
@@ -37,14 +38,14 @@ import QRCode from 'react-native-qrcode-svg';
         </Modal>
         <Modal animationIn="fadeIn"  isVisible={buyModal}>
             <View style={{height:180,backgroundColor:'#fff',padding:10,borderRadius:20,justifyContent:'center',alignItems:'center'}}>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,padding:20}}>Sure you want to buy this coupon</Text>
+                <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,padding:20}}>{t('Sure you want to buy this coupon')}</Text>
                 <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
                     <Button
                         title="Press me"
                         onPress={() => {seBuyModal(false);props.buy_coupon()}}
                         style={ styles2.modalBook }
                     >
-                        <Text style={{color:'#FFF' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Buy')} </Text>
+                        <Text style={{color:'#FFF' ,fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Buy')} </Text>
 
                     </Button>
                     <Button
@@ -52,7 +53,7 @@ import QRCode from 'react-native-qrcode-svg';
                         onPress={() => {seBuyModal(false)}}
                         style={ styles2.modalCancel }
                     >
-                        <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
+                        <Text style={{color:'#000' ,fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
 
                     </Button>
                 </View>
@@ -68,8 +69,8 @@ import QRCode from 'react-native-qrcode-svg';
 
         </View>
         <View style={styles2.right}>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>percent</Text>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.percent}</Text>
+            <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('Percent')}</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.percent} %</Text>
             {
                 (props.price == 0 || props.type == 'owned') ?
 
@@ -78,7 +79,7 @@ import QRCode from 'react-native-qrcode-svg';
                         onPress={() => setNormalModal(true)}
                         style={ styles2.selectedButton }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('Show')}</Text>
+                        <Text style={{color:'#fff' ,fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('Show')}</Text>
 
                     </Button>
                     :
@@ -87,7 +88,7 @@ import QRCode from 'react-native-qrcode-svg';
                         onPress={() => {seBuyModal(true)}}
                         style={ styles2.selectedButton }
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('Buy') } {props.price} Point </Text>
+                        <Text style={{color:'#fff' ,fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('Buy') } {props.price} {t('Point')} </Text>
 
                     </Button>
             }

@@ -7,9 +7,10 @@ import moment from 'moment';
 import Modal from 'react-native-modal';
 import StarRating from 'react-native-star-rating';
 
-import {useTranslation} from "react-i18next/src/index";
+import {useTranslation} from "react-i18next";
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
+import i18n from "i18next/index";
  const ReservationBox: () => React$Node = (props) => {
      const { t } = useTranslation();
      const [cancelModal,setCancelModal] = useState(false);
@@ -128,12 +129,12 @@ import AsyncStorage from "@react-native-community/async-storage";
 
         </View>
         <View style={styles2.right}>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>Date & Time</Text>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.date}</Text>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>Address</Text>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.address}</Text>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>Status</Text>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{(props.status == 0) ? 'comming' : (props.status == 1)  ? 'done' : (props.status == 2) ? 'ignored' : 'canceled'}</Text>
+            <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}>{t('Time')}</Text>
+            <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.date}</Text>
+            <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}>{t('Address')}</Text>
+            <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.address}</Text>
+            <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}> {t('Status')}</Text>
+            <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{(props.status == 0) ? (i18n.language == 'ar') ? 'قادم' : 'comming' : (props.status == 1)  ? (i18n.language == 'ar') ? 'تم' :'done' : (props.status == 2) ? (i18n.language == 'ar') ? 'تجاهل' : 'ignored' : (i18n.language == 'ar') ? 'الغاء' : 'canceled'}</Text>
             {
                 (props.status == 0)?
                     (props.type == 1) ?

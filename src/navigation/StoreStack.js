@@ -17,6 +17,7 @@ import CalenderScreen from "../screens/Store/CalenderScreen";
 import CouponScreen from "../screens/Store/CouponsScreen";
 import PaymentScreen from "../screens/Store/PaymentScreen";
 import EventsScreen from "../screens/Store/EventsScreen";
+import i18n from "i18next";
 
 export default function Store() {
     const { t } = useTranslation();
@@ -27,7 +28,7 @@ export default function Store() {
                 activeTintColor: '#E50000',
                 inactiveTintColor: '#000000',
                 labelStyle: {
-                    fontFamily:'Poppins-Medium',
+                    fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',
                     fontSize:10
                 },
                 style:{

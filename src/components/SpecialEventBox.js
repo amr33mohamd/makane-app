@@ -4,7 +4,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Container, Header, Content, Thumbnail, Text,Button } from 'native-base';
 import Feather from 'react-native-vector-icons/Feather';
 import moment from "moment";
-import {useTranslation} from "react-i18next/src/index";
+import {useTranslation} from "react-i18next";
+import i18n from "i18next/index";
 const SpecialEventBox: () => React$Node = (props) => {
     const { t } = useTranslation();
 
@@ -21,9 +22,9 @@ const SpecialEventBox: () => React$Node = (props) => {
 
             </View>
             <View style={styles2.right}>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{props.name}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{moment(props.time,'hh:mm:ss').calendar() }</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.available } person</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}>{props.name}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{moment(props.time,'hh:mm:ss').calendar() }</Text>
+                <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.available } {t('Person')}</Text>
 
 
                 <Button
@@ -33,7 +34,7 @@ const SpecialEventBox: () => React$Node = (props) => {
                     }}
                     style={ styles2.selectedButton }
                 >
-                    <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('book')}</Text>
+                    <Text style={{color:'#fff' ,fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('Book')}</Text>
 
                 </Button>
             </View>
@@ -54,16 +55,16 @@ const styles2 = StyleSheet.create({
         borderRadius:10,
         padding:10,
         elevation: 1,
-        width:'95%',
-        alignSelf:'center'
+        alignSelf:'center',
+        width:'95%'
 
     },
     left:{
-        flex:.4,
+        width:'40%',
         padding:10
     },
     right:{
-        flex:.7,
+        width:'60%',
         justifyContent:'flex-end'
     },
     buttom:{

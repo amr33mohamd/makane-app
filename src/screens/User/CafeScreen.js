@@ -22,6 +22,7 @@ export default function CafeScreen({route,navigation}) {
     const [normalModal,setNormalModal] = useState(false);
     const [specialModal,setSpecialModal] = useState(false);
     const [currentSpecialEvent,setCurrentSpecialEvent]= useState();
+    const [selected,setSelected] = useState('view');
     var renderStars = ()=>{
         var gold = parseInt(JSON.parse(route.params.item).rating);
         var empty = 5 - parseInt(JSON.parse(route.params.item).rating);
@@ -194,8 +195,8 @@ return (
 
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={normalModal}>
                 <View style={{height:270,backgroundColor:'#fff',padding:10,borderRadius:20}}>
-                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
-                    <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Are you sure you want to book now!')}</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>{t('You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned')}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                         <Button
                             title="Press me"
@@ -219,8 +220,8 @@ return (
             </Modal>
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={specialModal}>
                 <View style={{height:270,backgroundColor:'#fff',padding:10,borderRadius:20}}>
-                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
-                    <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Are you sure you want to book now!')}</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>{t('You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned')}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                         <Button
                             title="Press me"
@@ -259,7 +260,8 @@ return (
                     uri: 'http://192.168.1.2:8000/images/'+image.image}}
                         style={{
                             width:'33.33333%',
-                            height:250
+                            height:250,
+                            resizeMode:'stretch'
                         }}/>
             )
         }
@@ -269,121 +271,128 @@ return (
     </ScrollView>
 
             <View  renderToHardwareTextureAndroid style={styles.container}>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:10,padding:5}}>{store.country}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:12,padding:5,alignSelf:'flex-start'}}>{store.country}</Text>
 
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:28,padding:5}}>{store.name}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:10,padding:5}}>{store.available} person available</Text>
-                <Tabs
-                    style={{}}
-                    tabContainerStyle={{elevation: 0}}
-
-                    tabBarUnderlineStyle={{ backgroundColor:"#E50000" }}
-                >
-                    <Tab textStyle={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:5}}
-                         activeTextStyle={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:5}}
-                         tabStyle={{backgroundColor:'#fff',borderWidth:0,elevation: 0}}
-                         activeTabStyle={{backgroundColor:'#fff',borderColor:'#E50000'}}
-
-                         heading="Overview">
-                        <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>
-                            {
-                                (i18n.language == 'ar') ? store.description_ar : store.description_en
-                            }
-                        </Text>
-
-                        <Button
-                            title="Press me"
-                            onPress={() => {submit()}}
-                            style={ styles.selectedButton }
-                        >
-                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('website')}</Text>
-
-
-                        </Button>
-                        <View style={styles.stars}>
-
-                        {renderStars()}
-                        </View>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:28,padding:5,alignSelf:'flex-start'}}>{store.name}</Text>
+                <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#CECDCD',fontSize:12,padding:5,alignSelf:'flex-start'}}>{store.available} {t('person available')}</Text>
+                <View style={{flexDirection:'row',alignItems:'flex-start',alignSelf:'flex-start',padding:10}}>
+                   <Text
+                       onPress={()=>
+                       {
+                           setSelected('view')
+                       }
+                       }
+                       style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:(selected != 'view') ? '#CECDCD' : '#000',fontSize:12,paddingHorizontal:20,paddingTop:10,paddingBottom:15, borderBottomColor :'#E50000',borderBottomWidth: (selected == 'view') ? 1 : 0}}>
+                       {t('Overview')}
+                   </Text>
+                    <Text
+                        onPress={()=>
                         {
-                            (store.special_events == [])
-                                ?
-                                null
-                                :
-                                (<Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,padding:5}}>{t('Special events')}</Text>
-                                )
+                            setSelected('reviews')
                         }
+                        }
+                        style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:(selected != 'reviews') ? '#CECDCD' : '#000',fontSize:12,paddingHorizontal:20,paddingTop:10,borderBottomColor :'#E50000',paddingBottom:15,borderBottomWidth: (selected == 'reviews') ? 1 : 0}}>
+                        {t('Reviews')}
+                    </Text>
+                </View>
 
-                        <View style={{width:'99%',justifyContent:'center',alignItems:'center'}}>
+                        {
+                            (selected == 'view' ) ?
+                            <View style={{alignItems:'flex-start'}}>
+                                    <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>
+
+                                        {(i18n.language == 'ar') ? store.description_ar : store.description_en}
+
+                                </Text>
+                                <Button
+                            onPress={() => {submit()}}
+                            style= {styles.selectedButton}
+                            >
+                            <Text style={{color:'#fff' ,fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Website')}</Text>
+
+
+                            </Button>
+                                <View style={styles.stars}>
+
+                                    {renderStars()}
+                                </View>
+                                {
+                                    (store.special_events == [])
+                                        ?
+                                        null
+                                        :
+                                        (<Text style={{
+                                                fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                                                color: '#000',
+                                                fontSize: 20,
+                                                padding: 5
+                                            }}>{t('Special Events')}</Text>
+                                        )
+                                }
+
+
+                                <View style={{justifyContent:'center',alignItems:'center'}}>
+                                    <FlatList
+                                        style={styles.components}
+                                        contentContainerStyle={{}}
+                                        data={store.special_events}
+                                        ListFooterComponent={()=>
+
+                                            <Button
+                                                title="Press me"
+                                                onPress={() => {reserveNormalButton()}}
+                                                style={ styles.selectedButton2 }
+                                            >
+                                                <Text style={{color:'#fff' ,fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',fontSize:12,textAlign:'center',alignSelf:'center'}}>{t('Book Now')} </Text>
+
+
+                                            </Button>
+                                        }
+                                        renderItem={({ item }) => (
+
+
+
+                                            <SpecialEventBox
+                                                image={'http://192.168.1.2:8000/images/'+store.image}
+                                                name={item.name}
+                                                time={item.time}
+                                                available={item.available}
+                                                onPress={()=> {
+                                                    reserveSpecialButton(item.id)
+                                                }
+                                                }
+                                            />
+                                        )}
+                                        keyExtractor={item => item.id}
+                                    />
+
+                                </View>
+
+
+
+                            </View>
+                            :
+                            (
                             <FlatList
-                                style={styles.components}
-                                data={store.special_events}
-                                renderItem={({ item }) => (
-
-
-
-                                        <SpecialEventBox
-                                            image={'http://192.168.1.2:8000/images/'+store.image}
-                                            name={item.name}
-                                            time={item.time}
-                                            available={item.available}
-                                            onPress={()=> {
-                                                reserveSpecialButton(item.id)
-                                            }
-                                            }
-                                        />
-                                )}
-                                keyExtractor={item => item.id}
-                            />
-
-                        </View>
-                        <View style={{flexDirection:'row'}}>
-
-                            <View style={{flex:.8,alignSelf:'flex-end'}}>
-                        <Button
-                            title="Press me"
-                            onPress={() => {reserveNormalButton()}}
-                            style={ styles.selectedButton2 }
-                        >
-                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Book Now')} </Text>
-                            <View name="arrow-right-circle-outline"
-                                  style={{backgroundColor:'#CE0000',height:45,justifyContent:'center',borderRadius:10
-                            }}>
-                                <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:20}}> >> </Text>
-                            </View>
-
-                        </Button>
-                            </View>
-
-                        </View>
-                    </Tab>
-                    <Tab
-                        tabStyle={{backgroundColor:'#fff'}}
-                        activeTabStyle={{backgroundColor:'#fff'}}
-                        textStyle={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:5}}
-                        activeTextStyle={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:5}}
-                        heading="Reviews">
-                        <FlatList
                             style={styles.components}
                             data={store.store_reviews}
                             renderItem={({ item }) => (
 
 
 
-                                    <ReviewBox
-                                        image={'https://docs.nativebase.io/docs/assets/web-cover1.jpg'}
-                                        username={item.reviewer.name}
-                                        rate={item.rate}
-                                        review={item.review}
-                                    />
-                            )}
+                            <ReviewBox
+                                image={'https://docs.nativebase.io/docs/assets/web-cover1.jpg'}
+                                username={item.reviewer.name}
+                                rate={item.rate}
+                                review={item.review}
+                            />
+                        )}
                             keyExtractor={item => item.id}
-                        />
+                            />)
+
+                        }
 
 
 
-                    </Tab>
-
-                </Tabs>
 
             </View>
 
@@ -402,6 +411,7 @@ const styles = StyleSheet.create({
         textAlign:'center',
         alignItems:'center',
         padding:20,
+        paddingTop:40
 
     },
     searchInput:{
@@ -439,9 +449,10 @@ width:130,
     selectedButton2: {
         backgroundColor: '#E50000',
         flexDirection:'row',
-alignSelf:'flex-end',
+alignSelf:'center',
         borderRadius:10,
         width:'70%',
+        justifyContent:'center',
         height:45,
         margin:15,
         shadowOpacity: 0.3,
@@ -510,7 +521,7 @@ alignSelf:'flex-end',
 
     },
     components:{
-        width:'100%'
+        width:'95%'
     },
     stars:{
         flexDirection:'row',

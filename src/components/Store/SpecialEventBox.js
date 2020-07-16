@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Container, Header, Content, Thumbnail, Text,Button } from 'native-base';
 import Feather from 'react-native-vector-icons/Feather';
 import moment from "moment";
-import {useTranslation} from "react-i18next/src/index";
+import {useTranslation} from "react-i18next";
 const SpecialEventBox: () => React$Node = (props) => {
     const { t } = useTranslation();
 
@@ -23,7 +23,7 @@ const SpecialEventBox: () => React$Node = (props) => {
             <View style={styles2.right}>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{props.name}</Text>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{moment(props.time,'hh:mm:ss').calendar() }</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.available } person</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.available } {t('Person')}</Text>
 
 
                 <Button

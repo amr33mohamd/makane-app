@@ -26,7 +26,7 @@ return(
 
             <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:12,padding:20}}>{props.username}</Text>
         </View>
-        <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:10}}>
+        <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:10,alignItems:'flex-start'}}>
             {props.review}
 
         </Text>

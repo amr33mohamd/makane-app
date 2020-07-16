@@ -8,6 +8,7 @@ import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import Feather from 'react-native-vector-icons/Feather';
+import i18n from "i18next/index";
 
 export default function HomeScreen({navigation}) {
     const { t } = useTranslation();
@@ -58,7 +59,7 @@ export default function HomeScreen({navigation}) {
             <View renderToHardwareTextureAndroid style={styles.container}>
                 <Item style={styles.searchInput} rounded>
                     <Feather active name='search' size={20} style={{color:'#CECDCD'}} />
-                    <Input placeholder='Search' value={search} onChangeText={(value)=>{setSearch(value)}} onSubmitEditing={()=>{setUpdate(!update)}} fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
+                    <Input placeholder={t('Search')} value={search} onChangeText={(value)=>{setSearch(value)}} onSubmitEditing={()=>{setUpdate(!update)}} fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
                     />
                 </Item>
                 <View  style={styles.buttons}>
@@ -67,14 +68,14 @@ export default function HomeScreen({navigation}) {
                     onPress={() => {setSelected('cafe'); setCurrentData(cafes)}}
                     style={selected == 'cafe' ?  styles.selectedButton : styles.button}
                 >
-                    <Text style={{color:selected== 'cafe' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Cafe')}</Text>
+                    <Text style={{color:selected== 'cafe' ? '#fff' : '#000',fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Cafe')}</Text>
                 </Button>
 
                     <Button
                     onPress={() => {setSelected('resturant'); setCurrentData(restaurants)}}
                     style={selected == 'resturant' ?  styles.selectedButton : styles.button}
                 >
-                    <Text style={{color: selected== 'resturant' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('resturants')}</Text>
+                    <Text style={{color: selected== 'resturant' ? '#fff' : '#000',fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('resturants')}</Text>
                 </Button>
                 </View>
 

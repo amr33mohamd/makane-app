@@ -3,7 +3,11 @@ import {View,Image,StyleSheet,Alert} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Container, Header, Content, Thumbnail, Text } from 'native-base';
 import Feather from 'react-native-vector-icons/Feather';
+import {useTranslation} from "react-i18next";
+import i18n from "i18next";
  const StoreBox: () => React$Node = (props) => {
+     const { t } = useTranslation();
+
      const  items = [];
      var renderStars = ()=>{
          var gold = parseInt(props.rate);
@@ -31,9 +35,9 @@ return(
 
         </View>
         <View style={styles2.right}>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{props.name}</Text>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:10,padding:5,height:50}}>{props.description}</Text>
-            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:10,padding:0}}>Avalilability</Text>
+            <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5,textAlign:'right',alignSelf:'flex-start'}}>{props.name}</Text>
+            <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#CECDCD',fontSize:10,padding:5,height:50,alignSelf:'flex-start'}}>{props.description}</Text>
+            <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:12,padding:0,alignSelf:'flex-start'}}>{t('Availability')}</Text>
             <View style={styles2.buttom}>
                 <View style={{flexDirection:'row',flex:.6,alignItems:'center'}}>
                 <Feather name="users" color="#000" style={{}}/>

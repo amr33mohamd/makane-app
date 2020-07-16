@@ -7,7 +7,7 @@ import moment from 'moment';
 import Modal from 'react-native-modal';
 import StarRating from 'react-native-star-rating';
 
-import {useTranslation} from "react-i18next/src/index";
+import {useTranslation} from "react-i18next";
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
 const ReservationBox: () => React$Node = (props) => {
@@ -56,14 +56,14 @@ const ReservationBox: () => React$Node = (props) => {
         <View style={styles2.container} >
             <Modal animationIn="fadeIn"  isVisible={notArrivedModal}>
                 <View style={{height:150,backgroundColor:'#fff',padding:10,borderRadius:20}}>
-                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want tell that he didn't arrive?</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Are you sure you want tell that he didn\'t arrive?')}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                         <Button
                             title="Press me"
                             onPress={() => {setNotArrivedModal(false)}}
                             style={ styles2.modalCancel }
                         >
-                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('skip')} </Text>
+                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Skip')} </Text>
 
                         </Button>
                         <Button
@@ -81,14 +81,14 @@ const ReservationBox: () => React$Node = (props) => {
             </Modal>
             <Modal animationIn="fadeIn"  isVisible={ArrivedModal}>
                 <View style={{height:150,backgroundColor:'#fff',padding:10,borderRadius:20}}>
-                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want tell that he  arrived?</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Are you sure you want tell that he  arrived?')}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                         <Button
                             title="Press me"
                             onPress={() => {setArrivedModal(false)}}
                             style={ styles2.modalCancel }
                         >
-                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('skip')} </Text>
+                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Skip')} </Text>
 
                         </Button>
                         <Button
@@ -106,7 +106,7 @@ const ReservationBox: () => React$Node = (props) => {
             </Modal>
             <Modal animationIn="fadeIn"  isVisible={reviewModal}>
                 <View style={{height:260,backgroundColor:'#fff',padding:10,borderRadius:20,alignItems:'center'}}>
-                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Rate Us!</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Rate Us!')}</Text>
                     <StarRating
                         disabled={false}
                         maxStars={5}
@@ -131,7 +131,7 @@ const ReservationBox: () => React$Node = (props) => {
                             onPress={() => {setReviewModal(false)}}
                             style={ styles2.modalCancel }
                         >
-                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('cancel')} </Text>
+                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:12,textAlign:'center'}}>{t('Cancel')} </Text>
 
                         </Button>
                         <Button
@@ -157,14 +157,14 @@ const ReservationBox: () => React$Node = (props) => {
 
             </View>
             <View style={styles2.right}>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>Date & Time</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('Time')}</Text>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.date}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>User Name</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('User Name')}</Text>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.user.name}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>User Phone</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('User Phone')}</Text>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.user.phone}</Text>
 
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>Status</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}> {t('Status')}</Text>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{(props.status == 0) ? 'comming' : (props.status == 1)  ? 'done' : (props.status == 2) ? 'ignored' : 'canceled'}</Text>
                 <View >
                 {
