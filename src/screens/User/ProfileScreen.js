@@ -1,47 +1,60 @@
 import React,{useState,useEffect} from 'react';
-import {View,Image,StyleSheet,Alert,ScrollView} from 'react-native';
+import {View,Image,StyleSheet,Alert,ScrollView,I18nManager} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {Container, Header, Content, Item, Input, Icon, Button, Text, Label, Toast} from 'native-base';
 import StoreBox from '../../components/StoreBox'
+import RNRestart from 'react-native-restart'; // Import package from node modules
+
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
+import i18n from "i18next/index";
 export default function ProfileScreen({navigation}) {
-    const { t } = useTranslation();
-    const [name,setName] = useState();
-    const [email,setEmail] = useState();
-    const [code,setCode] = useState();
-    const [points,setPoints] = useState();
-    const [password,setPassword] = useState();
+    const {t} = useTranslation();
+    const [name, setName] = useState();
+    const [email, setEmail] = useState();
+    const [code, setCode] = useState();
+    const [points, setPoints] = useState();
+    const [password, setPassword] = useState();
+    const [token, setToken] = useState();
 
-    const [errors,setErrors] = useState({});
+    const [errors, setErrors] = useState({});
 
-    const [update,setUpdate] = useState(false);
-    useEffect(()=>{
-        AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/user',null, {
-
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+    const [update, setUpdate] = useState(false);
+    useEffect(() => {
+        AsyncStorage.getItem('token').then((token) => {
+            AsyncStorage.getItem('token').then((token) => {
+                setToken(token);
             })
-                .then(function (response) {
-                    setName(response.data.user.name);
-                    setCode(response.data.user.invite_code)
-                    setPoints(response.data.user.points)
+            if (token) {
 
+                axios.post('http://192.168.1.2:8000/api/user', null, {
 
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 })
-                .catch(function (error) {
-                    alert(JSON.stringify(error))
+                    .then(function (response) {
+                        setName(response.data.user.name);
+                        setCode(response.data.user.invite_code)
+                        setPoints(response.data.user.points)
 
-                    // alert(error.response.data.errors);
-                });
+
+                    })
+                    .catch(function (error) {
+                        alert(JSON.stringify(error))
+
+                        // alert(error.response.data.errors);
+                    });
+            }
         });
-    },[update]);
-    var submit = () =>{
-        AsyncStorage.getItem('token').then((token)=> {
+    }, [update]);
+    AsyncStorage.getItem('token').then((token) => {
+        setToken(token);
+    })
+    var submit = () => {
+        AsyncStorage.getItem('token').then((token) => {
 
-            if ( name != '') {
+            if (name != '') {
                 axios.post('http://192.168.1.2:8000/api/update_user', null, {
                     params: {
                         email, password, name
@@ -79,131 +92,248 @@ export default function ProfileScreen({navigation}) {
         })
 
     }
-    var logout = ()=>{
+    var logout = () => {
         AsyncStorage.removeItem('token');
         AsyncStorage.removeItem('type');
 
-        navigation.navigate('Auth',{screen:'Login'});
+        navigation.navigate('Auth', {screen: 'Login'});
     }
+    if(token != null){
 
     return (
-            <Container>
-                <Content>
+        <Container>
+            <Content>
 
-            <View style={{  alignItems: 'center'}}>
-            <Image
-                style={styles.stretch}
-                source={require('../../Assets/Images/Group207.png')}
-            />
-
-        </View>
-
-            <View style={styles.container}>
-                <Text style={{        fontFamily:'Poppins-Medium',
-                    fontSize:15,
-                    padding:10,
-                    textAlign:'center'
-
-                }}>{t('Points') } : {points}</Text>
-                <Text style={{        fontFamily:'Poppins-Medium',
-                    fontSize:13,
-                    padding:10,
-                    textAlign:'center'
-                }}>{t('to get points give this code to people to sign up with')}</Text>
-                <Item style={styles.searchInput} rounded >
-
-                    <Input  placeholder='Password' value={code} onChangeText={(value)=> null} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
+                <View style={{alignItems: 'center'}}>
+                    <Image
+                        style={styles.stretch}
+                        source={require('../../Assets/Images/Group207.png')}
                     />
-                </Item>
 
-                <Text style={{        fontFamily:'Poppins-Medium',
-                    fontSize:12,
-                    padding:10,
-                    textAlign:'center'
+                </View>
 
-                }}>{t('Name')}</Text>
-                <Item style={styles.searchInput} rounded >
+                <View style={styles.container}>
+                    <Text style={{
+                        fontFamily: 'Poppins-Medium',
+                        fontSize: 15,
+                        padding: 10,
+                        textAlign: 'center'
 
-                    <Input placeholder='Name' value={name} onChangeText={(value)=>setName(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
-                    />
-                </Item>
-                {
-                    errors.name && <Text style={{        fontFamily:'Poppins-Medium',
-                        fontSize:12,
-                        padding:10,
-                        textAlign:'center',
-                        color:'#E50000'
-                    }}>{errors.name}</Text>
-                }
+                    }}>{t('Points')} : {points}</Text>
+                    <Text style={{
+                        fontFamily: 'Poppins-Medium',
+                        fontSize: 13,
+                        padding: 10,
+                        textAlign: 'center'
+                    }}>{t('to get points give this code to people to sign up with')}</Text>
+                    <Item style={styles.searchInput} rounded>
 
-                <Text style={{        fontFamily:'Poppins-Medium',
-                    fontSize:12,
-                    padding:10,
-                    textAlign:'center'
-                }}>{t('Email')}</Text>
-                <Item style={styles.searchInput} rounded >
+                        <Input placeholder='Password' value={code} onChangeText={(value) => null}
+                               style={{textAlign: 'center'}} fontFamily='Poppins-ExtraLight' fontSize={15}
+                               placeholderTextColor="#CECDCD"
+                        />
+                    </Item>
 
-                    <Input placeholder='Email' value={email} onChangeText={(value)=>setEmail(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
-                    />
-                </Item>
-                {
-                    errors.email && <Text style={{        fontFamily:'Poppins-Medium',
-                        fontSize:12,
-                        padding:10,
-                        textAlign:'center',
-                        color:'#E50000'
-                    }}>{errors.email}</Text>
-                }
+                    <Text style={{
+                        fontFamily: 'Poppins-Medium',
+                        fontSize: 12,
+                        padding: 10,
+                        textAlign: 'center'
 
-                <Text style={{        fontFamily:'Poppins-Medium',
-                    fontSize:12,
-                    padding:10,
-                    textAlign:'center'
-                }}>{t('Password')}</Text>
-                <Item style={styles.searchInput} rounded >
+                    }}>{t('Name')}</Text>
+                    <Item style={styles.searchInput} rounded>
 
-                    <Input secureTextEntry={true} placeholder='Password' value={password} onChangeText={(value)=>setPassword(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
-                    />
-                </Item>
-                {
-                    errors.password && <Text style={{        fontFamily:'Poppins-Medium',
-                        fontSize:12,
-                        padding:10,
-                        textAlign:'center',
-                        color:'#E50000'
-                    }}>{errors.password}</Text>
-                }
+                        <Input placeholder='Name' value={name} onChangeText={(value) => setName(value)}
+                               style={{textAlign: 'center'}} fontFamily='Poppins-ExtraLight' fontSize={15}
+                               placeholderTextColor="#CECDCD"
+                        />
+                    </Item>
+                    {
+                        errors.name && <Text style={{
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 12,
+                            padding: 10,
+                            textAlign: 'center',
+                            color: '#E50000'
+                        }}>{errors.name}</Text>
+                    }
+
+                    <Text style={{
+                        fontFamily: 'Poppins-Medium',
+                        fontSize: 12,
+                        padding: 10,
+                        textAlign: 'center'
+                    }}>{t('Email')}</Text>
+                    <Item style={styles.searchInput} rounded>
+
+                        <Input placeholder='Email' value={email} onChangeText={(value) => setEmail(value)}
+                               style={{textAlign: 'center'}} fontFamily='Poppins-ExtraLight' fontSize={15}
+                               placeholderTextColor="#CECDCD"
+                        />
+                    </Item>
+                    {
+                        errors.email && <Text style={{
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 12,
+                            padding: 10,
+                            textAlign: 'center',
+                            color: '#E50000'
+                        }}>{errors.email}</Text>
+                    }
+
+                    <Text style={{
+                        fontFamily: 'Poppins-Medium',
+                        fontSize: 12,
+                        padding: 10,
+                        textAlign: 'center'
+                    }}>{t('Password')}</Text>
+                    <Item style={styles.searchInput} rounded>
+
+                        <Input secureTextEntry={true} placeholder='Password' value={password}
+                               onChangeText={(value) => setPassword(value)} style={{textAlign: 'center'}}
+                               fontFamily='Poppins-ExtraLight' fontSize={15} placeholderTextColor="#CECDCD"
+                        />
+                    </Item>
+                    {
+                        errors.password && <Text style={{
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 12,
+                            padding: 10,
+                            textAlign: 'center',
+                            color: '#E50000'
+                        }}>{errors.password}</Text>
+                    }
+                    <Button
+                        title="Press me"
+                        onPress={() => {
+                            if(i18n.language == 'ar'){
+                                AsyncStorage.setItem('lang','en');
+                                i18n.changeLanguage ('en');
+                                RNRestart.Restart();
+
+                            }
+                            else {
+                                AsyncStorage.setItem('lang','ar');
+                                i18n.changeLanguage ('ar');
+                                I18nManager.forceRTL(true);
+
+                                RNRestart.Restart();
+
+                            }
+
+                        }}
+                        style={{
+                            backgroundColor: '#E50000',
+                            alignItems:'center',
+                            justifyContent:'center',
+                            width:'70%',
+                            borderRadius:50,
+                            shadowOpacity: 0.3,
+                            shadowRadius: 5,
+                            shadowColor: '#E50000',
+                            shadowOffset: { height: 0, width: 0 },
+                            margin:10,
+                        }}
+                    >
+                        <Text style={{
+                            color: '#fff',
+                            fontFamily: 'Poppins-Medium',
+                            textAlign: 'center',
+                            fontSize: 15
+                        }}>{t('Change Langauage to ')}{ (i18n.language == 'ar') ? 'english' : 'Arabic'}</Text>
+
+                    </Button>
 
 
-
-
-
-
-            </View>
-                    <View style={{alignItems:'center',padding:20,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                </View>
+                <View style={{
+                    alignItems: 'center',
+                    padding: 20,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
                     <Button
                         title="Press me"
                         onPress={() => submit()}
-                        style={ styles.selectedButton }
+                        style={styles.selectedButton}
                     >
-                        <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Save')}</Text>
+                        <Text style={{
+                            color: '#fff',
+                            fontFamily: 'Poppins-Medium',
+                            textAlign: 'center',
+                            fontSize: 15
+                        }}>{t('Save')}</Text>
 
                     </Button>
-                        <Button
-                            title="Press me"
-                            onPress={() => logout()}
-                            style={ styles.button }
-                        >
-                            <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Log Out')}</Text>
+                    <Button
+                        title="Press me"
+                        onPress={() => logout()}
+                        style={styles.button}
+                    >
+                        <Text style={{
+                            color: '#000',
+                            fontFamily: 'Poppins-Medium',
+                            textAlign: 'center',
+                            fontSize: 15
+                        }}>{t('Log Out')}</Text>
 
-                        </Button>
-                    </View>
-                </Content>
+                    </Button>
+                </View>
+            </Content>
 
-            </Container>
+        </Container>
 
 
     );
+}
+else {
+        return (
+            <View style={{backgroundColor:'#fff',height:'100%',width:'100%',alignItems:'center'}}>
+                <View style={{
+                    backgroundColor:'#fff',
+                    shadowOpacity: 0.3,
+                    shadowRadius: 5,
+                    shadowColor: '#000',
+                    height:300,
+                    shadowOffset: { height: 0, width: 0 },
+                    marginVertical:10,
+                    borderRadius:30,
+                    elevation: 1,
+                    margin:20,
+                    alignItems:'center',
+                    justifyContent:'center',
+                    width:'80%'
+                }}>
+                    <Image
+                        source={require('../../Assets/Images/people.png')}
+                        style={{resizeMode:'contain',height:200,width:'70%',padding:10}}
+                    />
+                    <Button
+                        onPress={() => {navigation.navigate('Auth',{screen:'Login'})}}
+                        style={{
+                            backgroundColor: '#E50000',
+                            alignItems:'center',
+                            borderBottomRightRadius:30,
+                            borderBottomLeftRadius:30,
+
+                            marginHorizontal:5,
+                            width:'100%',
+                            justifyContent:'center',
+                            shadowOpacity: 0.3,
+                            shadowRadius: 5,
+                            shadowColor: '#E50000',
+                            shadowOffset: { height: 0, width: 0 },
+                            position:'absolute',
+                            bottom:0
+                        }}
+                    >
+                        <Text style={{color:  '#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Sign In')}</Text>
+                    </Button>
+                </View>
+            </View>
+        )
+    }
 }
 const styles = StyleSheet.create({
 

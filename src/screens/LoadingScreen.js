@@ -5,6 +5,7 @@ import { Container, Header, Content, Item, Input, Icon,Button,Text,Label,Toast }
 import StoreBox from '../components/StoreBox'
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import i18n from "i18next/index";
 
 export default function LoadingScreen({route,navigation}) {
     const { t } = useTranslation();
@@ -13,8 +14,14 @@ export default function LoadingScreen({route,navigation}) {
 
     const [error,setError] = useState();
     useEffect(()=>{
+        AsyncStorage.getItem('lang').then((lang)=>{
+            i18n.changeLanguage (lang);
+
+        })
         AsyncStorage.getItem('token').then((token)=>{
+
             if(token){
+
                 AsyncStorage.getItem('type').then((type)=>{
                     if(type == '1' ){
                         navigation.navigate('User');
@@ -25,17 +32,15 @@ export default function LoadingScreen({route,navigation}) {
                 })
             }
             else {
-                navigation.navigate('Auth');
+                navigation.navigate('User');
 
             }
         })
     },[]);
 
     return (
-        <Container>
-            <Content>
 
-                <View style={{  alignItems: 'center'}}>
+                <View style={{  alignItems: 'center',backgroundColor:'#E50000',justifyContent:'center',height:'100%'}}>
                     <Image
                         style={styles.stretch}
                         source={require('../Assets/Images/splash.png')}
@@ -44,55 +49,16 @@ export default function LoadingScreen({route,navigation}) {
                 </View>
 
 
-            </Content>
-
-        </Container>
 
 
     );
 }
 const styles = StyleSheet.create({
 
-    container: {
-        borderRadius:40,
-        textAlign:'left',
-        alignItems:'center',
-        alignSelf:'center'
-    },
-    searchInput:{
-        width:'90%',
-        borderRadius:10,
-        backgroundColor:'#F5F5F5',
-        alignItems:'center',
-        paddingHorizontal:30,
-        color:'#CECDCD',
-        borderColor:'#F5F5F5',
-        height:45,
-        fontFamily:'Poppins-Medium',
-        fontSize:4,
-        textAlign:'center'
-    },
-    buttons:{
-        flexDirection:'row',
-        marginVertical:20,
-    },
-    selectedButton: {
-        backgroundColor: '#E50000',
-        alignItems:'center',
-        justifyContent:'center',
-        width:'70%',
-        borderRadius:50,
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
-        shadowColor: '#E50000',
-        shadowOffset: { height: 0, width: 0 },
 
-    },
-
-    components:{
-        width:'90%'
-    },
     stretch:{
+        width:'50%',
+        height:'50%',
         resizeMode: 'contain',
 
 

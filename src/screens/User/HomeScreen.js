@@ -7,12 +7,16 @@ import Geolocation from '@react-native-community/geolocation';
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
 
+import Feather from 'react-native-vector-icons/Feather';
+
 export default function HomeScreen({navigation}) {
     const { t } = useTranslation();
     const [selected , setSelected] = useState('resturant');
     const [restaurants, setRestaurants ] = useState([]);
     const [cafes, setCafes ] = useState([]);
     const [currentData,setCurrentData] = useState(restaurants);
+    const [search,setSearch] = useState();
+    const [update,setUpdate] = useState();
     useEffect(()=>{
         // AsyncStorage.removeItem('token');
         Geolocation.getCurrentPosition((info) => {
@@ -21,7 +25,7 @@ export default function HomeScreen({navigation}) {
 
             axios.get('http://192.168.1.2:8000/api/stores', {
                 params: {
-                    lat, lng
+                    lat, lng,search
                 }
             })
                 .then(function (response) {
@@ -38,26 +42,26 @@ export default function HomeScreen({navigation}) {
         })
 
 
-    },[]);
+    },[update]);
     return (
             <Container>
                 <Content>
 
-            <View style={{  alignItems: 'center',  position: 'absolute'}}>
+            <View  style={{    position: 'absolute',height:220,width:'100%',justifyContent:'flex-start',flexDirection:'column'}}>
             <Image
                 style={styles.stretch}
-                source={require('../../Assets/Images/Header.png')}
-                style={{height:250}}
+                source={require('../../Assets/Images/test.jpg')}
+                style={{resizeMode:'cover',height:'100%',width:'100%'}}
             />
 
         </View>
-            <View style={styles.container}>
+            <View renderToHardwareTextureAndroid style={styles.container}>
                 <Item style={styles.searchInput} rounded>
-                    <Icon active name='search' style={{color:'#CECDCD'}} />
-                    <Input placeholder='Search'  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
+                    <Feather active name='search' size={20} style={{color:'#CECDCD'}} />
+                    <Input placeholder='Search' value={search} onChangeText={(value)=>{setSearch(value)}} onSubmitEditing={()=>{setUpdate(!update)}} fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
                     />
                 </Item>
-                <View style={styles.buttons}>
+                <View  style={styles.buttons}>
                 <Button
                     title="Press me"
                     onPress={() => {setSelected('cafe'); setCurrentData(cafes)}}
@@ -75,6 +79,7 @@ export default function HomeScreen({navigation}) {
                 </View>
 
                     <FlatList
+                        renderToHardwareTextureAndroid
                         style={styles.components}
                         data={currentData}
                         renderItem={({ item }) => (
@@ -87,7 +92,7 @@ export default function HomeScreen({navigation}) {
                             <StoreBox
                                 name={item.name}
                                 description={item.description_en}
-                                image="https://docs.nativebase.io/docs/assets/web-cover1.jpg"
+                                image={'http://192.168.1.2:8000/images/'+item.image}
                                 available={item.available}
                                 rate={item.rating}
                             />
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor:'#FFFFFF',
         borderRadius:40,
-        marginTop:200,
+        marginTop:190,
         textAlign:'center',
         alignItems:'center'
     },

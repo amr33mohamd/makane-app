@@ -15,30 +15,32 @@ export default function CalenderScreen({navigation}) {
     const [past, setPast ] = useState([]);
     const [update,setUpdate] = useState(false);
     const isFocused = useIsFocused()
-
+    const [token,setToken] = useState();
     const [currentData,setCurrentData] = useState(comming);
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/reservations',null, {
+            if(token) {
+                axios.post('http://192.168.1.2:8000/api/reservations', null, {
 
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-                .then(function (response) {
-                    setComming(response.data.comming);
-                    setPast(response.data.past);
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then(function (response) {
+                        setComming(response.data.comming);
+                        setPast(response.data.past);
 
                         setSelected('comming');
                         setCurrentData(response.data.comming);
 
 
-                })
-                .catch(function (error) {
-                    alert(JSON.stringify(error))
+                    })
+                    .catch(function (error) {
+                        alert(JSON.stringify(error))
 
-                    // alert(error.response.data.errors);
-                });
+                        // alert(error.response.data.errors);
+                    });
+            }
         });
     },[update,isFocused]);
     var cancel = (id)=>{
@@ -76,73 +78,121 @@ export default function CalenderScreen({navigation}) {
                 });
         });
     }
-    return (
-        <Container>
-            <Content>
+    AsyncStorage.getItem('token').then((token)=>{
+        setToken(token);
+    })
+    if(token != null){
+        return (
 
+            <View style={styles.container}>
 
-                <View style={styles.container}>
+                <View style={styles.buttons}>
+                    <Button
+                        title="Press me"
+                        onPress={() => {setSelected('past'); setCurrentData(past);}
+                        }
+                        style={selected == 'past' ?  styles.selectedButton : styles.button}
+                    >
+                        <Text style={{color:selected== 'past' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('previous')}</Text>
+                    </Button>
 
-                    <View style={styles.buttons}>
-                        <Button
-                            title="Press me"
-                            onPress={() => {setSelected('past'); setCurrentData(past);}
-                            }
-                            style={selected == 'past' ?  styles.selectedButton : styles.button}
-                        >
-                            <Text style={{color:selected== 'past' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('previous')}</Text>
-                        </Button>
-
-                        <Button
-                            onPress={() => {setSelected('comming');setCurrentData(comming)}}
-                            style={selected == 'comming' ?  styles.selectedButton : styles.button}
-                        >
-                            <Text style={{color: selected== 'comming' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('comming')}</Text>
-                        </Button>
-                    </View>
-                    <FlatList
-                        style={styles.components}
-                        data={currentData}
-                        renderItem={({ item }) => (
-
-
-                            <ReservationBox
-                                date={(item.type == 1)  ? moment(item.created_at).format('h:mm a') : moment(item.special_event.time,'hh:mm:ss').format('h:mm a')}
-                                address={item.store.address}
-                                type={item.type}
-                                clientReview={item.clientReview}
-                                cancel={()=>{cancel(item.id)}}
-                                id={item.id}
-                                store_id={item.store.id}
-                                image="https://docs.nativebase.io/docs/assets/web-cover1.jpg"
-                                status={item.status}
-                                lat={item.store.lat}
-                                lng={item.store.lng}
-                                navigation={navigation}
-                            />
-                        )}
-                        keyExtractor={item => item.id}
-                    />
-                    <View style={styles.components}>
-
-
-                    </View>
+                    <Button
+                        onPress={() => {setSelected('comming');setCurrentData(comming)}}
+                        style={selected == 'comming' ?  styles.selectedButton : styles.button}
+                    >
+                        <Text style={{color: selected== 'comming' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('comming')}</Text>
+                    </Button>
                 </View>
-            </Content>
+                <FlatList
+                    style={styles.components}
+                    data={currentData}
+                    contentContainerStyle={{alignItems:'center',justifyContent:'center'}}
+                    renderItem={({ item }) => (
 
-        </Container>
+
+                        <ReservationBox
+                            date={(item.type == 1)  ? moment(item.created_at).format('h:mm a') : moment(item.special_event.time,'hh:mm:ss').format('h:mm a')}
+                            address={item.store.address}
+                            type={item.type}
+                            clientReview={item.clientReview}
+                            cancel={()=>{cancel(item.id)}}
+                            id={item.id}
+                            store_id={item.store.id}
+                            image={'http://192.168.1.2:8000/images/'+item.store.image}
+                            status={item.status}
+                            lat={item.store.lat}
+                            lng={item.store.lng}
+                            navigation={navigation}
+                        />
+                    )}
+                    keyExtractor={item => item.id}
+                />
+                <View style={styles.components}>
 
 
-    );
+                </View>
+            </View>
+
+        );
+    }
+    else {
+        return (
+            <View style={{backgroundColor:'#fff',height:'100%',width:'100%',alignItems:'center'}}>
+                <View style={{
+                    backgroundColor:'#fff',
+                    shadowOpacity: 0.3,
+                    shadowRadius: 5,
+                    shadowColor: '#000',
+                    height:300,
+                    shadowOffset: { height: 0, width: 0 },
+                    marginVertical:10,
+                    borderRadius:30,
+                    elevation: 1,
+                    margin:20,
+                    alignItems:'center',
+                    justifyContent:'center',
+                    width:'80%'
+                }}>
+                    <Image
+                        source={require('../../Assets/Images/people.png')}
+                        style={{resizeMode:'contain',height:200,width:'70%',padding:10}}
+                    />
+                    <Button
+                        onPress={() => {navigation.navigate('Auth',{screen:'Login'})}}
+                        style={{
+                            backgroundColor: '#E50000',
+                            alignItems:'center',
+                            borderBottomRightRadius:30,
+                            borderBottomLeftRadius:30,
+
+                            marginHorizontal:5,
+                            width:'100%',
+                            justifyContent:'center',
+                            shadowOpacity: 0.3,
+                            shadowRadius: 5,
+                            shadowColor: '#E50000',
+                            shadowOffset: { height: 0, width: 0 },
+                            position:'absolute',
+                            bottom:0
+                        }}
+                    >
+                        <Text style={{color:  '#fff',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Sign In')}</Text>
+                    </Button>
+                </View>
+            </View>
+        )
+    }
+
 }
 const styles = StyleSheet.create({
 
     container: {
         backgroundColor:'#FFFFFF',
-        borderRadius:40,
-        marginTop:'10%',
         textAlign:'center',
-        alignItems:'center'
+        alignItems:'center',
+        marginBottom:70,
+        height:'100%',
+
     },
     searchInput:{
         width:'90%',
@@ -159,7 +209,7 @@ const styles = StyleSheet.create({
     },
     buttons:{
         flexDirection:'row',
-        marginVertical:20,
+        marginVertical:30,
     },
     selectedButton: {
         backgroundColor: '#E50000',
@@ -193,7 +243,7 @@ const styles = StyleSheet.create({
 
     },
     components:{
-        width:'90%'
+        width:'90%',
     }
 });
 

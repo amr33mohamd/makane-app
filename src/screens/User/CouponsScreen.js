@@ -6,48 +6,56 @@ import CouponBox from '../../components/CouponBox'
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
 export default function CouponScreen({navigation}) {
-    const { t } = useTranslation();
-    const [selected , setSelected] = useState('coupons');
-    const [coupons, setCoupons ] = useState([]);
-    const [owned, setOwned ] = useState([]);
-    const [currentData,setCurrentData] = useState(coupons);
-    const [update,setUpdate] = useState(false);
-    const [redirect,setRedirect] = useState(false);
-    useEffect(()=>{
-    AsyncStorage.getItem('token').then((token)=>{
-        axios.post('http://192.168.1.2:8000/api/coupons',null, {
+    const {t} = useTranslation();
+    const [selected, setSelected] = useState('coupons');
+    const [coupons, setCoupons] = useState([]);
+    const [owned, setOwned] = useState([]);
+    const [currentData, setCurrentData] = useState(coupons);
+    const [update, setUpdate] = useState(false);
+    const [redirect, setRedirect] = useState(false);
+    const [token, setToken] = useState();
 
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(function (response) {
-                setCoupons(response.data.coupons);
-                setOwned(response.data.owned_coupons);
-
-                if(redirect == true){
-                    setSelected('owned');
-                    setCurrentData(response.data.owned_coupons);
-
-                }
-                else {
-                    setSelected('coupons');
-                    setCurrentData(response.data.coupons);
-
-                }
+    useEffect(() => {
+        AsyncStorage.getItem('token').then((token) => {
+            AsyncStorage.getItem('token').then((token) => {
+                setToken(token);
             })
-            .catch(function (error) {
-                alert(JSON.stringify(error))
+            if (token) {
 
-                // alert(error.response.data.errors);
-            });
-    });
-    },[update]);
+                axios.post('http://192.168.1.2:8000/api/coupons', null, {
 
-    var buy_coupon = (id)=>{
-        AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/buy_coupon',null, {
-                params:{
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then(function (response) {
+                        setCoupons(response.data.coupons);
+                        setOwned(response.data.owned_coupons);
+
+                        if (redirect == true) {
+                            setSelected('owned');
+                            setCurrentData(response.data.owned_coupons);
+
+                        }
+                        else {
+                            setSelected('coupons');
+                            setCurrentData(response.data.coupons);
+
+                        }
+                    })
+                    .catch(function (error) {
+                        alert(JSON.stringify(error))
+
+                        // alert(error.response.data.errors);
+                    });
+            }
+        });
+    }, [update]);
+
+    var buy_coupon = (id) => {
+        AsyncStorage.getItem('token').then((token) => {
+            axios.post('http://192.168.1.2:8000/api/buy_coupon', null, {
+                params: {
                     id
                 },
                 headers: {
@@ -68,7 +76,7 @@ export default function CouponScreen({navigation}) {
 
                 })
                 .catch(function (error) {
-                    if(error.response.data.err == 1){
+                    if (error.response.data.err == 1) {
                         Toast.show({
                             text: "You don't have enough balance",
                             buttonText: 'Okay',
@@ -79,65 +87,130 @@ export default function CouponScreen({navigation}) {
                 });
         });
     }
+    if(token != null){
 
     return (
-        <Container>
-            <Content>
 
 
-                <View style={styles.container}>
-                    <View style={styles.buttons}>
-                        <Button
-                            title="Press me"
-                            onPress={() => {setSelected('coupons');setCurrentData(coupons)}}
-                            style={selected == 'coupons' ?  styles.selectedButton : styles.button}
-                        >
-                            <Text style={{color:selected== 'coupons' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Coupons')}</Text>
-                        </Button>
+        <View style={styles.container}>
+            <View style={styles.buttons}>
+                <Button
+                    title="Press me"
+                    onPress={() => {
+                        setSelected('coupons');
+                        setCurrentData(coupons)
+                    }}
+                    style={selected == 'coupons' ? styles.selectedButton : styles.button}
+                >
+                    <Text style={{
+                        color: selected == 'coupons' ? '#fff' : '#000',
+                        fontFamily: 'Poppins-Medium',
+                        textAlign: 'center',
+                        fontSize: 15
+                    }}>{t('Coupons')}</Text>
+                </Button>
 
-                        <Button
-                            onPress={() => {setSelected('owned');setCurrentData(owned)}}
-                            style={selected == 'owned' ?  styles.selectedButton : styles.button}
-                        >
-                            <Text style={{color: selected== 'owned' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Owned')}</Text>
-                        </Button>
-                    </View>
+                <Button
+                    onPress={() => {
+                        setSelected('owned');
+                        setCurrentData(owned)
+                    }}
+                    style={selected == 'owned' ? styles.selectedButton : styles.button}
+                >
+                    <Text style={{
+                        color: selected == 'owned' ? '#fff' : '#000',
+                        fontFamily: 'Poppins-Medium',
+                        textAlign: 'center',
+                        fontSize: 15
+                    }}>{t('Owned')}</Text>
+                </Button>
+            </View>
 
-                    <FlatList
-                        style={styles.components}
-                        data={currentData}
-                        renderItem={({ item }) => (
+            <FlatList
+                style={styles.components}
+                data={currentData}
+                contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
+
+                renderItem={({item}) => (
 
 
-                                <CouponBox
-                                    percent={(item.percent) ? item.percent :item.coupon.percent }
-                                    price={(item.price) ? item.price :item.coupon.price }
-                                    type={selected}
-                                    code={(item.code) ? item.code :item.coupon.code }
-                                    id={item.id}
-                                    buy_coupon={()=>{buy_coupon(item.id)}}
-                                    image="https://docs.nativebase.io/docs/assets/web-cover1.jpg"
-                                />
-                        )}
-                        keyExtractor={item => item.id}
+                    <CouponBox
+                        percent={(item.percent) ? item.percent : item.coupon.percent}
+                        price={(item.price) ? item.price : item.coupon.price}
+                        type={selected}
+                        code={(item.code) ? item.code : item.coupon.code}
+                        id={item.id}
+                        buy_coupon={() => {
+                            buy_coupon(item.id)
+                        }}
+                        image={(item.price) ? item.store.image : item.coupon.store.image}
                     />
+                )}
+                keyExtractor={item => item.id}
+            />
 
-                </View>
-            </Content>
-
-        </Container>
+        </View>
 
 
     );
+}
+else {
+        return (
+            <View style={{backgroundColor:'#fff',height:'100%',width:'100%',alignItems:'center'}}>
+                <View style={{
+                    backgroundColor:'#fff',
+                    shadowOpacity: 0.3,
+                    shadowRadius: 5,
+                    shadowColor: '#000',
+                    height:300,
+                    shadowOffset: { height: 0, width: 0 },
+                    marginVertical:10,
+                    borderRadius:30,
+                    elevation: 1,
+                    margin:20,
+                    alignItems:'center',
+                    justifyContent:'center',
+                    width:'80%'
+                }}>
+                    <Image
+                        source={require('../../Assets/Images/people.png')}
+                        style={{resizeMode:'contain',height:200,width:'70%',padding:10}}
+                    />
+                    <Button
+                        onPress={() => {navigation.navigate('Auth',{screen:'Login'})}}
+                        style={{
+                            backgroundColor: '#E50000',
+                            alignItems:'center',
+                            borderBottomRightRadius:30,
+                            borderBottomLeftRadius:30,
+
+                            marginHorizontal:5,
+                            width:'100%',
+                            justifyContent:'center',
+                            shadowOpacity: 0.3,
+                            shadowRadius: 5,
+                            shadowColor: '#E50000',
+                            shadowOffset: { height: 0, width: 0 },
+                            position:'absolute',
+                            bottom:0
+                        }}
+                    >
+                        <Text style={{color:  '#fff',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Sign In')}</Text>
+                    </Button>
+                </View>
+            </View>
+        )
+    }
 }
 const styles = StyleSheet.create({
 
     container: {
         backgroundColor:'#FFFFFF',
-        borderRadius:40,
-        marginTop:'10%',
         textAlign:'center',
-        alignItems:'center'
+        alignItems:'center',
+        height:'100%',
+        marginBottom:70,
+
     },
     searchInput:{
         width:'90%',
@@ -154,7 +227,7 @@ const styles = StyleSheet.create({
     },
     buttons:{
         flexDirection:'row',
-        marginVertical:20,
+        marginVertical:30,
     },
     selectedButton: {
         backgroundColor: '#E50000',

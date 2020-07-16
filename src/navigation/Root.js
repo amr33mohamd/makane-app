@@ -18,18 +18,7 @@ const Stack = createStackNavigator();
 export default function RootNavigation() {
     const { t } = useTranslation();
     const [initial , setIninitial] = useState('Auth');
-    useEffect(()=>{
-        AsyncStorage.getItem('token').then((token)=>{
-            if(token){
-                setIninitial('User');
-            }
-            else{
-                setIninitial('Auth');
 
-            }
-
-        })
-    });
         return (
             <Root>
                 <NavigationContainer>

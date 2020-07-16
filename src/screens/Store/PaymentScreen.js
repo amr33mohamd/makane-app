@@ -225,12 +225,6 @@ else {
                            textAlign:'left',
                            color:'#BBBBBB',
                        }}> - Paying on time gives your café more time to be in the app so, people would see it more </Text>
-                   <Text
-                       style={{        fontFamily:'Poppins-SemiBold',
-                           fontSize:15,
-                           textAlign:'left',
-                           color:'#BBBBBB',
-                       }}> - Users are always into deals, paying more would give the user the chance to see more deals about your café </Text>
                </View>
            </ImageBackground>       )
 }

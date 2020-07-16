@@ -58,108 +58,132 @@ export default function CafeScreen({route,navigation}) {
 
     var reserveNormal = ()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/reserve',null,{
-                params:{
-                    store_id:store.id,
-                    type:1
-                },
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then((response)=>{
+            if(token) {
+                axios.post('http://192.168.1.2:8000/api/reserve', null, {
+                    params: {
+                        store_id: store.id,
+                        type: 1
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then((response) => {
 
+                    closeModal()
+                    Toast.show({
+                        text: 'Successfully booked waiting for you ;)',
+                        buttonText: 'Okay',
+                        type: "success"
+
+                    })
+                    navigation.navigate('User', {screen: 'Calender', initial: false})
+
+                }).catch((error) => {
+                        closeModal()
+                        if (error.response.data.err == 1) {
+                            Toast.show({
+                                text: 'You are banned from booking',
+                                buttonText: 'Okay',
+                                type: "danger"
+
+                            });
+                        }
+                        else if (error.response.data.err == 2) {
+                            Toast.show({
+                                text: 'You already have active reservation',
+                                buttonText: 'Okay',
+                                type: "danger"
+
+                            })
+                        }
+                        else if (error.response.data.err == 3) {
+                            Toast.show({
+                                text: 'Sorry but some one got the last place',
+                                buttonText: 'Okay',
+                                type: "danger"
+
+                            })
+                        }
+
+                    }
+                );
+            }
+            else{
                 closeModal()
                 Toast.show({
-                    text: 'Successfully booked waiting for you ;)',
+                    text: 'You need to login first',
                     buttonText: 'Okay',
-                    type: "success"
+                    type: "danger"
 
-                })
-                navigation.navigate('User',{screen:'Calender',  initial: false})
-
-            }).catch((error)=>{
-                closeModal()
-                if(error.response.data.err == 1){
-                    Toast.show({
-                        text: 'You are banned from booking',
-                        buttonText: 'Okay',
-                        type: "danger"
-
-                    });
-                }
-                else if(error.response.data.err == 2){
-                    Toast.show({
-                        text: 'You already have active reservation',
-                        buttonText: 'Okay',
-                        type: "danger"
-
-                    })
-                }
-                else if(error.response.data.err == 3){
-                    Toast.show({
-                        text: 'Sorry but some one got the last place',
-                        buttonText: 'Okay',
-                        type: "danger"
-
-                    })
-                }
-
-                }
-            );
+                });
+            }
         })
     }
 
     var reserveSpecial = ()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/reserve',null,{
-                params:{
-                    store_id:store.id,
-                    type:2,
-                    SpecialEvent_id:currentSpecialEvent
-                },
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then((response)=>{
-                closeModal()
+            if(token) {
+                axios.post('http://192.168.1.2:8000/api/reserve', null, {
+                    params: {
+                        store_id: store.id,
+                        type: 2,
+                        SpecialEvent_id: currentSpecialEvent
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then((response) => {
+                    closeModal()
 
+                    Toast.show({
+                        text: 'Successfully booked waiting for you ;)',
+                        buttonText: 'Okay',
+                        type: "success"
+
+                    })
+                    navigation.navigate('User', {screen: 'Calender', initial: false})
+
+                }).catch((error) => {
+                        closeModal()
+                        if (error.response.data.err == 1) {
+                            Toast.show({
+                                text: 'You are banned from booking',
+                                buttonText: 'Okay',
+                                type: "danger"
+
+                            });
+                        }
+                        else if (error.response.data.err == 2) {
+                            Toast.show({
+                                text: 'You already have active reservation',
+                                buttonText: 'Okay',
+                                type: "danger"
+
+                            })
+                        }
+                        else if (error.response.data.err == 3) {
+                            Toast.show({
+                                text: 'Sorry but some one got the last place',
+                                buttonText: 'Okay',
+                                type: "danger"
+
+                            })
+                        }
+                    }
+                );
+            }
+            else{
+                closeModal()
                 Toast.show({
-                    text: 'Successfully booked waiting for you ;)',
+                    text: 'You need to login first',
                     buttonText: 'Okay',
-                    type: "success"
+                    type: "danger"
 
-                })
-                navigation.navigate('User',{screen:'Calender',  initial: false})
-
-            }).catch((error)=>{
-                closeModal()
-                if(error.response.data.err == 1){
-                    Toast.show({
-                        text: 'You are banned from booking',
-                        buttonText: 'Okay',
-                        type: "danger"
-
-                    });
-                }
-                else if(error.response.data.err == 2){
-                    Toast.show({
-                        text: 'You already have active reservation',
-                        buttonText: 'Okay',
-                        type: "danger"
-
-                    })
-                }
-                else if(error.response.data.err == 3){
-                    Toast.show({
-                        text: 'Sorry but some one got the last place',
-                        buttonText: 'Okay',
-                        type: "danger"
-
-                    })
-                }
-                }
-            );
+                });
+            }
         })
+
+
     }
 
 return (
@@ -169,7 +193,7 @@ return (
         >
 
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={normalModal}>
-                <View style={{height:220,backgroundColor:'#fff',padding:10,borderRadius:20}}>
+                <View style={{height:270,backgroundColor:'#fff',padding:10,borderRadius:20}}>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
@@ -194,7 +218,7 @@ return (
                 </View>
             </Modal>
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={specialModal}>
-                <View style={{height:220,backgroundColor:'#fff',padding:10,borderRadius:20}}>
+                <View style={{height:270,backgroundColor:'#fff',padding:10,borderRadius:20}}>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want book now!</Text>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
@@ -229,24 +253,19 @@ return (
         pagingEnabled
 
     >
-        <Image  source={{
-        uri: 'https://docs.nativebase.io/docs/assets/web-cover1.jpg'}}
-                            style={{
-                                width:'100%',
-                                height:250
-                            }}/>
-        <Image  source={{
-            uri: 'https://docs.nativebase.io/docs/assets/web-cover1.jpg'}}
-                style={{
-                    width:'100%',
-                    height:250
-                }}/>
-        <Image  source={{
-            uri: 'https://docs.nativebase.io/docs/assets/web-cover1.jpg'}}
-                style={{
-                    width:'100%',
-                    height:250
-                }}/>
+        {
+            store.store_images.map((image)=>
+                <Image renderToHardwareTextureAndroid  source={{
+                    uri: 'http://192.168.1.2:8000/images/'+image.image}}
+                        style={{
+                            width:'33.33333%',
+                            height:250
+                        }}/>
+            )
+        }
+
+
+
     </ScrollView>
 
             <View  renderToHardwareTextureAndroid style={styles.container}>
@@ -303,7 +322,7 @@ return (
 
 
                                         <SpecialEventBox
-                                            image="https://docs.nativebase.io/docs/assets/web-cover1.jpg"
+                                            image={'http://192.168.1.2:8000/images/'+store.image}
                                             name={item.name}
                                             time={item.time}
                                             available={item.available}
@@ -318,14 +337,7 @@ return (
 
                         </View>
                         <View style={{flexDirection:'row'}}>
-                            <Button
-                                title="Press me"
-                                onPress={() => {submit()}}
-                                style={ styles.selectedButton3 }
-                            >
-                                <MaterialCommunityIcons name="heart-outline" color="#000" size={25} />
 
-                            </Button>
                             <View style={{flex:.8,alignSelf:'flex-end'}}>
                         <Button
                             title="Press me"

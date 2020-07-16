@@ -60,7 +60,7 @@ import QRCode from 'react-native-qrcode-svg';
         </Modal>
         <View style={styles2.left}>
             <Image  source={{
-                uri: props.image}}
+                uri: 'http://192.168.1.2:8000/images/'+props.image}}
             style={{
                 width:'100%',
                 height:70
@@ -108,7 +108,8 @@ flexDirection:'row',
     marginVertical:10,
     borderRadius:10,
     padding:10,
-    elevation: 1
+    elevation: 1,
+    width:'98%'
 
 },
     left:{

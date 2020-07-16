@@ -16,6 +16,7 @@ import HomeScreen from '../screens/Store/HomeScreen'
 import CalenderScreen from "../screens/Store/CalenderScreen";
 import CouponScreen from "../screens/Store/CouponsScreen";
 import PaymentScreen from "../screens/Store/PaymentScreen";
+import EventsScreen from "../screens/Store/EventsScreen";
 
 export default function Store() {
     const { t } = useTranslation();
@@ -37,7 +38,8 @@ export default function Store() {
                     shadowOffset: { height: 0, width: 0 },
                     borderBottomLeftRadius:0,
                     borderBottomRightRadius:0,
-                    elevation:1
+                    elevation:1,
+                    paddingTop:12
 
 
                 }
@@ -66,25 +68,29 @@ export default function Store() {
                         iconName = focused ? 'money-bill-wave' : 'money-bill-wave';
                         type = 'FontAwesome5'
                     }
+                    else if (route.name === 'Events') {
+                        iconName = focused ? 'basketball-ball' : 'basketball-ball';
+                        type = 'FontAwesome5'
+                    }
 
 
                     // You can return any component that you like here!
                     switch (type) {
                         case 'Octicons':
 
-                            return <Octicons name={iconName} size={size} color={color}/>;
+                            return <Octicons name={iconName} size={size} style={{paddingBottom:8}} color={color}/>;
                             break;
                         case 'Ionicons':
-                            return <Ionicons name={iconName} size={size} color={color}/>;
+                            return <Ionicons name={iconName} style={{paddingBottom:5}} style={{paddingBottom:8}} size={size} color={color}/>;
                             break;
                         case 'MaterialCommunityIcons':
-                            return <MaterialCommunityIcons name={iconName} size={size} color={color}/>;
+                            return <MaterialCommunityIcons name={iconName} style={{paddingBottom:8}} size={size} color={color}/>;
                             break;
                         case 'EvilIcons':
-                            return <EvilIcons name={iconName} size={size} color={color}/>;
+                            return <EvilIcons name={iconName} size={size} style={{paddingBottom:8}} color={color}/>;
                             break;
                         case 'FontAwesome5':
-                            return <FontAwesome5 name={iconName} size={size} color={color}/>;
+                            return <FontAwesome5 name={iconName} style={{paddingBottom:8}} size={size} color={color}/>;
                             break;
 
                     }
@@ -94,7 +100,9 @@ export default function Store() {
         >
 
             <Tab.Screen name="Home"   component={HomeScreen} options={{headerShown:false,title:t('Home')}} />
-            <Tab.Screen name="Calender" component={CalenderScreen} options={{headerShown:false,title:t('calender')}} />
+            <Tab.Screen name="Events" component={EventsScreen} options={{headerShown:false,title:t('Events')}} />
+
+            <Tab.Screen name="Calender" component={CalenderScreen} options={{headerShown:false,title:t('reservations')}} />
             <Tab.Screen name="Coupon" component={CouponScreen} options={{headerShown:false,title:t('Coupons')}}/>
             <Tab.Screen name="Payment" component={PaymentScreen} options={{headerShown:false,title:t('Payment')}} />
 

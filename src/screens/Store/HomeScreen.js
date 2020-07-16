@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from 'react';
-import {View,Image,StyleSheet,Alert,ScrollView} from 'react-native';
+import {View,Image,StyleSheet,Alert,ScrollView,Platform} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {Container, Header, Content, Item, Input, Icon, Button, Text, Label, Toast} from 'native-base';
 import StoreBox from '../../components/StoreBox'
-import axios from "axios/index";
+import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import ImagePicker from 'react-native-image-picker';
 
@@ -21,6 +21,15 @@ export default  function HomeScreen({navigation}) {
     const [persons,setPersons] = useState();
     const [update,setUpdate] = useState(false);
     const [mainImage,setMainImage] = useState();
+    const [formMainImage,setFormMainImage] = useState();
+    const [user,setUser] = useState({store_images:[]});
+    const options = {
+        title: 'Select Avatar',
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+    };
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
             axios.post('http://192.168.1.2:8000/api/user',null, {
@@ -36,6 +45,7 @@ export default  function HomeScreen({navigation}) {
                     setDescriptionAr(response.data.user.description_ar)
                      setDescriptionEn(response.data.user.description_en)
                     setPersons(response.data.user.available)
+                    setUser(response.data.user);
                 })
                 .catch(function (error) {
                     // alert(JSON.stringify(error))
@@ -44,19 +54,35 @@ export default  function HomeScreen({navigation}) {
                 });
         });
     },[update]);
-    const options = {
-        title: 'Select Avatar',
-        customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-        storageOptions: {
-            skipBackup: true,
-            path: 'images',
-        },
-    };
 
-    /**
-     * The first arg is the options object for customization (it can also be null or omitted for default options),
-     * The second arg is the callback which sends object: response (more info in the API Reference)
-     */
+
+   var deleteImage= (id)=>{
+       AsyncStorage.getItem('token').then((token)=>{
+           axios.post('http://192.168.1.2:8000/api/delete-image',null, {
+                params:{
+                    id
+                },
+               headers: {
+                   'Authorization': `Bearer ${token}`
+               }
+           })
+               .then(function (response) {
+                   Toast.show({
+                       text: 'successfully deleted image',
+                       buttonText: 'Okay',
+                       type: "success"
+
+                   })
+                   setUpdate(!update);
+               })
+               .catch(function (error) {
+                   // alert(JSON.stringify(error))
+
+                   // alert(error);
+               });
+       });
+   }
+
     var mainImageUpload = ()=>{
         ImagePicker.showImagePicker(options, (response) => {
             console.log('Response = ', response);
@@ -68,11 +94,81 @@ export default  function HomeScreen({navigation}) {
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
-                const source = { uri: response.uri };
+                // const source = { uri: response.uri };
+                const data = new FormData();
 
-                // You can also display the image using data:
-                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-                setMainImage(source);
+                data.append('image', {
+                    name: response.fileName,
+                    type: 'image/jpeg',
+                    uri:  response.uri
+                });
+
+
+                axios({
+                    url:'http://192.168.1.2:8000/api/upload-image',
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                    data
+                }).then(function(response){
+                    // alert(JSON.stringify(response.data.file_name))
+                    setFormMainImage(response.data.file_name);
+
+
+                }).catch((error) =>{
+                    alert(JSON.stringify(error))
+                })
+                setMainImage(response);
+
+            }
+        });
+    }
+
+    var secondryImageUpload = ()=>{
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                // const source = { uri: response.uri };
+                AsyncStorage.getItem('token').then((token)=>{
+                    const data = new FormData();
+
+                    data.append('image', {
+                        name: response.fileName,
+                        type: 'image/jpeg',
+                        uri:  response.uri
+                    });
+
+
+                    axios({
+                        url:'http://192.168.1.2:8000/api/add-image',
+                        method:'POST',
+                        headers:{
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type':'multipart/form-data'
+                        },
+                        data
+                    }).then(function(response){
+                        Toast.show({
+                            text: 'successfully added image',
+                            buttonText: 'Okay',
+                            type: "success"
+
+                        })
+                        setUpdate(!update);
+
+                    }).catch((error) =>{
+                        alert(JSON.stringify(error))
+                    })
+                })
+
 
             }
         });
@@ -85,7 +181,7 @@ export default  function HomeScreen({navigation}) {
                 axios.post('http://192.168.1.2:8000/api/update_user', null, {
                     params: {
                         email, password, name,description_ar,description_en,
-                        available:(available2 != null) ? available2 : persons
+                        available:(available2 != null) ? available2 : persons,image:formMainImage
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -188,12 +284,94 @@ export default  function HomeScreen({navigation}) {
                     }
 
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',padding:10 }}>
-                        {mainImage && (
+                        {(mainImage)? (
+                                <Image
+                                    source={{ uri: mainImage.uri }}
+                                    style={{ width: 50, height: 100,margin:10 }}
+                                />
+                            )
+                            :
                             <Image
-                                source={{ uri: mainImage.uri }}
+                                source={{ uri: 'http://192.168.1.2:8000/images/'+user.image }}
                                 style={{ width: 50, height: 100,margin:10 }}
                             />
-                        )}
+                        }
+                    <Button title="Choose Photo" style={{
+                        backgroundColor: '#E50000',
+                        alignItems:'center',
+                        justifyContent:'center',
+                        borderRadius:50,
+                        shadowOpacity: 0.3,
+                        shadowRadius: 5,
+                        shadowColor: '#E50000',
+                        shadowOffset: { height: 0, width: 0 },
+                        margin:10,
+
+                    }} onPress={()=>{mainImageUpload()}} >
+                        <Text style={{
+                            fontFamily:'Poppins-Medium',
+                            fontSize:12,
+                            padding:10,
+                            textAlign:'center',
+                            color:'#fff',
+                            alignSelf:'center'
+
+                        }}>{t('upload Intro image')}</Text>
+                    </Button>
+                </View>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',padding:10 }}>
+                        <ScrollView
+                            renderToHardwareTextureAndroid
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            decelerationRate="fast"
+
+
+                        >
+                            {
+                                (user != null) &&
+                                <View renderToHardwareTextureAndroid style={{flexDirection: 'row'}}>
+                                    {user.store_images.map(
+                                        (image) =>
+
+                                            (<View>
+                                                <Image
+                                                    source={{uri: 'http://192.168.1.2:8000/images/' + image.image}}
+                                                    style={{flex: .3, height: 100, margin: 10}}
+                                                />
+
+                                                <Button title="Choose Photo" style={{
+                                                    backgroundColor: '#E50000',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    borderRadius: 50,
+                                                    shadowOpacity: 0.3,
+                                                    shadowRadius: 5,
+                                                    shadowColor: '#E50000',
+                                                    shadowOffset: {height: 0, width: 0},
+                                                    margin: 10,
+
+                                                }} onPress={() => {
+                                                    deleteImage(image.id)
+                                                }}>
+                                                    <Text style={{
+                                                        fontFamily: 'Poppins-Medium',
+                                                        fontSize: 12,
+                                                        padding: 10,
+                                                        textAlign: 'center',
+                                                        color: '#fff',
+                                                        alignSelf: 'center'
+
+                                                    }}>{t('Delete')}</Text>
+                                                </Button>
+                                            </View>)
+                                    )}
+
+
+                                </View>
+                            }
+                        </ScrollView>
+
                         <Button title="Choose Photo" style={{
                             backgroundColor: '#E50000',
                             alignItems:'center',
@@ -205,18 +383,20 @@ export default  function HomeScreen({navigation}) {
                             shadowOffset: { height: 0, width: 0 },
                             margin:10,
 
-                        }} onPress={()=>{mainImageUpload()}} >
+                        }} onPress={()=>{secondryImageUpload()}} >
                             <Text style={{
-                            fontFamily:'Poppins-Medium',
-                            fontSize:12,
-                            padding:10,
-                            textAlign:'center',
-                            color:'#fff',
-                            alignSelf:'center'
+                                fontFamily:'Poppins-Medium',
+                                fontSize:12,
+                                padding:10,
+                                textAlign:'center',
+                                color:'#fff',
+                                alignSelf:'center'
 
-                        }}>{t('upload image')}</Text>
+                            }}>{t('upload Secondary image')}</Text>
                         </Button>
                     </View>
+
+
 
 
                     <Text style={{        fontFamily:'Poppins-Medium',
@@ -307,8 +487,16 @@ export default  function HomeScreen({navigation}) {
                         <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Save')}</Text>
 
                     </Button>
+                    <Button
+                        title="Press me"
+                        onPress={() => logout()}
+                        style={ styles.button }
+                    >
+                        <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Log Out')}</Text>
 
+                    </Button>
                 </View>
+
             </Content>
 
         </Container>

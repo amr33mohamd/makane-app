@@ -51,7 +51,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
     <View style={styles2.container} >
         <Modal animationIn="fadeIn"  isVisible={cancelModal}>
-            <View style={{height:150,backgroundColor:'#fff',padding:10,borderRadius:20}}>
+            <View style={{height:190,backgroundColor:'#fff',padding:10,borderRadius:20}}>
                 <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Are you sure you want cancel now!</Text>
                 <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                     <Button
@@ -190,7 +190,8 @@ flexDirection:'row',
     marginVertical:10,
     borderRadius:10,
     padding:10,
-    elevation: 1
+    elevation: 1,
+    width:'98%'
 
 },
     left:{
@@ -254,7 +255,7 @@ flexDirection:'row',
         shadowRadius: 5,
         margin:20,
         justifyContent:'center',
-        width:85,
+        width:90,
         shadowColor: '#EFEFEF',
         shadowOffset: { height: 0, width: 0 },
 
@@ -266,7 +267,7 @@ flexDirection:'row',
         alignSelf:'center',
         borderRadius:10,
         height:45,
-        width:85,
+        width:95,
         justifyContent:'center',
         marginHorizontal:15,
         shadowOpacity: 0.3,

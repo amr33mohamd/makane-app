@@ -139,9 +139,7 @@ export default function CouponScreen({navigation}) {
                             flashMode={RNCamera.Constants.FlashMode.torch}
                             topContent={
                                 <Text style={styles.centerText}>
-                                    Go to{' '}
-                                    <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
-                                    your computer and scan the QR code.
+
                                 </Text>
                             }
                             bottomContent={
@@ -163,7 +161,7 @@ export default function CouponScreen({navigation}) {
                     </View>
                 </Modal>
 
-                <View style={styles.container}>
+                <View renderToHardwareTextureAndroid style={styles.container}>
                     <View style={styles.buttons}>
                         <Button
                             title="Press me"
@@ -232,7 +230,6 @@ const styles = StyleSheet.create({
     },
     selectedButton: {
         backgroundColor: '#E50000',
-        flex: .4,
         alignItems:'center',
         borderRadius:50,
         marginHorizontal:5,

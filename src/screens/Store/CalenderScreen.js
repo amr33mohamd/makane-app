@@ -116,7 +116,7 @@ export default function CalenderScreen({navigation}) {
             <Content>
 
 
-                <View style={styles.container}>
+                <View renderToHardwareTextureAndroid style={styles.container}>
 
                     <View style={styles.buttons}>
                         <Button

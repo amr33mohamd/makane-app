@@ -22,7 +22,7 @@ export default function LoginScreen({route,navigation}) {
     //http://10.0.2.2:8000
     var submit = () =>{
         if(email != '' && password != '' ){
-            axios.get('http://192.168.1.2:8000/api/login', {
+            axios.post('http://192.168.1.2:8000/api/login',null, {
                 params: {
                     email, password
                 }
@@ -40,7 +40,7 @@ export default function LoginScreen({route,navigation}) {
                 .catch(function (error) {
 
                     setError('Wrong email or password');
-
+                    alert(JSON.stringify(error.response))
                     // alert(error.response.data.errors);
                 });
         }
