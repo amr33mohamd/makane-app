@@ -9,6 +9,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Octicons from 'react-native-vector-icons/Octicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 
 import { useTranslation } from 'react-i18next';
 
@@ -34,13 +36,12 @@ export default function Store() {
                 style:{
                     borderRadius:25,
                     shadowOpacity: 0.1,
-                    shadowRadius: 25,
+                    shadowRadius: 5,
                     shadowColor: '#000',
                     shadowOffset: { height: 0, width: 0 },
                     borderBottomLeftRadius:0,
                     borderBottomRightRadius:0,
-                    elevation:1,
-                    paddingTop:12
+
 
 
                 }
@@ -54,16 +55,16 @@ export default function Store() {
                     if (route.name === 'Home') {
                         iconName = focused
                             ? 'home'
-                            : 'home-outline';
-                        type = 'MaterialCommunityIcons'
+                            : 'home';
+                        type = 'AntDesign'
                     } else if (route.name === 'Calender') {
-                        iconName = focused ? 'calendar' : 'calendar-outline';
+                        iconName = focused ? 'calendar' : 'calendar';
 
-                        type = 'MaterialCommunityIcons'
+                        type = 'AntDesign'
                     }
-                    else if (route.name === 'Coupon') {
-                        iconName = focused ? 'ticket-percent' : 'ticket-percent';
-                        type = 'MaterialCommunityIcons'
+                    else if (route.name === 'Coupons') {
+                        iconName = focused ? 'percent' : 'percent';
+                        type = 'Feather'
                     }
                     else if (route.name === 'Payment') {
                         iconName = focused ? 'money-bill-wave' : 'money-bill-wave';
@@ -79,19 +80,25 @@ export default function Store() {
                     switch (type) {
                         case 'Octicons':
 
-                            return <Octicons name={iconName} size={size} style={{paddingBottom:8}} color={color}/>;
+                            return <Octicons name={iconName} size={size}  color={color}/>;
                             break;
                         case 'Ionicons':
-                            return <Ionicons name={iconName} style={{paddingBottom:5}} style={{paddingBottom:8}} size={size} color={color}/>;
+                            return <Ionicons name={iconName}   size={size} color={color}/>;
                             break;
                         case 'MaterialCommunityIcons':
-                            return <MaterialCommunityIcons name={iconName} style={{paddingBottom:8}} size={size} color={color}/>;
+                            return <MaterialCommunityIcons name={iconName} size={size} color={color}/>;
                             break;
                         case 'EvilIcons':
-                            return <EvilIcons name={iconName} size={size} style={{paddingBottom:8}} color={color}/>;
+                            return <EvilIcons name={iconName} size={size}  color={color}/>;
                             break;
                         case 'FontAwesome5':
-                            return <FontAwesome5 name={iconName} style={{paddingBottom:8}} size={size} color={color}/>;
+                            return <FontAwesome5 name={iconName}  size={size} color={color}/>;
+                            break;
+                        case 'AntDesign':
+                            return <AntDesign name={iconName} size={size} color={color}/>;
+                            break;
+                        case 'Feather':
+                            return <Feather name={iconName} size={size} color={color}/>;
                             break;
 
                     }
@@ -103,8 +110,8 @@ export default function Store() {
             <Tab.Screen name="Home"   component={HomeScreen} options={{headerShown:false,title:t('Home')}} />
             <Tab.Screen name="Events" component={EventsScreen} options={{headerShown:false,title:t('Events')}} />
 
-            <Tab.Screen name="Calender" component={CalenderScreen} options={{headerShown:false,title:t('reservations')}} />
-            <Tab.Screen name="Coupon" component={CouponScreen} options={{headerShown:false,title:t('Coupons')}}/>
+            <Tab.Screen name="Calender" component={CalenderScreen} options={{headerShown:false,title:t('Reservations')}} />
+            <Tab.Screen name="Coupons" component={CouponScreen} options={{headerShown:false,title:t('Coupons')}}/>
             <Tab.Screen name="Payment" component={PaymentScreen} options={{headerShown:false,title:t('Payment')}} />
 
         </Tab.Navigator>

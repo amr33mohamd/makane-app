@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {View,Image,StyleSheet,Alert,ScrollView,FlatList,TouchableOpacity,I18nManager} from 'react-native';
+import {View,Image,StyleSheet,Alert,ScrollView,FlatList,TouchableOpacity,I18nManager,Linking} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {Container, Header, Content, Item, Input, Icon, Button, Text, Tab, Tabs, Thumbnail, Toast} from 'native-base';
 import StoreBox from '../../components/StoreBox'
@@ -11,7 +11,7 @@ import i18n from "i18next";
 import Modal from 'react-native-modal';
 import QRCode from 'react-native-qrcode-svg';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import ReviewBox from '../../components/ReviewBox'
 import CouponBox from "../../components/CouponBox";
 import SpecialEventBox from "../../components/SpecialEventBox";
@@ -29,10 +29,10 @@ export default function CafeScreen({route,navigation}) {
         stars = [];
         while(gold > 0){
             gold = gold - 1;
-            stars.push ( <MaterialCommunityIcons name="star" color="gold" size={15} style={{padding:1}}/>)
+            stars.push ( <AntDesign name="star" color="gold" size={15} style={{padding:1}}/>)
         }
         for(let m = empty;m > 0;m--){
-            stars.push ( <MaterialCommunityIcons name="star" color="gray" size={15} style={{padding:1}}/>)
+            stars.push ( <AntDesign name="star" color="gray" size={15} style={{padding:1}}/>)
         }
         return stars;
     }
@@ -298,14 +298,14 @@ return (
 
                         {
                             (selected == 'view' ) ?
-                            <View style={{alignItems:'flex-start'}}>
+                            <View style={{alignItems:'center'}}>
                                     <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>
 
                                         {(i18n.language == 'ar') ? store.description_ar : store.description_en}
 
                                 </Text>
                                 <Button
-                            onPress={() => {submit()}}
+                                    onPress={ ()=> Linking.openURL('https://www.google.com/maps?q='+store.lat+','+store.lng) }
                             style= {styles.selectedButton}
                             >
                             <Text style={{color:'#fff' ,fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Website')}</Text>
@@ -317,7 +317,7 @@ return (
                                     {renderStars()}
                                 </View>
                                 {
-                                    (store.special_events == [])
+                                    (store.special_events.length == 0)
                                         ?
                                         null
                                         :
@@ -335,6 +335,7 @@ return (
                                         style={styles.components}
                                         contentContainerStyle={{}}
                                         data={store.special_events}
+
                                         ListFooterComponent={()=>
 
                                             <Button
@@ -411,7 +412,8 @@ const styles = StyleSheet.create({
         textAlign:'center',
         alignItems:'center',
         padding:20,
-        paddingTop:40
+        paddingTop:40,
+        height:'100%'
 
     },
     searchInput:{
@@ -437,6 +439,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         borderRadius:50,
 width:130,
+        alignSelf:'center',
         height:40,
         margin:15,
         justifyContent:'center',
@@ -450,6 +453,7 @@ width:130,
         backgroundColor: '#E50000',
         flexDirection:'row',
 alignSelf:'center',
+        justifyContent:'center',
         borderRadius:10,
         width:'70%',
         justifyContent:'center',
@@ -525,8 +529,8 @@ alignSelf:'center',
     },
     stars:{
         flexDirection:'row',
-        flex:.4,
-        margin:15
+        margin:15,
+        alignSelf:'center'
 
 
     },

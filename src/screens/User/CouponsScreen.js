@@ -17,9 +17,10 @@ export default function CouponScreen({navigation}) {
 
     useEffect(() => {
         AsyncStorage.getItem('token').then((token) => {
-            AsyncStorage.getItem('token').then((token) => {
-                setToken(token);
-            })
+            setToken(token);
+        })
+        AsyncStorage.getItem('token').then((token) => {
+
             if (token) {
 
                 axios.post('http://192.168.1.2:8000/api/coupons', null, {

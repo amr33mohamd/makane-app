@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import {View,Image,StyleSheet,Alert} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Container, Header, Content, Thumbnail, Text } from 'native-base';
 import Feather from 'react-native-vector-icons/Feather';
 import {useTranslation} from "react-i18next";
@@ -15,10 +15,10 @@ import i18n from "i18next";
          stars = [];
          while(gold > 0){
              gold = gold - 1;
-             stars.push ( <MaterialCommunityIcons name="star" color="gold"/>)
+             stars.push ( <AntDesign name="star" color="gold"/>)
          }
          for(let m = empty;m > 0;m--){
-             stars.push ( <MaterialCommunityIcons name="star" color="gray"/>)
+             stars.push ( <AntDesign name="star" color="gray"/>)
          }
          return stars;
      }
@@ -30,7 +30,8 @@ return(
                 uri: props.image}}
             style={{
                 width:'100%',
-                height:130
+                height:130,
+                resizeMode:'contain'
             }}/>
 
         </View>

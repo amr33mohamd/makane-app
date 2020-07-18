@@ -11,7 +11,8 @@ const resources = {
             "cafe":"Cafe",
             "calender":"Calender",
             "comming":"Comming",
-            "previous":"Previous"
+            "previous":"Previous",
+            "Website":"Location"
         }
     },
     ar: {
@@ -63,9 +64,27 @@ const resources = {
             "Save":"حفظ",
             "Log Out":"تسجيل الخروج",
             "Points":"نقاط",
-            "":"",
-            "":"",
-
+            "Login":"تسجيل الدخول",
+            "New User ?":"مستخدم جديد ؟",
+            "Already have an account ?":"لديك حساب ب الفعل ؟",
+            "Invitation Code":"كود الدعوه",
+            "Phone (start with country code)":"رقم الهاتف مع كود الدوله",
+            "available":"المتاح",
+            "Upload intro image":"رفع الصوره الاساسيه",
+            "Upload secondary image":"رفع الصور الفرعيه",
+            "Description Arabic":"الوصف العربي",
+            "Description English":"الوصف الانجليزي",
+            "Payment":"الدفع",
+            "Reservations":"الحجوزات",
+            "Events":"الاحداث",
+            "User Name":"اسم العميل",
+            "User Phone":"رقم العميل",
+            "Add Event":"اضافه حدث",
+            "To":"الي",
+            "From":"من",
+            "Amount":"المبلغ",
+            "Pay":"الدفع",
+            "Scan Coupon":'فحص خصم'
 
 
         }

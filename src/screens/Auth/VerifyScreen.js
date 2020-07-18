@@ -12,34 +12,46 @@ export default function VerifyScreen({route,navigation}) {
     const [error,setError] = useState();
 
     var submit = () =>{
+        AsyncStorage.getItem('token').then((token)=> {
 
-       if(code != '' ){
-           axios.get('http://192.168.1.2:8080/api/verify', {
-               params: {
-                   code,
-                   id:JSON.parse(route.params.data).user.id
-               }
-           })
-               .then(function (response) {
-                   // alert(JSON.stringify(response.data));
-                   // // AsyncStorage.setItem('token',JSON.parse(response.data).token)
-                   // // AsyncStorage.getItem('token').then((token)=>{
-                   // //     alert(token);
-                   // // });
-                   navigation.navigate('User');
-               })
-               .catch(function (error) {
-                  setError('wrorg code');
-               });
-       }
-       else{
-           Toast.show({
-               text: 'please fill in all data',
-               buttonText: 'Okay',
-               type: "danger"
 
-           })
-       }
+            if (code != '') {
+                axios.post('http://192.168.1.2:8000/api/verify',null, {
+                    params: {
+                        code
+                        // id: JSON.parse(route.params.data).user.id
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then(function (response) {
+                        // alert(JSON.stringify(response.data));
+                        // // AsyncStorage.setItem('token',JSON.parse(response.data).token)
+                        // // AsyncStorage.getItem('token').then((token)=>{
+                        // //     alert(token);
+                        // // });
+                        navigation.reset({
+                            index: 0,
+                            routes: [{name: 'User'}],
+                        });
+                        AsyncStorage.setItem('type','1');
+                        // navigation.navigate('User');
+                    })
+                    .catch(function (error) {
+                        alert(JSON.stringify(error))
+                        setError('wrorg code');
+                    });
+            }
+            else {
+                Toast.show({
+                    text: 'please fill in all data',
+                    buttonText: 'Okay',
+                    type: "danger"
+
+                })
+            }
+        })
 
     }
     return (
@@ -86,13 +98,25 @@ export default function VerifyScreen({route,navigation}) {
 
 
                 </View>
-                <View style={{alignItems:'center',padding:20}}>
+                <View style={{alignItems:'center',padding:20,flexDirection:'row',justifyContent:'center'}}>
                     <Button
                         title="Press me"
                         onPress={() => {submit()}}
                         style={ styles.selectedButton }
                     >
                         <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Next')}</Text>
+
+                    </Button>
+                    <Button
+                        title="Press me"
+                        onPress={() => {
+                            AsyncStorage.removeItem('token');
+                            AsyncStorage.removeItem('type');
+                            navigation.navigate('Auth',{screen:'SignUp'})
+                        }}
+                        style={ styles.button }
+                    >
+                        <Text style={{color:'#000' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Edit Data')}</Text>
 
                     </Button>
                 </View>
@@ -132,7 +156,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#E50000',
         alignItems:'center',
         justifyContent:'center',
-        width:'70%',
+        width:'40%',
         borderRadius:50,
         shadowOpacity: 0.3,
         shadowRadius: 5,
@@ -140,7 +164,20 @@ const styles = StyleSheet.create({
         shadowOffset: { height: 0, width: 0 },
 
     },
+    button:{
+        backgroundColor: '#FFFFFF',
+        alignItems:'center',
+        justifyContent:'center',
+        width:'40%',
+        borderRadius:50,
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        shadowColor: '#FFFFFF',
+        margin:10,
+        shadowOffset: { height: 0, width: 0 },
 
+
+    },
     components:{
         width:'90%'
     },

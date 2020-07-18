@@ -1,11 +1,13 @@
 import React,{useState,useEffect} from 'react';
-import {View,Image,StyleSheet,Alert,ScrollView,Platform} from 'react-native';
+import {View, Image, StyleSheet, Alert, ScrollView, Platform, I18nManager} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {Container, Header, Content, Item, Input, Icon, Button, Text, Label, Toast} from 'native-base';
 import StoreBox from '../../components/StoreBox'
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import ImagePicker from 'react-native-image-picker';
+import i18n from "i18next";
+import RNRestart from 'react-native-restart'; // Import package from node modules
 
 export default  function HomeScreen({navigation}) {
     const { t } = useTranslation();
@@ -225,13 +227,10 @@ export default  function HomeScreen({navigation}) {
         <Container>
             <Content>
 
-                <View
-                    renderToHardwareTextureAndroid
-                    style={{  alignItems: 'center',  position: 'absolute'}}>
+                <View  style={{    position: 'absolute',height:220,width:'100%',justifyContent:'flex-start',flexDirection:'column'}}>
                     <Image
-                        style={styles.stretch}
-                        source={require('../../Assets/Images/Header.png')}
-                        style={{height:250}}
+                        source={(i18n.language == 'ar') ? require('../../Assets/Images/arabic.jpg') :require('../../Assets/Images/test.jpg')}
+                        style={{resizeMode:'cover',height:'100%',width:'100%'}}
                     />
 
                 </View>
@@ -316,7 +315,7 @@ export default  function HomeScreen({navigation}) {
                             color:'#fff',
                             alignSelf:'center'
 
-                        }}>{t('upload Intro image')}</Text>
+                        }}>{t('Upload intro image')}</Text>
                     </Button>
                 </View>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',padding:10 }}>
@@ -392,7 +391,7 @@ export default  function HomeScreen({navigation}) {
                                 color:'#fff',
                                 alignSelf:'center'
 
-                            }}>{t('upload Secondary image')}</Text>
+                            }}>{t('Upload secondary image')}</Text>
                         </Button>
                     </View>
 
@@ -473,7 +472,49 @@ export default  function HomeScreen({navigation}) {
                     }
 
 
+                    <Button
+                        title="Press me"
+                        onPress={() => {
+                            if(i18n.language == 'ar'){
+                                AsyncStorage.setItem('lang','en');
+                                i18n.changeLanguage ('en');
+                                I18nManager.forceRTL(false);
 
+                                RNRestart.Restart();
+
+                            }
+                            else {
+                                AsyncStorage.setItem('lang','ar');
+                                i18n.changeLanguage ('ar');
+                                I18nManager.forceRTL(true);
+
+                                RNRestart.Restart();
+
+                            }
+
+                        }}
+                        style={{
+                            backgroundColor: '#E50000',
+                            alignItems:'center',
+                            justifyContent:'center',
+                            width:'70%',
+                            borderRadius:50,
+                            shadowOpacity: 0.3,
+                            shadowRadius: 5,
+                            shadowColor: '#E50000',
+                            shadowOffset: { height: 0, width: 0 },
+                            margin:10,
+                        }}
+                    >
+                        <Text style={{
+                            color: '#fff',
+                            fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',                        fontSize: 13,
+                            textAlign: 'center',
+                            fontSize: 15,
+                            alignSelf:'center'
+                        }}>{t('Change Langauage to ')}{ (i18n.language == 'ar') ? 'english' : 'Arabic'}</Text>
+
+                    </Button>
 
 
 
@@ -509,7 +550,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor:'#FFFFFF',
         borderRadius:40,
-        marginTop:200,
+        marginTop:190,
         textAlign:'center',
         alignItems:'center',
         padding:20,

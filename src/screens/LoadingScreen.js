@@ -26,7 +26,12 @@ export default function LoadingScreen({route,navigation}) {
                     if(type == '1' ){
                         navigation.navigate('User');
                     }
-                    else {
+                    else if(type == '3'){
+                        navigation.navigate('Auth',{screen:'Verify'});
+
+                    }
+                    else
+                        {
                         navigation.navigate('Store');
                     }
                 })

@@ -11,7 +11,7 @@ export default function SignUpScreen({route,navigation}) {
     const [name,setName] = useState();
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
-    const [phone,setPhone] = useState('20');
+    const [phone,setPhone] = useState('974');
     const [code,setCode] = useState();
 
     const [errors,setErrors] = useState({});
@@ -32,7 +32,7 @@ export default function SignUpScreen({route,navigation}) {
            })
                .then(function (response) {
                    AsyncStorage.setItem('token',response.data.token);
-                    AsyncStorage.setItem('type','1');
+                    AsyncStorage.setItem('type','3');
                    navigation.navigate('Verify',{'data':JSON.stringify(response.data)})
                })
                .catch(function (error) {

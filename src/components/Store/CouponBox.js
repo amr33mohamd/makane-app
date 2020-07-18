@@ -3,7 +3,7 @@ import {View,Image,StyleSheet,Alert} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Container, Header, Content, Thumbnail, Text,Button } from 'native-base';
 import Feather from 'react-native-vector-icons/Feather';
-import {useTranslation} from "react-i18next/src/index";
+import {useTranslation} from "react-i18next";
 import Modal from 'react-native-modal';
 import QRCode from 'react-native-qrcode-svg';
 
@@ -26,12 +26,12 @@ const CouponBox: () => React$Node = (props) => {
 
             </View>
             <View style={styles2.right}>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('Percent')}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.percent} %</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('User Name')}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.user.name}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}> {t('User Phone')}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.user.phone}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}>{t('Percent')}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.percent} %</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}>{t('User Name')}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.user.name}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}> {t('User Phone')}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.user.phone}</Text>
 
             </View>
 

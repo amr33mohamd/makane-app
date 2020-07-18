@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import {View,Image,StyleSheet,Alert} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Container, Header, Content, Thumbnail, Text } from 'native-base';
 import Feather from 'react-native-vector-icons/Feather';
  const ReviewBox: () => React$Node = (props) => {
@@ -11,10 +11,10 @@ import Feather from 'react-native-vector-icons/Feather';
          stars = [];
          while(gold > 0){
              gold = gold - 1;
-             stars.push ( <MaterialCommunityIcons name="star" size={20} color="gold"/>)
+             stars.push ( <AntDesign name="star" size={20} color="gold"/>)
          }
          for(let m = empty;m > 0;m--){
-             stars.push ( <MaterialCommunityIcons name="star" size={20} color="gray"/>)
+             stars.push ( <AntDesign name="star" size={20} color="gray"/>)
          }
          return stars;
      }

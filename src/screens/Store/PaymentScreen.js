@@ -148,23 +148,23 @@ else {
                    <Text
                        style={{        fontFamily:'Poppins-SemiBold',
                            fontSize:15,
-                           textAlign:'center'
+                           alignSelf:'flex-start'
 
-                       }}>From : </Text>
+                       }}>{t('From')} : </Text>
                    <Text
                        style={{        fontFamily:'Poppins-SemiBold',
                            fontSize:15,
-                           textAlign:'center',
                            color:'#E50000',
+                           alignSelf:'flex-start'
                        }}> {moment().format("DD-MM-YYYY")}</Text>
                    </View>
                    <View style={{flexDirection:'row'}}>
                        <Text
                            style={{        fontFamily:'Poppins-SemiBold',
                                fontSize:15,
-                               textAlign:'center'
+                               alignSelf:'flex-start'
 
-                           }}>To : </Text>
+                           }}>{t('To')} : </Text>
                        <Text
                            style={{        fontFamily:'Poppins-SemiBold',
                                fontSize:15,
@@ -178,7 +178,7 @@ else {
                                fontSize:15,
                                textAlign:'center'
 
-                           }}>Amount : </Text>
+                           }}>{t('Amount')} : </Text>
                        <Text
                            style={{        fontFamily:'Poppins-SemiBold',
                                fontSize:15,

@@ -45,12 +45,11 @@ export default function ProfileScreen({navigation}) {
 
                         // alert(error.response.data.errors);
                     });
+
             }
         });
     }, [update]);
-    AsyncStorage.getItem('token').then((token) => {
-        setToken(token);
-    })
+
     var submit = () => {
         AsyncStorage.getItem('token').then((token) => {
 

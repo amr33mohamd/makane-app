@@ -10,6 +10,7 @@ import StarRating from 'react-native-star-rating';
 import {useTranslation} from "react-i18next";
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
+import i18n from "i18next/index";
 const ReservationBox: () => React$Node = (props) => {
     const { t } = useTranslation();
     const [notArrivedModal,setNotArrivedModal] = useState(false);
@@ -56,7 +57,7 @@ const ReservationBox: () => React$Node = (props) => {
         <View style={styles2.container} >
             <Modal animationIn="fadeIn"  isVisible={notArrivedModal}>
                 <View style={{height:150,backgroundColor:'#fff',padding:10,borderRadius:20}}>
-                    <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Are you sure you want tell that he didn\'t arrive?')}</Text>
+                    <Text style={{fontFamily:(i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Are you sure you want tell that he didn\'t arrive?')}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                         <Button
                             title="Press me"
@@ -157,15 +158,15 @@ const ReservationBox: () => React$Node = (props) => {
 
             </View>
             <View style={styles2.right}>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('Time')}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.date}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('User Name')}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.user.name}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}>{t('User Phone')}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{props.user.phone}</Text>
+                <Text style={{fontFamily:(i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}>{t('Time')}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.date}</Text>
+                <Text style={{fontFamily:(i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}>{t('User Name')}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.user.name}</Text>
+                <Text style={{fontFamily:(i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}>{t('User Phone')}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{props.user.phone}</Text>
 
-                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5}}> {t('Status')}</Text>
-                <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5}}>{(props.status == 0) ? 'comming' : (props.status == 1)  ? 'done' : (props.status == 2) ? 'ignored' : 'canceled'}</Text>
+                <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}> {t('Status')}</Text>
+                <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{(props.status == 0) ? (i18n.language == 'ar') ? 'قادم' : 'comming' : (props.status == 1)  ? (i18n.language == 'ar') ? 'تم' :'done' : (props.status == 2) ? (i18n.language == 'ar') ? 'تجاهل' : 'ignored' : (i18n.language == 'ar') ? 'الغاء' : 'canceled'}</Text>
                 <View >
                 {
                     (props.status == 0) ?

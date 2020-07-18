@@ -17,7 +17,9 @@ const SpecialEventBox: () => React$Node = (props) => {
                     uri: props.image}}
                         style={{
                             width:'100%',
-                            height:70
+                            height:70,
+                            resizeMode:'contain'
+
                         }}/>
 
             </View>
