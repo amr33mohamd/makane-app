@@ -64,7 +64,8 @@ import i18n from "i18next";
                 uri: 'http://192.168.1.2:8000/images/'+props.image}}
             style={{
                 width:'100%',
-                height:70
+                height:70,
+                resizeMode:'contain'
             }}/>
 
         </View>

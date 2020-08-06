@@ -5,6 +5,9 @@ import {Container, Header, Content, Item, Input, Icon, Button, Text, Toast} from
 import CouponBox from '../../components/CouponBox'
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
+import {useIsFocused} from "@react-navigation/native";
+import  StatusBarPlaceHolder from '../../components/StatusBarPlaceHolder'
+
 export default function CouponScreen({navigation}) {
     const {t} = useTranslation();
     const [selected, setSelected] = useState('coupons');
@@ -14,6 +17,7 @@ export default function CouponScreen({navigation}) {
     const [update, setUpdate] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const [token, setToken] = useState();
+    const isFocused = useIsFocused()
 
     useEffect(() => {
         AsyncStorage.getItem('token').then((token) => {
@@ -45,13 +49,13 @@ export default function CouponScreen({navigation}) {
                         }
                     })
                     .catch(function (error) {
-                        alert(JSON.stringify(error))
+                        // alert(JSON.stringify(error))
 
                         // alert(error.response.data.errors);
                     });
             }
         });
-    }, [update]);
+    }, [update,isFocused]);
 
     var buy_coupon = (id) => {
         AsyncStorage.getItem('token').then((token) => {
@@ -94,6 +98,8 @@ export default function CouponScreen({navigation}) {
 
 
         <View style={styles.container}>
+            <StatusBarPlaceHolder/>
+
             <View style={styles.buttons}>
                 <Button
                     title="Press me"
@@ -158,6 +164,8 @@ export default function CouponScreen({navigation}) {
 else {
         return (
             <View style={{backgroundColor:'#fff',height:'100%',width:'100%',alignItems:'center'}}>
+                <StatusBarPlaceHolder/>
+
                 <View style={{
                     backgroundColor:'#fff',
                     shadowOpacity: 0.3,

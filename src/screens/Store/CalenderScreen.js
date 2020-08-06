@@ -7,6 +7,7 @@ import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
 import moment from 'moment';
 import { useIsFocused } from '@react-navigation/native'
+import  StatusBarPlaceHolder from '../../components/StatusBarPlaceHolder'
 
 export default function CalenderScreen({navigation}) {
     const { t } = useTranslation();
@@ -35,7 +36,7 @@ export default function CalenderScreen({navigation}) {
 
                 })
                 .catch(function (error) {
-                    alert(JSON.stringify(error))
+                    // alert(JSON.stringify(error))
 
                     // alert(error.response.data.errors);
                 });
@@ -72,7 +73,7 @@ export default function CalenderScreen({navigation}) {
 
                         });
                     }
-                    alert(JSON.stringify(error.response.data));
+                    // alert(JSON.stringify(error.response.data));
                 });
         });
     }
@@ -107,16 +108,16 @@ export default function CalenderScreen({navigation}) {
 
                         });
                     }
-                    alert(JSON.stringify(error.response.data));
+                    // alert(JSON.stringify(error.response.data));
                 });
         });
     }
     return (
-        <Container>
-            <Content>
+        <View style={{backgroundColor:'#fff',height:'100%',alignItems:'center'}}>
 
+<StatusBarPlaceHolder/>
 
-                <View renderToHardwareTextureAndroid style={styles.container}>
+        <View  style={styles.container}>
 
                     <View style={styles.buttons}>
                         <Button
@@ -138,6 +139,14 @@ export default function CalenderScreen({navigation}) {
                     <FlatList
                         style={styles.components}
                         data={currentData}
+                        ListEmptyComponent={() =>
+                            <Text style={{
+                                color: '#000',
+                                fontFamily: 'Poppins-Medium',
+                                textAlign: 'center',
+                                fontSize: 15
+                            }}>No New Reservations</Text>
+                        }
                         renderItem={({ item }) => (
 
 
@@ -167,9 +176,7 @@ export default function CalenderScreen({navigation}) {
 
                     </View>
                 </View>
-            </Content>
-
-        </Container>
+        </View>
 
 
     );
@@ -179,9 +186,9 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor:'#FFFFFF',
         borderRadius:40,
-        marginTop:'10%',
         textAlign:'center',
-        alignItems:'center'
+        alignItems:'center',
+        width:'100%'
     },
     searchInput:{
         width:'90%',
@@ -232,7 +239,7 @@ const styles = StyleSheet.create({
 
     },
     components:{
-        width:'90%'
+        width:'100%'
     }
 });
 

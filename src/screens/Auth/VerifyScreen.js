@@ -39,7 +39,7 @@ export default function VerifyScreen({route,navigation}) {
                         // navigation.navigate('User');
                     })
                     .catch(function (error) {
-                        alert(JSON.stringify(error))
+                        // alert(JSON.stringify(error))
                         setError('wrorg code');
                     });
             }

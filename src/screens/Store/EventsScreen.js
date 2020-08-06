@@ -50,7 +50,7 @@ export default function EventsScreen({navigation}) {
 
                 })
                 .catch(function (error) {
-                    alert(JSON.stringify(error))
+                    // alert(JSON.stringify(error))
 
                     // alert(error.response.data.errors);
                 });
@@ -98,7 +98,7 @@ export default function EventsScreen({navigation}) {
                 })
                 .catch(function (error) {
 
-                    alert(JSON.stringify(error))
+                    // alert(JSON.stringify(error))
                 });
         });
     }
@@ -131,7 +131,7 @@ export default function EventsScreen({navigation}) {
                 })
                 .catch(function (error) {
 
-                    alert(JSON.stringify(error))
+                    // alert(JSON.stringify(error))
                 });
         });
     }
@@ -289,7 +289,7 @@ export default function EventsScreen({navigation}) {
                         </View>
                 </Modal>
 
-                <View renderToHardwareTextureAndroid style={styles.container}>
+                <View  style={styles.container}>
                     <View style={styles.buttons}>
                         <Button
                             title="Press me"
@@ -332,7 +332,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor:'#FFFFFF',
         borderRadius:40,
-        marginTop:'10%',
         textAlign:'center',
         alignItems:'center'
     },

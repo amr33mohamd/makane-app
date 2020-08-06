@@ -1,11 +1,12 @@
 import React,{useState,useEffect} from 'react';
 import {View,Image,StyleSheet,Alert,ScrollView,FlatList,TouchableOpacity} from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Container, Header, Content, Item, Input, Icon,Button,Text } from 'native-base';
+import { Container, Header, Content, Item, Input, Icon,Button,Text,Spinner } from 'native-base';
 import StoreBox from '../../components/StoreBox'
 import Geolocation from '@react-native-community/geolocation';
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
+import  StatusBarPlaceHolder from '../../components/StatusBarPlaceHolder'
 
 import Feather from 'react-native-vector-icons/Feather';
 import i18n from "i18next/index";
@@ -18,6 +19,7 @@ export default function HomeScreen({navigation}) {
     const [currentData,setCurrentData] = useState(restaurants);
     const [search,setSearch] = useState();
     const [update,setUpdate] = useState();
+    const [featched,setFeatched] = useState(false);
     useEffect(()=>{
         // AsyncStorage.removeItem('token');
         Geolocation.getCurrentPosition((info) => {
@@ -30,13 +32,14 @@ export default function HomeScreen({navigation}) {
                 }
             })
                 .then(function (response) {
+                    setFeatched(true);
+
                     setRestaurants(response.data.restaurants);
                     setCafes(response.data.cafes);
-
                     setCurrentData(response.data.restaurants);
                 })
                 .catch(function (error) {
-                alert(JSON.stringify(error))
+
 
                     // alert(error.response.data.errors);
                 });
@@ -48,7 +51,8 @@ export default function HomeScreen({navigation}) {
             <Container>
                 <Content>
 
-            <View  style={{    position: 'absolute',height:220,width:'100%',justifyContent:'flex-start',flexDirection:'column'}}>
+
+                    <View  style={{    position: 'absolute',height:220,width:'100%',justifyContent:'flex-start',flexDirection:'column'}}>
             <Image
                 style={styles.stretch}
                 source={require('../../Assets/Images/test.jpg')}
@@ -78,29 +82,37 @@ export default function HomeScreen({navigation}) {
                     <Text style={{color: selected== 'resturant' ? '#fff' : '#000',fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('resturants')}</Text>
                 </Button>
                 </View>
+                {
+                    (featched) ?
+                        <FlatList
+                            renderToHardwareTextureAndroid
+                            style={styles.components}
+                            data={currentData}
+                            ListEmptyComponent={()=>
+                                <Text style={{color:  '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>No Data</Text>
+                            }
+                            renderItem={({ item }) => (
+                                <TouchableOpacity onPress={()=>{
+                                    navigation.navigate('CafeScreen',{item:JSON.stringify(item)})
+                                }}
+                                                  activeOpacity={.95}
+                                >
 
-                    <FlatList
-                        renderToHardwareTextureAndroid
-                        style={styles.components}
-                        data={currentData}
-                        renderItem={({ item }) => (
-                              <TouchableOpacity onPress={()=>{
-                                  navigation.navigate('CafeScreen',{item:JSON.stringify(item)})
-                              }}
-                                                activeOpacity={.95}
-                                                >
+                                    <StoreBox
+                                        name={item.name}
+                                        description={item.description_en}
+                                        image={'http://192.168.1.2:8000/images/'+item.image}
+                                        available={item.available}
+                                        rate={item.rating}
+                                    />
+                                </TouchableOpacity>
+                            )}
+                            keyExtractor={item => item.id}
+                        />
+                        :
+                        <Spinner color='#E50000'/>
+                }
 
-                            <StoreBox
-                                name={item.name}
-                                description={item.description_en}
-                                image={'http://192.168.1.2:8000/images/'+item.image}
-                                available={item.available}
-                                rate={item.rating}
-                            />
-                              </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item.id}
-                    />
 
 
 

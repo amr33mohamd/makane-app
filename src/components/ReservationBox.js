@@ -19,7 +19,7 @@ import i18n from "i18next/index";
     const  [review,setReview] = useState();
      var rate = ()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://10.0.2.2:8000/api/user-review',null, {
+            axios.post('http://192.168.1.2:8000/api/user-review',null, {
                 params:{
                   store_id:props.store_id,
                   reservation_id:props.id,
@@ -31,6 +31,7 @@ import i18n from "i18next/index";
                 }
             })
                 .then(function (response) {
+                    // alert('ll')
                     Toast.show({
                         text: 'Thanks for your review',
                         buttonText: 'Okay',
@@ -42,7 +43,8 @@ import i18n from "i18next/index";
 
                 })
                 .catch(function (error) {
-                    alert(JSON.stringify(error))
+                    // alert('hh')
+                    // alert(error)
 
                     // alert(error.response.data.errors);
                 });
@@ -124,7 +126,8 @@ import i18n from "i18next/index";
                 uri: props.image}}
             style={{
                 width:'100%',
-                height:170
+                height:170,
+                resizeMode:'contain'
             }}/>
 
         </View>

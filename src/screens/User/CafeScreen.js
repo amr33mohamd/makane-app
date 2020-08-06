@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import {View,Image,StyleSheet,Alert,ScrollView,FlatList,TouchableOpacity,I18nManager,Linking} from 'react-native';
 import { useTranslation } from 'react-i18next';
-import {Container, Header, Content, Item, Input, Icon, Button, Text, Tab, Tabs, Thumbnail, Toast} from 'native-base';
+import {Container, Header, Content, Item, Input, Icon, Button, Text, Tab, Tabs, Thumbnail, Toast,Spinner} from 'native-base';
 import StoreBox from '../../components/StoreBox'
 import Geolocation from '@react-native-community/geolocation';
 import axios from "axios/index";
@@ -16,6 +16,7 @@ import ReviewBox from '../../components/ReviewBox'
 import CouponBox from "../../components/CouponBox";
 import SpecialEventBox from "../../components/SpecialEventBox";
 import CalenderScreen from "./CalenderScreen";
+import StatusBarPlaceHolder from "../../components/StatusBarPlaceHolder"
 export default function CafeScreen({route,navigation}) {
     const {t} = useTranslation();
     const [store,setStore]= useState(JSON.parse(route.params.item));
@@ -23,6 +24,7 @@ export default function CafeScreen({route,navigation}) {
     const [specialModal,setSpecialModal] = useState(false);
     const [currentSpecialEvent,setCurrentSpecialEvent]= useState();
     const [selected,setSelected] = useState('view');
+    const [featched,setFeatched] = useState(false);
     var renderStars = ()=>{
         var gold = parseInt(JSON.parse(route.params.item).rating);
         var empty = 5 - parseInt(JSON.parse(route.params.item).rating);
@@ -111,6 +113,8 @@ export default function CafeScreen({route,navigation}) {
             }
             else{
                 closeModal()
+                navigation.navigate('Auth',{screen:'Login'});
+
                 Toast.show({
                     text: 'You need to login first',
                     buttonText: 'Okay',
@@ -175,6 +179,7 @@ export default function CafeScreen({route,navigation}) {
             }
             else{
                 closeModal()
+                navigation.navigate('Auth',{screen:'Login'});
                 Toast.show({
                     text: 'You need to login first',
                     buttonText: 'Okay',
@@ -192,9 +197,10 @@ return (
         decelerationRate="fast"
         renderToHardwareTextureAndroid
         >
+        <StatusBarPlaceHolder/>
 
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={normalModal}>
-                <View style={{height:270,backgroundColor:'#fff',padding:10,borderRadius:20}}>
+                <View style={{height:290,backgroundColor:'#fff',padding:10,borderRadius:20}}>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Are you sure you want to book now!')}</Text>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>{t('You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned')}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
@@ -219,7 +225,7 @@ return (
                 </View>
             </Modal>
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={specialModal}>
-                <View style={{height:270,backgroundColor:'#fff',padding:10,borderRadius:20}}>
+                <View style={{height:290,backgroundColor:'#fff',padding:10,borderRadius:20}}>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Are you sure you want to book now!')}</Text>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>{t('You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned')}</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
@@ -331,6 +337,7 @@ return (
 
 
                                 <View style={{justifyContent:'center',alignItems:'center'}}>
+
                                     <FlatList
                                         style={styles.components}
                                         contentContainerStyle={{}}

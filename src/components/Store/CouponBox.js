@@ -50,8 +50,8 @@ const styles2 = StyleSheet.create({
         marginVertical:10,
         borderRadius:10,
         padding:10,
-        elevation: 1
-
+        elevation: 1,
+        width:'90%'
     },
     left:{
         flex:.4,

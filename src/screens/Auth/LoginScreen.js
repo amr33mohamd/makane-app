@@ -29,18 +29,21 @@ export default function LoginScreen({route,navigation}) {
             })
                 .then(function (response) {
                     AsyncStorage.setItem('token',response.data.token);
-                    AsyncStorage.setItem('type',''+response.data.user.type);
                     if(response.data.user.type == 1 ){
                         navigation.navigate('User');
+                        AsyncStorage.setItem('type','1');
+
                     }
                     else {
                         navigation.navigate('Store');
+                        AsyncStorage.setItem('type','2');
+
                     }
                 })
                 .catch(function (error) {
 
                     setError('Wrong email or password');
-                    alert(JSON.stringify(error.response))
+                    // alert(JSON.stringify(error.response))
                     // alert(error.response.data.errors);
                 });
         }

@@ -7,6 +7,8 @@ import axios from "axios/index";
 import moment from 'moment';
 import AsyncStorage from "@react-native-community/async-storage";
 import { useIsFocused } from '@react-navigation/native'
+import  StatusBarPlaceHolder from '../../components/StatusBarPlaceHolder'
+
 export default function PaScreen({navigation}) {
     const { t } = useTranslation();
     const [date,setDate] = useState();
@@ -29,7 +31,7 @@ export default function PaScreen({navigation}) {
 
                 })
                 .catch(function (error) {
-                    alert(JSON.stringify(error))
+                    // alert(JSON.stringify(error))
 
                     // alert(error.response.data.errors);
                 });
@@ -89,6 +91,7 @@ if(moment().isBefore(date) ){
             style={styles.image}
             source={require('../../Assets/Images/Group209.png')}
         >
+            <StatusBarPlaceHolder/>
             <View style={{width:'70%',margin:10}}>
                 <Text style={{        fontFamily:'Poppins-SemiBold',
                     fontSize:19,
@@ -127,6 +130,8 @@ else {
                style={styles.image}
                source={require('../../Assets/Images/Group.png')}
            >
+               <StatusBarPlaceHolder/>
+
                <View style={{width:'70%',margin:10}}>
                    <Text style={{        fontFamily:'Poppins-SemiBold',
                        fontSize:19,

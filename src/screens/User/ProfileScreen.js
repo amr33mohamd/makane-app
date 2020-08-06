@@ -4,10 +4,13 @@ import { useTranslation } from 'react-i18next';
 import {Container, Header, Content, Item, Input, Icon, Button, Text, Label, Toast} from 'native-base';
 import StoreBox from '../../components/StoreBox'
 import RNRestart from 'react-native-restart'; // Import package from node modules
+import  StatusBarPlaceHolder from '../../components/StatusBarPlaceHolder'
 
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
 import i18n from "i18next/index";
+import {useIsFocused} from "@react-navigation/native";
+
 export default function ProfileScreen({navigation}) {
     const {t} = useTranslation();
     const [name, setName] = useState();
@@ -16,6 +19,7 @@ export default function ProfileScreen({navigation}) {
     const [points, setPoints] = useState();
     const [password, setPassword] = useState();
     const [token, setToken] = useState();
+    const isFocused = useIsFocused()
 
     const [errors, setErrors] = useState({});
 
@@ -41,14 +45,14 @@ export default function ProfileScreen({navigation}) {
 
                     })
                     .catch(function (error) {
-                        alert(JSON.stringify(error))
+                        // alert(JSON.stringify(error))
 
                         // alert(error.response.data.errors);
                     });
 
             }
         });
-    }, [update]);
+    }, [update,isFocused]);
 
     var submit = () => {
         AsyncStorage.getItem('token').then((token) => {
@@ -383,7 +387,7 @@ const styles = StyleSheet.create({
         borderRadius:50,
         shadowOpacity: 0.3,
         shadowRadius: 5,
-        shadowColor: '#FFFFFF',
+        shadowColor: '#000',
         margin:10,
         shadowOffset: { height: 0, width: 0 },
 

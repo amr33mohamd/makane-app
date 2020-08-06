@@ -1,13 +1,13 @@
 import React,{useState,useEffect} from 'react';
 import {View,Image,StyleSheet,Alert,ScrollView,FlatList} from 'react-native';
 import { useTranslation } from 'react-i18next';
-import {Container, Header, Content, Item, Input, Icon, Button, Text, Toast} from 'native-base';
+import {Container, Header, Content, Item, Input, Icon, Button, Text, Toast,Spinner} from 'native-base';
 import ReservationBox from '../../components/ReservationBox'
 import axios from "axios/index";
 import AsyncStorage from "@react-native-community/async-storage";
 import moment from 'moment';
 import { useIsFocused } from '@react-navigation/native'
-
+import  StatusBarPlaceHolder from '../../components/StatusBarPlaceHolder'
 export default function CalenderScreen({navigation}) {
     const { t } = useTranslation();
     const [selected , setSelected] = useState('comming');
@@ -16,8 +16,12 @@ export default function CalenderScreen({navigation}) {
     const [update,setUpdate] = useState(false);
     const isFocused = useIsFocused()
     const [token,setToken] = useState();
+    const [featched,setFeatched] = useState(false);
     const [currentData,setCurrentData] = useState(comming);
     useEffect(()=>{
+        AsyncStorage.getItem('token').then((token) => {
+            setToken(token);
+        })
         AsyncStorage.getItem('token').then((token)=>{
             if(token) {
                 axios.post('http://192.168.1.2:8000/api/reservations', null, {
@@ -27,6 +31,7 @@ export default function CalenderScreen({navigation}) {
                     }
                 })
                     .then(function (response) {
+                        setFeatched(true)
                         setComming(response.data.comming);
                         setPast(response.data.past);
 
@@ -36,7 +41,7 @@ export default function CalenderScreen({navigation}) {
 
                     })
                     .catch(function (error) {
-                        alert(JSON.stringify(error))
+                        // alert(JSON.stringify(error))
 
                         // alert(error.response.data.errors);
                     });
@@ -44,6 +49,7 @@ export default function CalenderScreen({navigation}) {
         });
     },[update,isFocused]);
     var cancel = (id)=>{
+        setFeatched(false)
         AsyncStorage.getItem('token').then((token)=>{
             axios.post('http://192.168.1.2:8000/api/cancel_reservation',null, {
                 params:{
@@ -62,6 +68,7 @@ export default function CalenderScreen({navigation}) {
                     });
 
                     setUpdate(!update);
+                    setFeatched(true)
 
 
                 })
@@ -74,17 +81,16 @@ export default function CalenderScreen({navigation}) {
 
                         });
                     }
-                    alert(JSON.stringify(error.response.data));
+                    // alert(JSON.stringify(error.response.data));
                 });
         });
     }
-    AsyncStorage.getItem('token').then((token)=>{
-        setToken(token);
-    })
+
     if(token != null){
         return (
 
             <View style={styles.container}>
+                <StatusBarPlaceHolder/>
 
                 <View style={styles.buttons}>
                     <Button
@@ -103,30 +109,46 @@ export default function CalenderScreen({navigation}) {
                         <Text style={{color: selected== 'comming' ? '#fff' : '#000',fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('comming')}</Text>
                     </Button>
                 </View>
-                <FlatList
-                    style={styles.components}
-                    data={currentData}
-                    contentContainerStyle={{alignItems:'center',justifyContent:'center'}}
-                    renderItem={({ item }) => (
+                {
+                    (featched) ?
+
+                        <FlatList
+                            style={styles.components}
+                            data={currentData}
+                            contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
+                            ListEmptyComponent={() =>
+                                <Text style={{
+                                    color: '#000',
+                                    fontFamily: 'Poppins-Medium',
+                                    textAlign: 'center',
+                                    fontSize: 15
+                                }}>No New Reservations</Text>
+                            }
+                            renderItem={({item}) => (
 
 
-                        <ReservationBox
-                            date={(item.type == 1)  ? moment(item.created_at).format('h:mm a') : moment(item.special_event.time,'hh:mm:ss').format('h:mm a')}
-                            address={item.store.address}
-                            type={item.type}
-                            clientReview={item.clientReview}
-                            cancel={()=>{cancel(item.id)}}
-                            id={item.id}
-                            store_id={item.store.id}
-                            image={'http://192.168.1.2:8000/images/'+item.store.image}
-                            status={item.status}
-                            lat={item.store.lat}
-                            lng={item.store.lng}
-                            navigation={navigation}
+                                <ReservationBox
+                                    date={(item.type == 1) ? moment(item.created_at).format('h:mm a') : moment(item.special_event.time, 'hh:mm:ss').format('h:mm a')}
+                                    address={item.store.address}
+                                    type={item.type}
+                                    clientReview={item.clientReview}
+                                    cancel={() => {
+                                        cancel(item.id)
+                                    }}
+                                    id={item.id}
+                                    store_id={item.store.id}
+                                    image={'http://192.168.1.2:8000/images/' + item.store.image}
+                                    status={item.status}
+                                    lat={item.store.lat}
+                                    lng={item.store.lng}
+                                    navigation={navigation}
+                                />
+                            )}
+                            keyExtractor={item => item.id}
                         />
-                    )}
-                    keyExtractor={item => item.id}
-                />
+                        :
+                        <Spinner color='#E50000' />
+                }
                 <View style={styles.components}>
 
 

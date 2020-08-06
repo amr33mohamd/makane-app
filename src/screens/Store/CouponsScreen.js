@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import Modal from 'react-native-modal';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
+import  StatusBarPlaceHolder from '../../components/StatusBarPlaceHolder'
 
 export default function CouponScreen({navigation}) {
     const { t } = useTranslation();
@@ -34,7 +35,7 @@ export default function CouponScreen({navigation}) {
 
                 })
                 .catch(function (error) {
-                    alert(JSON.stringify(error))
+                    // alert(JSON.stringify(error))
 
                     // alert(error.response.data.errors);
                 });
@@ -129,8 +130,7 @@ export default function CouponScreen({navigation}) {
     }
 
     return (
-        <Container>
-            <Content>
+        <View style={{backgroundColor:'#fff',height:'100%',alignItems:'center'}}>
                 <Modal animationIn="fadeIn"  isVisible={scanModal}>
                     <View style={{height:'100%',backgroundColor:'#fff',padding:10,borderRadius:20,alignItems:'center'}}>
                         <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>Scan Qr</Text>
@@ -160,8 +160,9 @@ export default function CouponScreen({navigation}) {
                         </View>
                     </View>
                 </Modal>
+            <StatusBarPlaceHolder/>
 
-                <View renderToHardwareTextureAndroid style={styles.container}>
+                <View  style={styles.container}>
                     <View style={styles.buttons}>
                         <Button
                             title="Press me"
@@ -177,6 +178,8 @@ export default function CouponScreen({navigation}) {
                     <FlatList
                         style={styles.components}
                         data={currentData}
+                        contentContainerStyle={{alignItems: 'center', justifyContent: 'center',width:"100%"}}
+
                         renderItem={({ item }) => (
 
 
@@ -195,9 +198,7 @@ export default function CouponScreen({navigation}) {
                     />
 
                 </View>
-            </Content>
-
-        </Container>
+            </View>
 
 
     );
@@ -206,10 +207,9 @@ const styles = StyleSheet.create({
 
     container: {
         backgroundColor:'#FFFFFF',
-        borderRadius:40,
-        marginTop:'10%',
         textAlign:'center',
-        alignItems:'center'
+        alignItems:'center',
+        width:'100%'
     },
     searchInput:{
         width:'90%',
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
 
     },
     components:{
-        width:'90%'
+        width:'100%'
     },
     centerText: {
         flex: 1,

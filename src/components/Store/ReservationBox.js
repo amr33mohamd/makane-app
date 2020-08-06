@@ -167,6 +167,7 @@ const ReservationBox: () => React$Node = (props) => {
 
                 <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:13,padding:5,alignSelf:'flex-start'}}> {t('Status')}</Text>
                 <Text style={{fontFamily: (i18n.language == 'ar') ? 'Tajawal-Regular' :'Poppins-Medium',color:'#CECDCD',fontSize:11,padding:5,alignSelf:'flex-start'}}>{(props.status == 0) ? (i18n.language == 'ar') ? 'قادم' : 'comming' : (props.status == 1)  ? (i18n.language == 'ar') ? 'تم' :'done' : (props.status == 2) ? (i18n.language == 'ar') ? 'تجاهل' : 'ignored' : (i18n.language == 'ar') ? 'الغاء' : 'canceled'}</Text>
+
                 <View >
                 {
                     (props.status == 0) ?
@@ -175,7 +176,7 @@ const ReservationBox: () => React$Node = (props) => {
                             onPress={() => setArrivedModal(true)}
                             style={ styles2.selectedButton }
                         >
-                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:11,marginVertical:30}}>{t('Arrived')}</Text>
+                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:11}}>{t('Arrived')} </Text>
                         </Button>
                         :null
                 }
@@ -238,7 +239,9 @@ const styles2 = StyleSheet.create({
         marginVertical:10,
         borderRadius:10,
         padding:10,
-        elevation: 1
+        elevation: 1,
+        width:'90%',
+        alignSelf:'center'
 
     },
     left:{

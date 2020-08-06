@@ -12,7 +12,8 @@ const resources = {
             "calender":"Calender",
             "comming":"Comming",
             "previous":"Previous",
-            "Website":"Location"
+            "Website":"Location",
+            "Arrived":"Arrived"
         }
     },
     ar: {
@@ -84,7 +85,8 @@ const resources = {
             "From":"من",
             "Amount":"المبلغ",
             "Pay":"الدفع",
-            "Scan Coupon":'فحص خصم'
+            "Scan Coupon":'فحص خصم',
+            "Arrived":"وصل"
 
 
         }

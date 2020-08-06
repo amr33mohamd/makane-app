@@ -119,7 +119,7 @@ export default  function HomeScreen({navigation}) {
 
 
                 }).catch((error) =>{
-                    alert(JSON.stringify(error))
+                    // alert(JSON.stringify(error))
                 })
                 setMainImage(response);
 
@@ -167,7 +167,7 @@ export default  function HomeScreen({navigation}) {
                         setUpdate(!update);
 
                     }).catch((error) =>{
-                        alert(JSON.stringify(error))
+                        // alert(JSON.stringify(error))
                     })
                 })
 
@@ -202,7 +202,7 @@ export default  function HomeScreen({navigation}) {
 
                     })
                     .catch(function (error) {
-                        alert(JSON.stringify(error.response))
+                        // alert(JSON.stringify(error.response))
                         // setErrors(error.response.data.errors)
 
                     });
@@ -286,13 +286,13 @@ export default  function HomeScreen({navigation}) {
                         {(mainImage)? (
                                 <Image
                                     source={{ uri: mainImage.uri }}
-                                    style={{ width: 50, height: 100,margin:10 }}
+                                    style={{ width:100, height: 100,margin:10,resizeMode:'contain' }}
                                 />
                             )
                             :
                             <Image
                                 source={{ uri: 'http://192.168.1.2:8000/images/'+user.image }}
-                                style={{ width: 50, height: 100,margin:10 }}
+                                style={{ width: 100, height: 100,margin:10,resizeMode:'contain' }}
                             />
                         }
                     <Button title="Choose Photo" style={{
@@ -597,7 +597,7 @@ const styles = StyleSheet.create({
         borderRadius:50,
         shadowOpacity: 0.3,
         shadowRadius: 5,
-        shadowColor: '#FFFFFF',
+        shadowColor: '#000',
         margin:10,
         shadowOffset: { height: 0, width: 0 },
 
