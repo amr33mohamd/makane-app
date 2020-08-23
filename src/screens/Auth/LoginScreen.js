@@ -5,7 +5,6 @@ import { Container, Header, Content, Item, Input, Icon,Button,Text,Label,Toast }
 import StoreBox from '../../components/StoreBox'
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import OAuthManager from 'react-native-social-login';
 import { LoginButton, AccessToken,GraphRequest,GraphRequestManager,LoginManager } from 'react-native-fbsdk';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
