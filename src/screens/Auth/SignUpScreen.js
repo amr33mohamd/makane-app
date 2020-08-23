@@ -25,7 +25,7 @@ export default function SignUpScreen({route,navigation}) {
 
    var submit = () =>{
        if(email != '' && password != '' && password != '' && phone != '20'){
-           axios.get('http://192.168.1.2:8000/api/signup', {
+           axios.get('https://makane.herokuapp.com/api/signup', {
                params: {
                    email, password, phone, name, country: 'kkk',code
                }
@@ -36,7 +36,7 @@ export default function SignUpScreen({route,navigation}) {
                    navigation.navigate('Verify',{'data':JSON.stringify(response.data)})
                })
                .catch(function (error) {
-
+                // alert(JSON.stringify(error.response))
                 setErrors(error.response.data.errors)
 
                     // alert(error);

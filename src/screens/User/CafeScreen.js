@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import {View,Image,StyleSheet,Alert,ScrollView,FlatList,TouchableOpacity,I18nManager,Linking} from 'react-native';
 import { useTranslation } from 'react-i18next';
-import {Container, Header, Content, Item, Input, Icon, Button, Text, Tab, Tabs, Thumbnail, Toast,Spinner} from 'native-base';
+import {Container, Header, Content, Item, Input, Icon, Button, Text,Picker, Tab, Tabs, Thumbnail, Toast,Spinner} from 'native-base';
 import StoreBox from '../../components/StoreBox'
 import Geolocation from '@react-native-community/geolocation';
 import axios from "axios/index";
@@ -10,6 +10,7 @@ import Carousel from 'react-native-snap-carousel';
 import i18n from "i18next";
 import Modal from 'react-native-modal';
 import QRCode from 'react-native-qrcode-svg';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ReviewBox from '../../components/ReviewBox'
@@ -17,6 +18,7 @@ import CouponBox from "../../components/CouponBox";
 import SpecialEventBox from "../../components/SpecialEventBox";
 import CalenderScreen from "./CalenderScreen";
 import StatusBarPlaceHolder from "../../components/StatusBarPlaceHolder"
+import moment from "moment/moment";
 export default function CafeScreen({route,navigation}) {
     const {t} = useTranslation();
     const [store,setStore]= useState(JSON.parse(route.params.item));
@@ -25,6 +27,13 @@ export default function CafeScreen({route,navigation}) {
     const [currentSpecialEvent,setCurrentSpecialEvent]= useState();
     const [selected,setSelected] = useState('view');
     const [featched,setFeatched] = useState(false);
+    const [time, setTime] = useState(new Date());
+    const [show, setShow] = useState(false);
+    const [persons, setPersons] = useState('0');
+    const [kids, setKids] = useState('0');
+    const [smoking, setSmoking] = useState('0');
+    const [outt, setOutt] = useState('0');
+
     var renderStars = ()=>{
         var gold = parseInt(JSON.parse(route.params.item).rating);
         var empty = 5 - parseInt(JSON.parse(route.params.item).rating);
@@ -45,6 +54,10 @@ export default function CafeScreen({route,navigation}) {
 
         // i18n.changeLanguage ('ar');
     },[]);
+
+    const showTimepicker = () => {
+        setShow(true);
+    };
     var reserveNormalButton = ()=>{
         setNormalModal(true);
     }
@@ -62,10 +75,16 @@ export default function CafeScreen({route,navigation}) {
     var reserveNormal = ()=>{
         AsyncStorage.getItem('token').then((token)=>{
             if(token) {
-                axios.post('http://192.168.1.2:8000/api/reserve', null, {
+                axios.post('https://makane.herokuapp.com/api/reserve', null, {
                     params: {
                         store_id: store.id,
-                        type: 1
+                        type: 1,
+                        smoking,
+                        outt,
+                        time,
+                        persons,
+                        kids
+
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -107,6 +126,7 @@ export default function CafeScreen({route,navigation}) {
 
                             })
                         }
+                        alert(JSON.stringify(error.response))
 
                     }
                 );
@@ -124,11 +144,16 @@ export default function CafeScreen({route,navigation}) {
             }
         })
     }
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate ;
+        setShow(false);
+        setTime(currentDate);
+    };
 
     var reserveSpecial = ()=>{
         AsyncStorage.getItem('token').then((token)=>{
             if(token) {
-                axios.post('http://192.168.1.2:8000/api/reserve', null, {
+                axios.post('https://makane.herokuapp.com/api/reserve', null, {
                     params: {
                         store_id: store.id,
                         type: 2,
@@ -200,10 +225,136 @@ return (
         <StatusBarPlaceHolder/>
 
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={normalModal}>
-                <View style={{height:290,backgroundColor:'#fff',padding:10,borderRadius:20}}>
+                <ScrollView>
+                <View style={{backgroundColor:'#fff',padding:10,borderRadius:20}}>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#000',fontSize:20,paddingHorizontal:20,paddingTop:20}}>{t('Are you sure you want to book now!')}</Text>
                     <Text style={{fontFamily:'Poppins-Medium',color:'#CECDCD',fontSize:15,padding:20}}>{t('You can cancel your reservation 30 minutes after reserve. Note that 2 reservation without attending you will be baned')}</Text>
-                    <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
+                    <Text style={{        fontFamily:'Poppins-Medium',
+                        fontSize:12,
+                        padding:10,
+                        textAlign:'center'
+
+                    }}>{t('Time')} {moment(time).format('HH:MM')}</Text>
+                    <Button title="Choose Photo" style={{
+                        backgroundColor: '#E50000',
+                        alignItems:'center',
+                        justifyContent:'center',
+                        borderRadius:50,
+                        shadowOpacity: 0.3,
+                        shadowRadius: 5,
+                        shadowColor: '#E50000',
+                        shadowOffset: { height: 0, width: 0 },
+                        margin:10,
+
+                    }} onPress={showTimepicker} >
+                        <Text style={{
+                            fontFamily:'Poppins-Medium',
+                            fontSize:12,
+                            padding:10,
+                            textAlign:'center',
+                            color:'#fff',
+                            alignSelf:'center'
+
+                        }}>{t('Select Time')}</Text>
+                    </Button>
+
+                    {show && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={time}
+                            mode={'time'}
+                            is24Hour={false}
+                            display="clock"
+                            onChange={onChange}
+                        />
+                    )}
+
+                    <Text style={{        fontFamily:'Poppins-Medium',
+                        fontSize:12,
+                        padding:10,
+                        textAlign:'center'
+
+                    }}>{t('Number of persons')}</Text>
+                    <Item style={styles.searchInput} rounded >
+
+                        <Input placeholder='Number' value={persons} onChangeText={(value)=>setPersons(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
+                        />
+                    </Item>
+
+                    <Text style={{        fontFamily:'Poppins-Medium',
+                        fontSize:12,
+                        padding:10,
+                        textAlign:'center'
+
+                    }}>{t('Number of kids')}</Text>
+                    <Item style={styles.searchInput} rounded >
+
+                        <Input placeholder='Number' value={kids} onChangeText={(value)=>setKids(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
+                        />
+                    </Item>
+                    {
+                        (store.smoking == 1) &&
+                        <View>
+                            <Text style={{
+                                fontFamily: 'Poppins-Medium',
+                                fontSize: 12,
+                                padding: 10,
+                                textAlign: 'center'
+
+                            }}>{t('Smoking')}</Text>
+                            <Item style={styles.searchInput} rounded>
+
+                                <Picker
+                                    note
+                                    mode="dropdown"
+                                    style={{width: 120}}
+                                    selectedValue={smoking}
+                                    onValueChange={(value) => {
+                                        setSmoking(value)
+                                    }}
+                                >
+                                    <Picker.Item label="Yes" value="1"/>
+                                    <Picker.Item label="No" value="0"/>
+                                </Picker>
+
+                            </Item>
+                        </View>
+                    }
+
+
+
+                    {
+                        (store.outt == 1) &&
+                            <View>
+                        <Text style={{        fontFamily:'Poppins-Medium',
+                                fontSize:12,
+                                padding:10,
+                                textAlign:'center'
+
+                            }}>{t('Outside Place')}</Text>
+
+                        <Item style={styles.searchInput} rounded >
+
+                        <Picker
+                        note
+                        mode="dropdown"
+                        style={{ width: 120 }}
+                        selectedValue={outt}
+                        onValueChange={(value)=>{
+                        setOutt(value)
+                    }
+                    }
+                        >
+                        <Picker.Item label="Yes" value="1" />
+                        <Picker.Item label="No" value="0" />
+                        </Picker>
+                        </Item>
+                            </View>
+                    }
+
+
+
+                    <View style={{flexDirection:'row',justifyContent:'center',padding:40}}>
                         <Button
                             title="Press me"
                             onPress={() => {reserveNormal()}}
@@ -223,6 +374,7 @@ return (
 
                     </View>
                 </View>
+                </ScrollView>
             </Modal>
             <Modal animationIn="fadeIn" animationOut="fadeOut" isVisible={specialModal}>
                 <View style={{height:290,backgroundColor:'#fff',padding:10,borderRadius:20}}>
@@ -263,7 +415,7 @@ return (
         {
             store.store_images.map((image)=>
                 <Image renderToHardwareTextureAndroid  source={{
-                    uri: 'http://192.168.1.2:8000/images/'+image.image}}
+                    uri: 'https://makane.herokuapp.com/images/'+image.image}}
                         style={{
                             width:'33.33333%',
                             height:250,
@@ -360,7 +512,7 @@ return (
 
 
                                             <SpecialEventBox
-                                                image={'http://192.168.1.2:8000/images/'+store.image}
+                                                image={'https://makane.herokuapp.com/images/'+store.image}
                                                 name={item.name}
                                                 time={item.time}
                                                 available={item.available}
@@ -424,10 +576,9 @@ const styles = StyleSheet.create({
 
     },
     searchInput:{
-        width:'20%',
+        width:'100%',
         borderRadius:10,
         backgroundColor:'#F5F5F5',
-        marginTop:35,
         alignItems:'center',
         paddingHorizontal:30,
         color:'#CECDCD',
@@ -512,10 +663,6 @@ alignSelf:'center',
         alignSelf:'flex-end',
         borderRadius:10,
         height:45,
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
-        shadowColor: '#E50000',
-        shadowOffset: { height: 0, width: 0 },
 
     },
     modalCancel:{
@@ -525,10 +672,7 @@ alignSelf:'center',
         borderRadius:10,
         height:45,
         marginHorizontal:15,
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
-        shadowColor: '#EFEFEF',
-        shadowOffset: { height: 0, width: 0 },
+
 
     },
     components:{

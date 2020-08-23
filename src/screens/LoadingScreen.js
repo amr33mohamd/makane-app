@@ -30,6 +30,10 @@ export default function LoadingScreen({route,navigation}) {
                         navigation.navigate('Auth',{screen:'Verify'});
 
                     }
+                    else if(type == '4'){
+                        navigation.navigate('Auth',{screen:'Phone'});
+
+                    }
                     else
                         {
                         navigation.navigate('Store');

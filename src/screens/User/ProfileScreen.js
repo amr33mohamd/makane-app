@@ -31,7 +31,7 @@ export default function ProfileScreen({navigation}) {
             })
             if (token) {
 
-                axios.post('http://192.168.1.2:8000/api/user', null, {
+                axios.post('https://makane.herokuapp.com/api/user', null, {
 
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -58,7 +58,7 @@ export default function ProfileScreen({navigation}) {
         AsyncStorage.getItem('token').then((token) => {
 
             if (name != '') {
-                axios.post('http://192.168.1.2:8000/api/update_user', null, {
+                axios.post('https://makane.herokuapp.com/api/update_user', null, {
                     params: {
                         email, password, name
                     },

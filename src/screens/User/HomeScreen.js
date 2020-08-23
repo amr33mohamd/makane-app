@@ -26,7 +26,7 @@ export default function HomeScreen({navigation}) {
             var lat = info.coords.latitude;
             var lng = info.coords.latitude;
 
-            axios.get('http://192.168.1.2:8000/api/stores', {
+            axios.get('https://makane.herokuapp.com/api/stores', {
                 params: {
                     lat, lng,search
                 }
@@ -101,7 +101,7 @@ export default function HomeScreen({navigation}) {
                                     <StoreBox
                                         name={item.name}
                                         description={item.description_en}
-                                        image={'http://192.168.1.2:8000/images/'+item.image}
+                                        image={'https://makane.herokuapp.com/images/'+item.image}
                                         available={item.available}
                                         rate={item.rating}
                                     />

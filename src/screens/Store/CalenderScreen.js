@@ -20,7 +20,7 @@ export default function CalenderScreen({navigation}) {
     const [currentData,setCurrentData] = useState(comming);
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/reservations',null, {
+            axios.post('https://makane.herokuapp.com/api/reservations',null, {
 
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -44,7 +44,7 @@ export default function CalenderScreen({navigation}) {
     },[update,isFocused]);
     var arrived = (id)=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/arrived',null, {
+            axios.post('https://makane.herokuapp.com/api/arrived',null, {
                 params:{
                     id
                 },
@@ -79,7 +79,7 @@ export default function CalenderScreen({navigation}) {
     }
     var notArrived = (id)=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/not-arrived',null, {
+            axios.post('https://makane.herokuapp.com/api/not-arrived',null, {
                 params:{
                     id
                 },
@@ -139,6 +139,8 @@ export default function CalenderScreen({navigation}) {
                     <FlatList
                         style={styles.components}
                         data={currentData}
+                        contentContainerStyle={{ paddingBottom: 150}}
+
                         ListEmptyComponent={() =>
                             <Text style={{
                                 color: '#000',
@@ -151,6 +153,7 @@ export default function CalenderScreen({navigation}) {
 
 
                             <ReservationBox
+
                                 date={(item.type == 1)  ? moment(item.created_at).format('h:mm a') : moment(item.special_event.time,'hh:mm:ss').format('h:mm a')}
                                 address={item.store.address}
                                 type={item.type}
@@ -167,14 +170,12 @@ export default function CalenderScreen({navigation}) {
                                 lat={item.store.lat}
                                 lng={item.store.lng}
                                 navigation={navigation}
+                                reservation={item}
                             />
                         )}
                         keyExtractor={item => item.id}
                     />
-                    <View style={styles.components}>
 
-
-                    </View>
                 </View>
         </View>
 
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
 
     },
     components:{
-        width:'100%'
+        width:'100%',
     }
 });
 

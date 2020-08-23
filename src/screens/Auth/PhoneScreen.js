@@ -6,18 +6,21 @@ import StoreBox from '../../components/StoreBox'
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default function VerifyScreen({route,navigation}) {
+export default function PhoneScreen({route,navigation}) {
     const { t } = useTranslation();
+    const [phone,setPhone] = useState('974');
     const [code,setCode] = useState();
-    const [error,setError] = useState();
+
+    const [errors,setErrors] = useState({});
 
     var submit = () =>{
         AsyncStorage.getItem('token').then((token)=> {
 
 
-            if (code != '') {
-                axios.post('https://makane.herokuapp.com/api/verify',null, {
+            if (phone != '') {
+                axios.post('https://makane.herokuapp.com/api/add-phone',null, {
                     params: {
+                        phone,
                         code
                         // id: JSON.parse(route.params.data).user.id
                     },
@@ -40,7 +43,10 @@ export default function VerifyScreen({route,navigation}) {
                     })
                     .catch(function (error) {
                         // alert(JSON.stringify(error))
-                        setError('wrorg code');
+                        setErrors(error.response.data.errors)
+
+                        // alert(JSON.stringify(error.response))
+                        // setError('wrorg Phone');
                     });
             }
             else {
@@ -68,7 +74,7 @@ export default function VerifyScreen({route,navigation}) {
 
                 <View style={styles.container}>
                     <View style={{borderBottomColor:'#000',borderBottomWidth:3,display:'flex',margin:10}}>
-                    <Text style={{fontFamily:'Poppins-Medium',padding:10,fontSize:25}}>{t('Verify Number')}</Text>
+                    <Text style={{fontFamily:'Poppins-Medium',padding:10,fontSize:25}}>{t('Add Number')}</Text>
                     </View>
 
 
@@ -76,19 +82,37 @@ export default function VerifyScreen({route,navigation}) {
                         fontSize:12,
                         padding:10,
                         textAlign:'center'
-                    }}>{t('Code')}</Text>
+                    }}>{t('Phone (with country code)')}</Text>
+                    <Item style={styles.searchInput} rounded >
+
+                        <Input placeholder='Phone' value={phone} onChangeText={(value)=>setPhone(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
+                        />
+                    </Item>
+                    {
+                        errors.phone && <Text style={{        fontFamily:'Poppins-Medium',
+                            fontSize:12,
+                            padding:10,
+                            textAlign:'center',
+                            color:'#E50000'
+                        }}> {errors.phone}</Text>
+                    }
+                    <Text style={{        fontFamily:'Poppins-Medium',
+                        fontSize:12,
+                        padding:10,
+                        textAlign:'center'
+                    }}>{t('Invite Code')}</Text>
                     <Item style={styles.searchInput} rounded >
 
                         <Input placeholder='Code' value={code} onChangeText={(value)=>setCode(value)} style={{textAlign:'center'}}  fontFamily='Poppins-ExtraLight' fontSize={15}  placeholderTextColor="#CECDCD"
                         />
                     </Item>
                     {
-                        error && <Text style={{        fontFamily:'Poppins-Medium',
+                        errors.code && <Text style={{        fontFamily:'Poppins-Medium',
                             fontSize:12,
                             padding:10,
                             textAlign:'center',
                             color:'#E50000'
-                        }}> {error}</Text>
+                        }}> {errors.code}</Text>
                     }
 
 

@@ -24,7 +24,7 @@ export default function CalenderScreen({navigation}) {
         })
         AsyncStorage.getItem('token').then((token)=>{
             if(token) {
-                axios.post('http://192.168.1.2:8000/api/reservations', null, {
+                axios.post('https://makane.herokuapp.com/api/reservations', null, {
 
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -51,7 +51,7 @@ export default function CalenderScreen({navigation}) {
     var cancel = (id)=>{
         setFeatched(false)
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/cancel_reservation',null, {
+            axios.post('https://makane.herokuapp.com/api/cancel_reservation',null, {
                 params:{
                     id
                 },
@@ -137,11 +137,12 @@ export default function CalenderScreen({navigation}) {
                                     }}
                                     id={item.id}
                                     store_id={item.store.id}
-                                    image={'http://192.168.1.2:8000/images/' + item.store.image}
+                                    image={'https://makane.herokuapp.com/images/' + item.store.image}
                                     status={item.status}
                                     lat={item.store.lat}
                                     lng={item.store.lng}
                                     navigation={navigation}
+                                    reservation={item}
                                 />
                             )}
                             keyExtractor={item => item.id}

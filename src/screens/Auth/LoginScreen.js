@@ -5,12 +5,22 @@ import { Container, Header, Content, Item, Input, Icon,Button,Text,Label,Toast }
 import StoreBox from '../../components/StoreBox'
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import OAuthManager from 'react-native-social-login';
+import { LoginButton, AccessToken,GraphRequest,GraphRequestManager,LoginManager } from 'react-native-fbsdk';
+import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+} from '@react-native-community/google-signin';
 
 export default function LoginScreen({route,navigation}) {
     const { t } = useTranslation();
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
-
+    const [user,setUser] = useState();
     const [error,setError] = useState();
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
@@ -20,9 +30,98 @@ export default function LoginScreen({route,navigation}) {
         })
     },[]);
     //http://10.0.2.2:8000
+    var fb = () =>{
+
+        LoginManager.logInWithPermissions(['public_profile']).then(
+            function(result) {
+                if (result.isCancelled) {
+                    alert('Login was cancelled');
+                } else {
+                    const infoRequest = new GraphRequest(
+                        '/me',
+                        null,
+                        _responseInfoCallback,
+                    );
+
+                    new GraphRequestManager().addRequest(infoRequest).start();
+
+                }
+            },
+            function(error) {
+                alert('Login failed with error: ' + error);
+            }
+        );
+
+    }
+    GoogleSignin.configure();
+    var signIn = async () => {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            setUser(userInfo);
+            submitSocial(userInfo.user.email)
+        } catch (error) {
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                // user cancelled the login flow
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                // operation (e.g. sign in) is in progress already
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                // play services not available or outdated
+            } else {
+                alert(error)
+            }
+        }
+    };
+    var _responseInfoCallback = (error: ?Object, result: ?Object) =>{
+        if (error) {
+            alert('Error fetching data: ' + error.toString());
+        } else {
+            submitSocial(result.id);
+        }
+    }
+
+    var submitSocial = (email) =>{
+
+            axios.post('https://makane.herokuapp.com/api/social-login',null, {
+                params: {
+                    email,
+                }
+            })
+                .then(function (response) {
+                    // alert(JSON.stringify(response))
+                    AsyncStorage.setItem('token',response.data.token);
+                    if(response.data.status == 1 ){
+                        navigation.navigate('User');
+                        AsyncStorage.setItem('type','1');
+
+                    }
+                    else {
+                        AsyncStorage.setItem('token',response.data.token);
+                        navigation.navigate('Phone');
+                        AsyncStorage.setItem('type','4');
+
+                    }
+                })
+                .catch(function (error) {
+
+                    setError('Wrong email or password');
+                    // alert(JSON.stringify(error.response))
+                    // alert(error.response.data.errors);
+                });
+
+            // Toast.show({
+            //     text: 'please fill in all data'+email,
+            //     buttonText: 'Okay',
+            //     type: "danger"
+            //
+            // })
+
+
+    }
+
     var submit = () =>{
         if(email != '' && password != '' ){
-            axios.post('http://192.168.1.2:8000/api/login',null, {
+            axios.post('https://makane.herokuapp.com/api/login',null, {
                 params: {
                     email, password
                 }
@@ -72,6 +171,27 @@ export default function LoginScreen({route,navigation}) {
                 <View style={styles.container}>
                     <View style={{borderBottomColor:'#000',borderBottomWidth:3,display:'flex',margin:10}}>
                         <Text style={{fontFamily:'Poppins-Medium',padding:10,fontSize:25}}>{t('Login')}</Text>
+
+                    </View>
+                    <View style={{flexDirection:'row'}}>
+                        <Button
+                            title="Press me"
+                            onPress={() => {signIn()}}
+                            style={ styles.goButton }
+                        >
+                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}><AntDesign name="google" size={20} style={{color:'#fff',textAlign:'center',fontSize:16}}/>{t(' Google')}</Text>
+
+                        </Button>
+                        <Button
+                            title="Press me"
+                            onPress={() => {fb()}}
+                            style={ styles.fbButton }
+                        >
+
+                            <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}><Entypo name="facebook" size={20} style={{color:'#fff',textAlign:'center',fontSize:16}}/>{t(' Facebook')}</Text>
+
+                        </Button>
+
                     </View>
 
                     {
@@ -132,6 +252,7 @@ export default function LoginScreen({route,navigation}) {
                         <Text style={{color:'#fff' ,fontFamily:'Poppins-Medium',textAlign:'center',fontSize:15}}>{t('Login')}</Text>
 
                     </Button>
+
                 </View>
             </Content>
 
@@ -171,6 +292,31 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         width:'70%',
         borderRadius:50,
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        shadowColor: '#E50000',
+        shadowOffset: { height: 0, width: 0 },
+
+    },
+    fbButton: {
+        backgroundColor: '#1a77f2',
+        alignItems:'center',
+        justifyContent:'center',
+        width:'40%',
+        borderRadius:50,
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        shadowColor: '#E50000',
+        shadowOffset: { height: 0, width: 0 },
+
+    },
+    goButton: {
+        backgroundColor: '#E50000',
+        alignItems:'center',
+        justifyContent:'center',
+        width:'40%',
+        borderRadius:50,
+        marginHorizontal:10,
         shadowOpacity: 0.3,
         shadowRadius: 5,
         shadowColor: '#E50000',

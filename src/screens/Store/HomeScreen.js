@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import {View, Image, StyleSheet, Alert, ScrollView, Platform, I18nManager} from 'react-native';
 import { useTranslation } from 'react-i18next';
-import {Container, Header, Content, Item, Input, Icon, Button, Text, Label, Toast} from 'native-base';
+import {Container, Header, Content, Item, Input, Icon, Button, Text, Label,Picker, Toast} from 'native-base';
 import StoreBox from '../../components/StoreBox'
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -25,6 +25,9 @@ export default  function HomeScreen({navigation}) {
     const [mainImage,setMainImage] = useState();
     const [formMainImage,setFormMainImage] = useState();
     const [user,setUser] = useState({store_images:[]});
+    const [smoking, setSmoking] = useState('0');
+    const [outt, setOutt] = useState('0');
+
     const options = {
         title: 'Select Avatar',
         storageOptions: {
@@ -34,7 +37,7 @@ export default  function HomeScreen({navigation}) {
     };
     useEffect(()=>{
         AsyncStorage.getItem('token').then((token)=>{
-            axios.post('http://192.168.1.2:8000/api/user',null, {
+            axios.post('https://makane.herokuapp.com/api/user',null, {
 
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -47,6 +50,8 @@ export default  function HomeScreen({navigation}) {
                     setDescriptionAr(response.data.user.description_ar)
                      setDescriptionEn(response.data.user.description_en)
                     setPersons(response.data.user.available)
+                    setSmoking(response.data.user.smoking)
+                    setOutt(response.data.user.outt)
                     setUser(response.data.user);
                 })
                 .catch(function (error) {
@@ -60,7 +65,7 @@ export default  function HomeScreen({navigation}) {
 
    var deleteImage= (id)=>{
        AsyncStorage.getItem('token').then((token)=>{
-           axios.post('http://192.168.1.2:8000/api/delete-image',null, {
+           axios.post('https://makane.herokuapp.com/api/delete-image',null, {
                 params:{
                     id
                 },
@@ -107,7 +112,7 @@ export default  function HomeScreen({navigation}) {
 
 
                 axios({
-                    url:'http://192.168.1.2:8000/api/upload-image',
+                    url:'https://makane.herokuapp.com/api/upload-image',
                     method:'POST',
                     headers:{
                         'Content-Type':'multipart/form-data'
@@ -150,7 +155,7 @@ export default  function HomeScreen({navigation}) {
 
 
                     axios({
-                        url:'http://192.168.1.2:8000/api/add-image',
+                        url:'https://makane.herokuapp.com/api/add-image',
                         method:'POST',
                         headers:{
                             'Authorization': `Bearer ${token}`,
@@ -180,10 +185,10 @@ export default  function HomeScreen({navigation}) {
         AsyncStorage.getItem('token').then((token)=> {
 
             if ( name != '') {
-                axios.post('http://192.168.1.2:8000/api/update_user', null, {
+                axios.post('https://makane.herokuapp.com/api/update_user', null, {
                     params: {
                         email, password, name,description_ar,description_en,
-                        available:(available2 != null) ? available2 : persons,image:formMainImage
+                        available:(available2 != null) ? available2 : persons,image:formMainImage,smoking,outt
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -291,7 +296,7 @@ export default  function HomeScreen({navigation}) {
                             )
                             :
                             <Image
-                                source={{ uri: 'http://192.168.1.2:8000/images/'+user.image }}
+                                source={{ uri: 'https://makane.herokuapp.com/images/'+user.image }}
                                 style={{ width: 100, height: 100,margin:10,resizeMode:'contain' }}
                             />
                         }
@@ -335,7 +340,7 @@ export default  function HomeScreen({navigation}) {
 
                                             (<View>
                                                 <Image
-                                                    source={{uri: 'http://192.168.1.2:8000/images/' + image.image}}
+                                                    source={{uri: 'https://makane.herokuapp.com/images/' + image.image}}
                                                     style={{flex: .3, height: 100, margin: 10}}
                                                 />
 
@@ -470,6 +475,58 @@ export default  function HomeScreen({navigation}) {
                             color:'#E50000',
                         }}>{errors.password}</Text>
                     }
+
+
+                    <Text style={{
+                        fontFamily: 'Poppins-Medium',
+                        fontSize: 12,
+                        padding: 10,
+                        textAlign: 'center'
+
+                    }}>{t('Smoking')}</Text>
+                    <Item style={styles.searchInput} rounded>
+
+                        <Picker
+                            note
+                            mode="dropdown"
+                            style={{width: 120}}
+                            selectedValue={smoking}
+                            onValueChange={(value) => {
+                                setSmoking(value)
+                            }}
+                        >
+                            <Picker.Item label="Yes" value="1"/>
+                            <Picker.Item label="No" value="0"/>
+                        </Picker>
+
+                    </Item>
+
+
+                    <Text style={{        fontFamily:'Poppins-Medium',
+                        fontSize:12,
+                        padding:10,
+                        textAlign:'center'
+
+                    }}>{t('Outside Place')}</Text>
+
+                    <Item style={styles.searchInput} rounded >
+
+                        <Picker
+                            note
+                            mode="dropdown"
+                            style={{ width: 120 }}
+                            selectedValue={outt}
+                            onValueChange={(value)=>{
+                                setOutt(value)
+                            }
+                            }
+                        >
+                            <Picker.Item label="Yes" value="1" />
+                            <Picker.Item label="No" value="0" />
+                        </Picker>
+                    </Item>
+
+
 
 
                     <Button
